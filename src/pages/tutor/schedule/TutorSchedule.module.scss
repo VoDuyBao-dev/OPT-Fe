@@ -1,6 +1,5 @@
 .tutorSchedule {
   width: 100%;
-  min-height: 100vh;
   background-color: var(--bgr-c);
   padding: 2rem;
 }
@@ -86,8 +85,13 @@
   font-size: 1.4rem;
   cursor: pointer;
 }
+.calendar{
+  overflow-x: auto;
 
-.calendar {
+}
+.calendarCtn {
+  min-width: 500px;
+  
   display: grid;
   grid-template-columns: 90px repeat(7, 1fr);
   border: 1px solid var(--border-c-04);
