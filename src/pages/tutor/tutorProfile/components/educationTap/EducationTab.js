@@ -73,13 +73,7 @@ function EducationTab({
                                     required
                                     className={styles.formGroup}
                                 />
-                                {cert.status && (
-                                    <span
-                                        className={`${styles.certStatus} ${cert.status === 'PENDING' ? styles.pending : styles.approved}`}
-                                    >
-                                        {cert.status === 'PENDING' ? 'Chờ duyệt' : cert.status}
-                                    </span>
-                                )}
+
                                 {cert.fileUrl && !cert.file && (
                                     <Button
                                         size="small"
@@ -93,6 +87,14 @@ function EducationTab({
                                             Xem file hiện tại
                                         </a>
                                     </Button>
+
+                                )}
+                                {cert.status && (
+                                    <span
+                                        className={`${styles.certStatus} ${cert.status === 'PENDING' ? styles.pending : styles.approved}`}
+                                    >
+                                        {cert.status === 'PENDING' ? 'Chờ duyệt' : 'Đã duyệt'}
+                                    </span>
                                 )}
                             </div>
                             {isEditing && (
@@ -119,12 +121,12 @@ function EducationTab({
                     ))}
                 </div>
                 {isEditing && (
-                    <Button 
-                        type="button" 
-                        className={styles.addCertBtn} 
+                    <Button
+                        type="button"
+                        className={styles.addCertBtn}
                         onClick={onAddCertificate}
                         variant="primary"
-                        size= 'small'
+                        size='small'
                     >
                         <FontAwesomeIcon icon={faPlus} /> Thêm chứng chỉ
                     </Button>

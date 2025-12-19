@@ -5,7 +5,7 @@ function DefaultLayout({userType, children}){
     return(
         <>
             <Header userType={userType} showNotification ={false}/>
-            <main style={{marginTop: '80px'}}>
+            <main>
                 {children}
             </main>
             <Footer/>

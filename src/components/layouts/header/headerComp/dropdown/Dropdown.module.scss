@@ -38,3 +38,12 @@
     margin-right: 8px;
     font-size: 1.6rem;
 }
+//responsive
+@media screen and (max-width: 768px){
+    .Dropdown{
+        width: 180px;
+    }
+    .ListItem{
+        padding: 10px 14px;
+    }
+}

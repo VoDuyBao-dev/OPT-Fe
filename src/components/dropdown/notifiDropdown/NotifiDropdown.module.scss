@@ -60,3 +60,18 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
+//responsive
+@media screen and (max-width: 480px){
+    .notification{
+        width: 260px;
+    }
+    .notificationHeader{
+        font-size: 1.6rem;
+    }
+    .notificationItemTitle{
+        font-size: 1.2rem;
+    }
+    .notificationItemContent{
+        font-size: 1.2rem;
+    }
+}

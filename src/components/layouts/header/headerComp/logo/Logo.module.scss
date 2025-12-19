@@ -13,3 +13,17 @@
     color: var(--primary-c);
     font-size: 2.4rem;
 }
+//responsive
+@media screen and (max-width: 768px){
+    .logo{
+        width: 140px;
+    }
+    .logoIcon, .logoTitle{
+        font-size: 2rem;
+    }
+}
+@media screen and (max-width: 480px){
+    .logo{
+        width: 120px;
+    }
+}

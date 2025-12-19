@@ -29,3 +29,12 @@
     font-weight: 500;
     color: #b71c1c;
 }
+//responsive
+@media screen and (max-width: 768px){
+    .notification{
+        margin-right: 0px;
+    }
+    .notificationNumber{
+        right: 8px;
+    }
+}

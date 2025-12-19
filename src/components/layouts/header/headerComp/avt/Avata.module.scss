@@ -48,3 +48,24 @@
         transform: rotate(0deg);
     }
 }
+//responsive
+@media screen and (max-width: 768px){
+    // .account{
+    //     margin-right: 0px;
+    // }
+    .accountIcon{
+        right: -12px;
+    }
+    .accountIconItem{
+        font-size: 1rem;
+    }
+}
+@media screen and (max-width: 480px){
+    .accountAvt{
+        height: 32px;
+        width: 32px;
+    }
+    .accountIconItem{
+        font-size: 0.8rem;
+    }
+}

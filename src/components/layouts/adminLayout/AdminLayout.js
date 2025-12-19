@@ -5,7 +5,7 @@ function AdminLayout({ children }) {
   return (
     <>
       <Header userType="admin" showNotification={false} />
-      <main style={{ marginTop: '100px', display: 'flex' }}>
+      <main >
         {children}
       </main>
       <Footer />
