@@ -1,0 +1,14 @@
+.miniProfile{
+    min-height: 240px;
+    height: 100%;
+    width: 100%;
+    
+}
+.miniProfileCtn{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--section-bgr);
+    border-radius: 12px;
+}

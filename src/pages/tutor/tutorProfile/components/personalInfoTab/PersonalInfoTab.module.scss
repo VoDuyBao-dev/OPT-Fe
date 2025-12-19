@@ -1,0 +1,30 @@
+.section {
+    .sectionTitle {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-c);
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .formGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        margin-bottom: 2rem;
+
+        .fullWidth {
+            grid-column: 1 / -1;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .section {
+        .formGrid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+    }
+}

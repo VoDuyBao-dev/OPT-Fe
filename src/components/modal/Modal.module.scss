@@ -1,0 +1,17 @@
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 1500px;
+    height: 98%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: auto;
+    &.default{
+        background-color: transparent;
+    }
+    &.blackBg{
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+}

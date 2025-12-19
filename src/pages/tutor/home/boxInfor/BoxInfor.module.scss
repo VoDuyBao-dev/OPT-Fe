@@ -1,0 +1,78 @@
+.boxInfor{
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+.boxInforPrimary{
+    .boxCtn{
+        background-color: var(--primary-c);
+        border: 1px solid var(--border-c-04);
+        box-shadow: var(--box-shadow-pm);
+    }
+    .itemBox{
+        h2, p, a.link{
+            color: var(--text-c-light);
+        }
+    }
+    .iconBox{
+        color: var(--text-c-light);
+    }
+}
+.boxCtn{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    border: 1px solid var(--border-c-04);
+    box-shadow: var(--box-shadow-pm);
+    background-color: var(--section-bgr);
+    border-radius: 12px;
+    width: 100%;
+    overflow: hidden;
+    
+}
+.itemBox{
+    height: 100%;
+    flex: 1;
+    padding: 12px 16px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    h2{
+        font-size: 1.6rem;
+        font-weight: 500;
+        color: var(--text-c);
+        line-height: 1.5;
+    }
+    p{
+        font-size: 2.4rem;
+        font-weight: 600;
+        line-height: 1.5;
+        color: var(--text-red-c);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    span{
+        font-size: 1.4rem;
+    }
+    a.link{
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--text-c);
+        text-decoration: underline;
+        cursor: pointer;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+.iconBox{
+    height: 100%;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 24px;
+    font-size: 3.8rem;
+    color: var(--text-c);
+}

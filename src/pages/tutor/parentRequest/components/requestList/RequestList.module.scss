@@ -1,0 +1,17 @@
+.requestList {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border-radius: 12px;
+    
+    p {
+        font-size: 1.6rem;
+        color: #666;
+    }
+}

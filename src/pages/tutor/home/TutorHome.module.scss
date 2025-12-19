@@ -1,0 +1,25 @@
+.tutorHome{
+    width: 100%;
+    display: flex;
+    padding: 0 var(--padding-left-right);
+}
+.container{
+    max-width: var(--max-width);
+    width: 100%;
+    margin: 0 auto;
+
+}
+.section{
+    margin-bottom: 20px;
+}
+.boxInfor{
+    background-color: var(--section-bgr);
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+}
+.gridBoxInfor{
+    padding: 12px;
+    height: 100%;
+    width: 100%;
+}

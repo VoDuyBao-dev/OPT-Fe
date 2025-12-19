@@ -1,0 +1,53 @@
+.availabilityForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem 0;
+
+    .timeRow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+    }
+
+    .timeField {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .errorMessage {
+        color: #ef4444;
+        font-size: 1.3rem;
+        margin-top: -1rem;
+        margin-left: 0.5rem;
+        font-weight: 500;
+        animation: slideDown 0.2s ease-out;
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .modalActions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 768px) {
+    .availabilityForm {
+        .timeRow {
+            grid-template-columns: 1fr;
+        }
+    }
+}

@@ -1,0 +1,143 @@
+.container {
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0c6f63;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.controls button {
+  border: none;
+  background: #f2f5f7;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.controls button:hover {
+  background: #e4ecec;
+}
+.controls .today {
+  background: #0c6f63;
+  color: white;
+  font-weight: 600;
+}
+.controls .today:hover {
+  background: #09584f;
+}
+
+.dateBox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border: 1px solid #dcdcdc;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+.dateBox input {
+  border: none;
+  outline: none;
+  background: none;
+}
+
+.calendar {
+  display: grid;
+  grid-template-columns: 90px repeat(7,1fr);
+  border: 1px solid #eaeaea;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.timeCol {
+  background: #0c6f63;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dayHeader {
+  padding: 10px 0;
+  background: #f2f5f7;
+  font-weight: 600;
+  text-align: center;
+  font-size: 14px;
+  border-left: 1px solid #ddd;
+}
+.dayHeader span {
+  display: block;
+  font-size: 13px;
+  opacity: .8;
+  color: rgb(12, 83, 41) ;
+}
+
+.activeDay {
+  background: #e9f8f5;
+  color: #0c6f63;
+  font-weight: 700;
+  border-bottom: 2px solid #0c6f63;
+}
+
+.session {
+  writing-mode: vertical-rl;
+  background: #e9f8f5;
+  font-weight: 700;
+  font-size: 14px;
+  text-align: center;
+}
+
+.cell {
+  background-color: #fdfdfd;
+  padding: 6px;
+  min-height: 90px;
+  border-left: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.card {
+  background: white;
+  border: 1px solid #e5e8eb;
+  border-left: 4px solid #0c6f63;
+  border-radius: 8px;
+  padding: 8px;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  font-size: 16px;
+}
+.card .title {
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.card .meta {
+  font-size: 12px;
+  opacity: .8;
+}
+.card .tutor {
+  color: rgb(0, 63, 114);
+  font-size: 14px;
+  font-weight: 600;
+  opacity: .8;
+}
+.pause {
+  border-left-color: #e64c3c;
+  background: #fff4f2;
+}

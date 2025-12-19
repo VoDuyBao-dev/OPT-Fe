@@ -1,0 +1,203 @@
+.profileHeader {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    gap: 3rem;
+
+    .avatarSection {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+
+        .avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-c), #6ea8ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4.8rem;
+            color: white;
+            box-shadow: 0 4px 12px rgba(69, 130, 255, 0.3);
+            overflow: hidden;
+            
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        .changeAvatarBtn {
+            visibility: hidden;
+            padding: 0.6rem 1.2rem;
+            background-color: transparent;
+            border: 2px solid var(--primary-c);
+            color: var(--primary-c);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &.editing{
+                visibility: visible;
+            }
+            &:hover {
+                background-color: var(--primary-c);
+                color: white;
+            }
+        }
+    }
+
+    .headerInfo {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+
+        .nameSection {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .name {
+                font-size: 2.4rem;
+                font-weight: 700;
+                color: var(--text-c);
+                margin: 0;
+            }
+
+            .verifiedBadge {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+                padding: 0.5rem 1rem;
+                background-color: #e8f5e9;
+                color: #2e7d32;
+                border-radius: 20px;
+                font-size: 1.2rem;
+                font-weight: 600;
+
+                svg {
+                    font-size: 1.2rem;
+                }
+            }
+        }
+
+        .ratingSection {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+
+            .starIcon {
+                color: var(--yellow-c);
+                font-size: 1.3rem;
+            }
+
+            .rating {
+                font-weight: 700;
+                color: var(--text-c);
+            }
+
+            .reviews {
+                color: #666;
+            }
+        }
+
+        .quickInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+
+            .infoItem {
+                display: flex;
+                align-items: center;
+                gap: 0.8rem;
+                color: var(--text-c);
+                font-size: 1.3rem;
+
+                svg {
+                    color: var(--primary-c);
+                    width: 18px;
+                }
+            }
+        }
+
+        .headerActions {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+        }
+    }
+}
+
+// Responsive Design
+@media (max-width: 1024px) {
+    .profileHeader {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .headerInfo {
+            align-items: center;
+
+            .nameSection {
+                flex-direction: column;
+            }
+
+            .quickInfo {
+                align-items: center;
+            }
+
+            .headerActions {
+                justify-content: center;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .profileHeader {
+        padding: 2rem;
+
+        .avatarSection .avatar {
+            width: 140px;
+            height: 140px;
+            font-size: 4rem;
+        }
+
+        .headerInfo {
+            .nameSection .name {
+                font-size: 1.5rem;
+            }
+
+            .headerActions {
+                flex-direction: column;
+                width: 100%;
+
+                button {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .profileHeader {
+        padding: 1.5rem;
+
+        .avatarSection .avatar {
+            width: 120px;
+            height: 120px;
+            font-size: 3rem;
+        }
+    }
+}

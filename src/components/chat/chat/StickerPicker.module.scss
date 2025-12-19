@@ -1,0 +1,26 @@
+.picker {
+    position: absolute;
+    bottom: 60px;
+    right: 10px;
+    width: 260px;
+    max-height: 200px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 8px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.sticker {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+}
+
+.empty {
+    padding: 12px;
+    color: #888;
+}

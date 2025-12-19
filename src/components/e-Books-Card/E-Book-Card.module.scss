@@ -1,0 +1,139 @@
+.ebookCard {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.coverWrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 120%; // Tall book cover ratio
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--bg-light-c) 0%, var(--bgr-c) 100%);
+}
+
+.cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.defaultCover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-c) 0%, var(--hover-c-pmr) 100%);
+  
+  svg {
+    font-size: 6rem;
+    color: white;
+    opacity: 0.3;
+    
+    @media (max-width: 768px) {
+      font-size: 5rem;
+    }
+  }
+}
+
+.categoryBadge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--primary-c);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 1.2rem;
+  font-weight: 500;
+  z-index: 1;
+  
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+    padding: 5px 10px;
+  }
+}
+
+.content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+.title {
+  font-size: 1.6rem;
+  font-weight: 500;
+  color: var(--text-c);
+  margin-bottom: 12px;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.4rem;
+  }
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.3rem;
+  color: var(--text-c);
+  opacity: 0.7;
+  margin-bottom: 12px;
+  
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+}
+
+.authorIcon {
+  font-size: 1.2rem;
+}
+
+.description {
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--text-c);
+  opacity: 0.6;
+  line-height: 1.6;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+}

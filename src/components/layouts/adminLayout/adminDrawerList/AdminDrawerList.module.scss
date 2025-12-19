@@ -1,0 +1,22 @@
+.listItem{
+    border-bottom: 1px solid var(--border-c-04);
+}
+.listItemIcon{
+    display: flex;
+    justify-content: center;
+    .icon {
+        font-size: 2.4rem;
+        color: var(--primary-c);
+    }
+}
+
+.listItemText {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.6rem;
+    
+    :global {
+        .MuiListItemText-primary {
+            font-size: 1.6rem;
+        }
+    }
+}

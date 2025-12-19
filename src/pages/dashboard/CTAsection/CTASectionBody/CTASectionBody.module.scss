@@ -1,0 +1,77 @@
+.ctaBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+.buttonsWrapper {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  
+  @media (max-width: 600px) {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+    
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+.outlineButton {
+  background: transparent !important;
+  border-color: white !important;
+  color: white !important;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: white !important;
+  }
+}
+
+.features {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  
+  @media (max-width: 768px) {
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 400;
+  
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.3rem;
+  }
+}
+
+.checkIcon {
+  font-size: 2rem;
+  color: white;
+  
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+}

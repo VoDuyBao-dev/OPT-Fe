@@ -1,0 +1,133 @@
+:root{
+    --max-width: 1200px;
+    --padding-left-right: 12px;
+    --primary-c: #4582ff;
+    --primary-c-01: rgba(69, 130, 255, 0.1);
+    --bgr-c: #F7F6F5;
+    --bgr-header-c: rgba(247, 246, 245,0.7);
+    --bgr-menu-c: #e1e1e1;
+    --text-c:#342d47;
+    --text-red-c: #ff5757;
+    --text-c-light:#f1f1f1;
+    --yellow-c:#ffb800;
+    --section-bgr:#FCFCFC;
+    --border-c: #545454;
+    --border-c-04: rgba(120, 120, 120, 0.4);
+    --hover-c: #E4E4E4;
+    --hover-c-pmr: #1f6aff;
+    --input-bgr: #f0f0f0;
+    --bgr-hover-c: rgba(0, 0, 0, 0.03);
+    --bg-hover-c: #F0F0F0;
+    --bg-light-c: #FCFCFC;
+    --box-shadow: 0.5px 0.5px 2px rgba(0, 0, 0, 0.7);
+    --box-shadow-pm: 0 0 2px rgba(69, 130, 255, 0.7);
+}
+/* === INTER FONT FAMILY === */
+@font-face {
+  font-family: 'Inter';
+  src: url('../../fonts/Inter/Inter_18pt-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../../fonts/Inter/Inter_18pt-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../../fonts/Inter/Inter_18pt-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../../fonts/Inter/Inter_18pt-MediumItalic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+}
+
+// @font-face {
+//   font-family: 'Inter';
+//   src: url('../../fonts/Inter/Inter_18pt-SemiBold.ttf') format('truetype');
+//   font-weight: 600;
+//   font-style: normal;
+// }
+
+// @font-face {
+//   font-family: 'Inter';
+//   src: url('../../fonts/Inter/Inter_18pt-SemiBoldItalic.ttf') format('truetype');
+//   font-weight: 600;
+//   font-style: italic;
+// }
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../../fonts/Inter/Inter_18pt-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../../fonts/Inter/Inter_18pt-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+}
+
+/* === GLOBAL FONT APPLY === */
+html, body {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: var(--text-c);
+  background-color: var(--bgr-c);
+  line-height: 1.5;
+}
+
+*{
+    box-sizing: inherit;
+    padding: 0;
+    margin: 0;
+}
+
+html{
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+
+a[href]{
+    text-decoration: none;
+    color: var(--text-c);
+}
+input,
+button{
+    outline: none;
+    border: none;
+}
+
+/* Thanh cuộn tổng thể */
+::-webkit-scrollbar {
+  width: 4px;       /* Độ rộng */
+}
+
+/* Kênh chứa thanh kéo */
+::-webkit-scrollbar-track {
+  background: #f2f2f2;
+  border-radius: 20px;
+}
+
+/* Thanh kéo */
+::-webkit-scrollbar-thumb {
+  background: var(--primary-c);
+  border-radius: 20px;
+}
+
+/* Hover thanh kéo */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hover-c-pmr);
+}

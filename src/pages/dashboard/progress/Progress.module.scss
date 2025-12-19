@@ -1,0 +1,22 @@
+.progress {
+  background: var(--bgr-c);
+  padding: 80px 20px;
+  
+  @media (max-width: 1024px) {
+    padding: 60px 20px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 50px 20px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 40px 16px;
+  }
+}
+
+.progressContainer {
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+}

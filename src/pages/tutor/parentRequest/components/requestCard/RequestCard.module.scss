@@ -1,0 +1,176 @@
+.requestCard {
+    background: var(--section-bgr);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+
+    &:hover {
+        box-shadow: 0 1px 1.5px var(--primary-c);
+        border-color: var(--primary-c);
+    }
+
+    .cardHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #f0f0f0;
+
+        .badges {
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .badge {
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+
+            &.pending {
+                background: #fff4e6;
+                color: #f39c12;
+            }
+
+            &.accepted {
+                background: #e8f5e9;
+                color: #2e7d32;
+            }
+
+            &.rejected {
+                background: #ffebee;
+                color: #c62828;
+            }
+
+            &.trial {
+                background: #e3f2fd;
+                color: #1976d2;
+            }
+
+            &.official {
+                background: #f3e5f5;
+                color: #7b1fa2;
+            }
+        }
+
+        .date {
+            font-size: 1.3rem;
+            color: #666;
+        }
+    }
+
+    .cardBody {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+
+        .mainInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .learnerInfo {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+
+            svg {
+                font-size: 3.5rem;
+                color: var(--primary-c);
+                background: var(--primary-c-01);
+                padding: 1rem;
+                border-radius: 50%;
+            }
+
+            h3 {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--text-c);
+                margin: 0 0 0.3rem 0;
+            }
+
+            span {
+                font-size: 1.3rem;
+                color: #666;
+            }
+        }
+
+        .detailsGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .detailItem {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bgr-c);
+            border-radius: 8px;
+
+            svg {
+                font-size: 1.6rem;
+                color: var(--primary-c);
+            }
+
+            span {
+                font-size: 1.4rem;
+                color: var(--text-c);
+            }
+        }
+
+        .message {
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-c);
+
+            strong {
+                font-size: 1.4rem;
+                color: var(--text-c);
+                display: block;
+                margin-bottom: 0.8rem;
+            }
+
+            p {
+                font-size: 1.4rem;
+                line-height: 1.6;
+                color: #555;
+                margin: 0;
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .requestCard {
+        padding: 1.5rem;
+
+        .cardBody {
+            .detailsGrid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+
+                button {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

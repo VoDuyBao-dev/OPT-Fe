@@ -1,0 +1,33 @@
+.banner {
+  position: relative;
+  background: linear-gradient(135deg, var(--bg-light-c) 0%, var(--bgr-c) 100%);
+  padding: 80px 20px;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  
+  @media (max-width: 1024px) {
+    padding: 60px 20px;
+    min-height: 450px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 50px 20px;
+    min-height: 400px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 40px 16px;
+    min-height: 350px;
+  }
+}
+
+.bannerContainer {
+  position: relative;
+  z-index: 2;
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+}

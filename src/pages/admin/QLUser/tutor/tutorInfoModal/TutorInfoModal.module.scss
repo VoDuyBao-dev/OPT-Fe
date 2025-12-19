@@ -1,0 +1,253 @@
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 2rem;
+    overflow-y: auto;
+}
+
+.modalContent {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 900px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2.4rem;
+    border-bottom: 1px solid var(--border-c-04);
+
+    h2 {
+        font-size: 2rem;
+        font-weight: 500;
+        color: var(--text-c);
+        margin: 0;
+    }
+}
+
+.closeButton {
+    width: 3.6rem;
+    height: 3.6rem;
+    border-radius: 50%;
+    border: none;
+    background: var(--border-c-04);
+    color: var(--text-c);
+    font-size: 2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: var(--primary-c);
+        color: white;
+    }
+}
+
+.modalBody {
+    padding: 2.4rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.loadingMessage {
+    text-align: center;
+    color: var(--text-c);
+    padding: 1rem 0;
+    font-size: 1.4rem;
+}
+
+.sectionBlock {
+    margin: 1.6rem 0;
+}
+
+.sectionTitle {
+    font-weight: 600;
+    color: var(--text-c);
+    margin-bottom: 0.8rem;
+}
+
+.tags {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    padding: 0.4rem 0.8rem;
+    background: var(--primary-c-01);
+    color: var(--primary-c);
+    border-radius: 4px;
+    font-size: 1.2rem;
+}
+
+.certList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.certRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
+    background: var(--bg-light-c);
+    border: 1px solid var(--border-c-04);
+    border-radius: 6px;
+}
+
+.certName {
+    font-size: 1.4rem;
+    color: var(--text-c);
+    flex: 1;
+}
+
+.viewCertButton {
+    padding: 0.6rem 1.2rem;
+    background: var(--primary-c);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: all 0.2s ease;
+
+    &:hover:enabled {
+        background: var(--hover-c-pmr);
+    }
+
+    &:disabled {
+        background: var(--border-c-04);
+        cursor: not-allowed;
+    }
+}
+
+.topRow {
+    display: grid;
+    grid-template-columns: 1fr 200px;
+    gap: 2.4rem;
+    margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        
+        .avatarCol {
+            order: -1;
+        }
+    }
+}
+
+.leftCol {
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+}
+
+.avatarCol {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.avatarLabel {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--text-c);
+}
+
+.avatarBox {
+    width: 100%;
+    height: 200px;
+    border: 2px dashed var(--border-c-04);
+    border-radius: 8px;
+    background: var(--bg-light-c);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    transition: all 0.3s ease;
+
+    &:hover {
+        border-color: var(--primary-c);
+        background: rgba(69, 130, 255, 0.05);
+    }
+}
+
+.avatarImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatarPlaceholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    color: var(--text-c);
+    opacity: 0.5;
+    font-size: 1.4rem;
+
+    svg {
+        font-size: 3.6rem;
+    }
+}
+
+.avatarInput {
+    display: none;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.6rem;
+    margin-bottom: 1.6rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.inputField {
+    width: 100%;
+}
+
+.modalFooter {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-c-04);
+    margin-top: 2rem;
+}

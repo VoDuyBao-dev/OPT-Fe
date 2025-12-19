@@ -1,0 +1,126 @@
+.section {
+    .sectionTitle {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-c);
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    .formGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+        margin-bottom: 2rem;
+
+        .fullWidth {
+            grid-column: 1 / -1;
+        }
+    }
+
+    .proofFile {
+        margin-top: 3rem;
+        padding: 2rem;
+        background-color: #f9f9f9;
+        border-radius: 12px;
+
+        h3 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-c);
+            margin-bottom: 1rem;
+            span{
+                font-size: 1.2rem;
+                font-weight: 400;
+                color: red;
+            }
+        }
+
+        .reviewNote {
+            margin: 0 0 1rem 0;
+            font-size: 1.3rem;
+            color: #666;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1.5rem 0;
+
+            li {
+                padding: 0.8rem;
+                background: white;
+                border-radius: 8px;
+                margin-bottom: 0.5rem;
+                color: var(--text-c);
+                display: flex;
+                align-items: center;
+
+                &::before {
+                    content: '📄';
+                    margin-right: 0.8rem;
+                }
+            }
+        }
+    }
+}
+.certInfo{
+    display: flex;
+    align-items: end;
+    .formGroup{
+        flex: 1;
+    }
+    .certStatus{
+        display: inline-block;
+        margin-left: 12px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        font-size: 1.2rem;
+        line-height: 1;
+        text-transform: capitalize;
+    }
+    .pending{
+        background: #fff7e6;
+        color: #d46b08;
+    }
+    .approved{
+        background: #e6fffb;
+        color: #08979c;
+    }
+    .certLinkBtn{
+        margin-left: 12px;
+        margin-bottom: 8px;
+    }
+    .certLink{
+        display: inline-block;
+        font-size: 1.4rem;
+        text-decoration: underline;
+        color: var(--primary-c);
+        line-height: 24px;
+    }
+}
+.certActions{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .fileInput{
+        margin-left: 12px;
+    }
+    .removeBtn{
+
+    }
+}
+.addCertBtn{
+    margin-left: 12px;
+    margin-top: 24px;
+}
+@media (max-width: 768px) {
+    .section {
+        .formGrid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+    }
+}

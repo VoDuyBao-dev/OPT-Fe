@@ -1,0 +1,50 @@
+.account{
+    position: relative;
+    margin-right: 16px;
+    &:hover{
+        cursor: pointer;
+    }
+    .show{
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+.accountAvt{
+    position: relative;
+    display: flex;
+    height: 40px;
+    width: 40px;
+}
+
+.accountImg{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+    border: 1px solid #000000;
+    overflow: hidden;
+}
+.accountImgItem{
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+}
+.accountIcon{
+    position: absolute;
+    right: -16px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.accountIconItem{
+    display: inline-flex; 
+    font-size: 1.2rem;
+    color: var(--text-c);
+    transition: transform 0.3s ease;
+    transform: rotate(-180deg);
+    &.rotate{
+        transform: rotate(0deg);
+    }
+}

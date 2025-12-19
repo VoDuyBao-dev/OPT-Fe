@@ -1,0 +1,18 @@
+.container{
+    width: 100%;
+    background-color: var(--primary-c);
+    border-radius: 8px;
+}
+.headerPage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:12px;
+    margin-bottom: 24px;
+
+}
+.title{
+    font-size: 3.2rem;
+    font-weight: 500;
+    color: var(--text-c-light);
+}

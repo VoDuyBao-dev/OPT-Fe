@@ -1,0 +1,23 @@
+.action {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 8px;
+    min-width: 184px;
+}
+
+.action.mobile {
+    flex-direction: column;
+    width: 100%;
+    gap: 1.2rem;
+    min-width: auto;
+
+    a {
+        width: 100%;
+
+        button {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}

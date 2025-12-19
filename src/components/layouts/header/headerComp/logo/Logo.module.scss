@@ -1,0 +1,15 @@
+.logo{
+    width: 160px;
+    font-weight: 600;
+    display: flex;
+    user-select: none;
+    flex-wrap: nowrap;
+}
+.logoIcon{
+    color: var(--primary-c);
+    font-size: 2.4rem;
+}
+.logoTitle{
+    color: var(--primary-c);
+    font-size: 2.4rem;
+}

@@ -1,0 +1,56 @@
+.ebooksHead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 48px;
+  
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+}
+
+.textContent {
+  flex: 1;
+}
+
+.title {
+  font-size: 3.6rem;
+  font-weight: 500;
+  color: var(--text-c);
+  margin-bottom: 16px;
+  
+  @media (max-width: 1024px) {
+    font-size: 3.2rem;
+  }
+  
+  @media (max-width: 768px) {
+    font-size: 2.8rem;
+    margin-bottom: 12px;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 2.4rem;
+    margin-bottom: 8px;
+  }
+}
+
+.description {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--text-c);
+  opacity: 0.8;
+  line-height: 1.6;
+  max-width: 700px;
+  
+  @media (max-width: 768px) {
+    font-size: 1.4rem;
+  }
+  
+  @media (max-width: 480px) {
+    font-size: 1.3rem;
+  }
+}

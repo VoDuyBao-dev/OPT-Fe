@@ -1,0 +1,110 @@
+.tabsContainer {
+    background: var(--bgr-c);
+    border-radius: 12px;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.8rem;
+    padding: 1.2rem 2rem;
+    border: none;
+    background: var(--section-bgr);
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+
+    &:hover {
+        color: var(--primary-c);
+        background: var(--primary-c-01);
+    }
+
+    &.active {
+        color: var(--primary-c);
+        border: 1px solid var(--primary-c);
+        .icon {
+            transform: scale(1.1);
+        }
+    }
+
+    .icon {
+        font-size: 2rem;
+        transition: transform 0.3s ease;
+    }
+
+    .label {
+        white-space: nowrap;
+    }
+}
+
+.indicator {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    height: calc(100% - 1rem);
+    width: calc(50% - 0.75rem);
+    background: linear-gradient(135deg, var(--primary-c-01) 0%, var(--primary-c-02) 100%);
+    border-radius: 8px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+    box-shadow: 0 2px 8px rgba(69, 130, 255, 0.2);
+
+    &[data-active="schedule"] {
+        transform: translateX(calc(100% + 0.5rem));
+    }
+}
+
+@media (max-width: 768px) {
+    .tabsContainer {
+        margin-bottom: 1.5rem;
+        padding: 0.4rem;
+    }
+
+    .tab {
+        padding: 1rem 1.5rem;
+        font-size: 1.4rem;
+        gap: 0.6rem;
+
+        .icon {
+            font-size: 1.8rem;
+        }
+
+        .label {
+            font-size: 1.3rem;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .tab {
+        padding: 0.8rem 1rem;
+        flex-direction: column;
+        gap: 0.4rem;
+
+        .icon {
+            font-size: 2rem;
+        }
+
+        .label {
+            font-size: 1.2rem;
+        }
+    }
+}

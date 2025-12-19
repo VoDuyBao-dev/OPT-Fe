@@ -1,0 +1,43 @@
+.tutorProfile {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    padding: 0 var(--padding-left-right);
+    margin-bottom: 24px;
+
+    .container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .tabContent {
+        background: white;
+        border-radius: 20px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+}
+
+// Responsive Design
+// @media (max-width: 768px) {
+//     .tutorProfile {
+//         padding: 20px 0;
+
+//         .container {
+//             padding: 0 10px;
+//         }
+
+//         .tabContent {
+//             padding: 20px 15px;
+//         }
+//     }
+// }
+
+// @media (max-width: 480px) {
+//     .tutorProfile {
+//         .tabContent {
+//             padding: 15px 10px;
+//         }
+//     }
+// }

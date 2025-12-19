@@ -1,0 +1,22 @@
+.headerMiniProfile{
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    padding:0 12px;
+    border-bottom: 1px solid var(--border-c-04);
+    align-items: center;
+    h2{
+        font-size: 2.2rem;
+        line-height: 1.5;
+        font-weight: 600;
+        color: var(--primary-c);
+    }
+    p{
+        font-size: 1.8rem;
+        color: var(--yellow-c);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-weight: 500;
+    }
+}

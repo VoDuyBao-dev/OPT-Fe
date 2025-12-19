@@ -1,0 +1,68 @@
+.infoSection {
+    padding: 2.4rem;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid var(--border-c-04);
+}
+
+.sectionTitle {
+    font-size: 1.8rem;
+    font-weight: 500;
+    color: var(--text-c);
+    margin: 0 0 2.4rem 0;
+    padding-bottom: 1.6rem;
+    border-bottom: 1px solid var(--border-c-04);
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.4rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.infoItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.infoLabel {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.4rem;
+    color: var(--text-c);
+    opacity: 0.7;
+    font-weight: 500;
+}
+
+.icon {
+    font-size: 1.6rem;
+    color: var(--primary-c);
+}
+
+.infoValue {
+    font-size: 1.6rem;
+    color: var(--text-c);
+    font-weight: 400;
+    padding-left: 2.4rem;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.inputField {
+    width: 100%;
+}
+

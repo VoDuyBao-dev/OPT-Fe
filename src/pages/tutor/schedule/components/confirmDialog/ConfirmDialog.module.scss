@@ -1,0 +1,72 @@
+.confirmDialog {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem 0;
+
+    .iconWrapper {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 4rem;
+        color: #ff6b6b;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            transform: scale(1);
+        }
+        50% {
+            transform: scale(1.05);
+        }
+    }
+
+    .message {
+        font-size: 1.6rem;
+        color: var(--text-c);
+        text-align: center;
+        line-height: 1.6;
+        margin: 0;
+        max-width: 400px;
+    }
+
+    .actions {
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+        justify-content: center;
+        margin-top: 1rem;
+
+        button {
+            min-width: 120px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .confirmDialog {
+        .iconWrapper {
+            width: 60px;
+            height: 60px;
+            font-size: 3rem;
+        }
+
+        .message {
+            font-size: 1.4rem;
+        }
+
+        .actions {
+            flex-direction: column-reverse;
+            
+            button {
+                width: 100%;
+            }
+        }
+    }
+}

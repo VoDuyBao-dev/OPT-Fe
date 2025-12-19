@@ -1,0 +1,274 @@
+/* ============================ */
+/* TutorFormModal.scss          */
+/* ============================ */
+
+/* ---- Overlay & Modal ---- */
+.tfm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  backdrop-filter: blur(2px);
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+.tfm-modal {
+  background: #fff;
+  width: 820px;
+  max-width: 95%;
+  border-radius: 14px;
+  padding: 2.2rem;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  animation: slideIn 0.25s ease-out;
+  overflow-y: auto;
+  max-height: 90vh;
+  font-size: 15px;
+  color: #333;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ---- Close Button ---- */
+.tfm-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.8rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #555;
+  transition: color 0.2s;
+  &:hover {
+    color: #222;
+  }
+}
+
+/* ---- Title & Subtitle ---- */
+.tfm-title {
+  margin: 0 0 0.3rem 0;
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(90deg, #4a90e2, #50e3c2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  align-items: center;
+}
+
+.tfm-sub {
+  margin: 0 0 1.5rem 0;
+  color: #555;
+  font-size: 0.95rem;
+  font-size: 18px;
+  align-items: center;
+}
+
+/* ---- Form Rows ---- */
+.tfm-form .tfm-row {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  label {
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    min-width: 120px;
+  }
+  input, select, textarea {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0.55rem 0.8rem;
+    font-size: 15px;
+    flex: 1;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    &:focus {
+      outline: none;
+      border-color: #4a90e2;
+      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    }
+  }
+  textarea {
+    resize: vertical;
+    min-height: 70px;
+  }
+}
+
+/* ---- Radio Buttons ---- */
+.tfm-radio {
+  display: flex;
+  gap: 1.5rem;
+  label {
+    cursor: pointer;
+    input {
+      margin-right: 0.4rem;
+    }
+  }
+}
+
+/* ---- Buttons ---- */
+.tfm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+.tfm-btn {
+  border: none;
+  padding: 0.65rem 1.3rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 15px;
+}
+.tfm-cancel {
+  background: #f0f0f0;
+  color: #555;
+  &:hover {
+    background: #e0e0e0;
+  }
+}
+.tfm-submit {
+  background: linear-gradient(90deg, #4a90e2, #50e3c2);
+  color: #fff;
+  &:hover {
+    background: linear-gradient(90deg, #357abd, #3fc1aa);
+  }
+}
+
+/* ---- Schedule Grid ---- */
+.tfm-schedule-grid {
+  display: grid;
+  grid-template-columns: 120px repeat(6, 1fr);
+  gap: 0.35rem;
+  margin: 1rem 0;
+}
+
+.tfm-col-head {
+  font-weight: 600;
+  text-align: center;
+  padding: 0.55rem;
+  background: #f5f8ff;
+  border-radius: 8px;
+  font-size: 14.5px;
+}
+
+.tfm-day-head {
+  font-weight: 500;
+  text-align: center;
+  padding: 0.5rem;
+  background: #fdfdfd;
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.tfm-session-cell {
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e4f0ff;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 14.5px;
+}
+
+.tfm-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.25rem;
+}
+
+.tfm-slot {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3rem 0.35rem;
+  font-size: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  transition: all 0.15s;
+  text-align: center;
+  .tfm-slot-label {
+    white-space: nowrap;
+  }
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+  }
+  &.busy {
+    background: #ffe0e0;
+    border-color: #f5bcbc;
+    cursor: not-allowed;
+    color: #a71d2a;
+  }
+  &.selected {
+    background: #cce5ff;
+    border-color: #66b2ff;
+    font-weight: 600;
+  }
+}
+
+/* ---- Legend ---- */
+.tfm-legend {
+  display: flex;
+  gap: 1rem;
+  margin: 0.5rem 0 1rem 0;
+  align-items: center;
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 14px;
+  }
+  .leg-box {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  .leg-free { background: #f9f9f9; }
+  .leg-busy { background: #ffe0e0; border-color: #f5bcbc; }
+  .leg-selected { background: #cce5ff; border-color: #66b2ff; }
+}
+
+/* ---- Hint ---- */
+.tfm-hint {
+  font-size: 14px;
+  color: #666;
+  margin: 0.5rem 0 0.5rem 0;
+}
+
+/* ---- Animations ---- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* ---- Responsive: Small screens ---- */
+@media (max-width: 768px) {
+  .tfm-modal {
+    padding: 1.5rem;
+  }
+  .tfm-schedule-grid {
+    grid-template-columns: 100px repeat(3, 1fr);
+    overflow-x: auto;
+  }
+  .tfm-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}

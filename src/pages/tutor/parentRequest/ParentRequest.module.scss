@@ -1,0 +1,49 @@
+.parentRequest {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--bgr-c);
+    padding: 2rem;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: var(--max-width);
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.pageBtn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    font-weight: 600;
+}
+
+.pageBtn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.pageBtn:not(:disabled):hover {
+    border-color: #d1d5db;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+
+.pageInfo {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .parentRequest {
+        padding: 1.5rem;
+    }
+}

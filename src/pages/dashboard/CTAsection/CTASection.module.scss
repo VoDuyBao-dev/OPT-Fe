@@ -1,0 +1,22 @@
+.ctaSection {
+  background: linear-gradient(135deg, var(--primary-c) 0%, var(--hover-c-pmr) 100%);
+  padding: 100px 20px;
+  
+  @media (max-width: 1024px) {
+    padding: 80px 20px;
+  }
+  
+  @media (max-width: 768px) {
+    padding: 60px 20px;
+  }
+  
+  @media (max-width: 480px) {
+    padding: 50px 16px;
+  }
+}
+
+.ctaContainer {
+  max-width: var(--max-width);
+  width: 100%;
+  margin: 0 auto;
+}

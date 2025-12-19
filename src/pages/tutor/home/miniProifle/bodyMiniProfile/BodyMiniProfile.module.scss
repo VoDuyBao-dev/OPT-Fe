@@ -1,0 +1,76 @@
+.bodyMiniProfile{
+    padding: 0 24px;
+    height: 100%;
+    display: flex;
+}
+.avatarContainer{
+    display: flex;
+    flex: 0;
+    align-items: center;
+    justify-content: start;
+    @media (max-width: 600px) {
+        padding: 8px 0;
+        justify-content: center;
+    }
+}
+.avatarBox{
+    height: 160px;
+    width: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--primary-c);
+    img{
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+    }
+}
+.infoContainer{
+    padding-top: 16px;
+    flex: 1;
+    max-width: 100%;
+    display: flex;
+    align-items: start;
+}
+.infoList{
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    list-style: none;
+    li{
+        display: flex;
+        flex: 0 0 50%;
+        width: 50%;
+        font-size: 1.4rem;
+        margin-bottom: 8px;
+        strong{
+            font-weight: 600;
+            color: var(text-c);
+            text-wrap: nowrap;
+            margin-right: 4px;
+        }
+        span{
+            display: -webkit-box;
+                -webkit-line-clamp: 1;
+                line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-align: justify;
+        }
+        &.introduction{
+            display: flex;
+            flex: 0 0 100%;
+            width: 100%;
+            //giới hạn 3 dòng
+            span{
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}

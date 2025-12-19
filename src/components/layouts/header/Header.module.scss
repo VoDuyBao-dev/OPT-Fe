@@ -1,0 +1,347 @@
+.header{
+    width: 100%;
+    height: 80px;
+    padding: 0 var(--padding-left-right);
+    background-color: var(--bgr-header-c);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    transform: translateY(0);
+    transition: all 0.2s ease;
+    &.hide {
+    transform: translateY(-100%);
+    }
+
+    &.show {
+    transform: translateY(0);
+    }
+}
+
+.headerCtn{
+    width: 100%;
+    max-width: var(--max-width);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.headerTop{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+}
+
+.logoLink {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.desktopNav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.desktopActions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.headerUser{
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 1.6rem;
+    min-width: 184px;
+}
+
+.mobileRight {
+    display: none;
+}
+
+.mobileNotification {
+    display: flex;
+    align-items: center;
+}
+
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 2.4rem;
+    color: var(--text-c);
+    cursor: pointer;
+    padding: 0.8rem;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: var(--primary-c);
+    }
+
+    &:active {
+        transform: scale(0.95);
+    }
+}
+
+.mobileMenu {
+    position: fixed;
+    top: 80px;
+    right: -100%;
+    width: 320px;
+    height: calc(100vh - 80px);
+    background-color: var(--bgr-menu-c);
+    backdrop-filter: blur(12px);
+    box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+    transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 998;
+    overflow-y: auto;
+
+    &.open {
+        right: 0;
+    }
+}
+
+.mobileMenuContent {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    gap: 2rem;
+}
+
+.mobileNavSection {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobileActionSection {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+}
+
+.mobileUserSection {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.6rem;
+    background: linear-gradient(135deg, rgba(69, 130, 255, 0.08) 0%, rgba(69, 130, 255, 0.04) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(69, 130, 255, 0.1);
+    margin-top: auto;
+}
+
+.userProfile {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    flex: 1;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+
+    &:hover {
+        opacity: 0.8;
+    }
+
+    &:active {
+        opacity: 0.6;
+    }
+}
+
+.userAvatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-c), #6ea8ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(69, 130, 255, 0.3);
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.userName {
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--text-c);
+}
+
+.logoutBtn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background-color: #fff;
+    color: #d32f2f;
+    border-radius: 10px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        background-color: #ffebee;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(211, 47, 47, 0.2);
+    }
+
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+.overlay {
+    display: none;
+}
+
+// Tablet and Desktop
+@media (max-width: 1024px) {
+    .header {
+        padding: 0 2rem;
+    }
+
+    .headerTop {
+        gap: 1.5rem;
+    }
+
+    .desktopNav {
+        flex: 0 1 auto;
+    }
+}
+
+// Mobile
+@media (max-width: 768px) {
+    .header {
+        height: 70px;
+        padding: 0 1.6rem;
+    }
+
+    .headerTop {
+        height: 70px;
+        gap: 1rem;
+    }
+
+    .desktopNav {
+        display: none;
+    }
+
+    .desktopActions {
+        display: none;
+    }
+
+    .mobileRight {
+        display: flex;
+        align-items: center;
+        gap: 1.2rem;
+    }
+
+    // Keep desktopActions visible for tutor on mobile
+    .header.showActions {
+        .desktopActions {
+            display: flex;
+        }
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .mobileMenu {
+        top: 70px;
+        height: calc(100vh - 70px);
+        width: 85%;
+        max-width: 320px;
+    }
+
+    .overlay {
+        display: block;
+        position: fixed;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease, visibility 0.3s ease;
+        z-index: 997;
+
+        &.open {
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+
+    .mobileMenu.open ~ .overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+// Small Mobile
+@media (max-width: 480px) {
+    .header {
+        height: 60px;
+        padding: 0 1.2rem;
+    }
+
+    .headerTop {
+        height: 60px;
+        gap: 0.8rem;
+    }
+
+    .hamburger {
+        font-size: 2rem;
+        padding: 0.6rem;
+    }
+
+    .mobileMenu {
+        top: 60px;
+        height: calc(100vh - 60px);
+        width: 90%;
+    }
+
+    .mobileMenuContent {
+        padding: 1.6rem;
+    }
+
+    .overlay {
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
+
+    .userName {
+        font-size: 1.4rem;
+    }
+
+    .userAvatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.6rem;
+    }
+
+    .logoutBtn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.6rem;
+    }
+}

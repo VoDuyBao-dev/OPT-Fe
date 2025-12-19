@@ -1,0 +1,91 @@
+.filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    background: var(--section-bgr);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    .searchBox {
+        flex: 1;
+        min-width: 250px;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        background: var(--bgr-c);
+        border-radius: 8px;
+        border: 1px solid var(--border-c-04);
+
+        svg {
+            color: #666;
+            font-size: 1.6rem;
+        }
+
+        input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1.4rem;
+            color: var(--text-c);
+
+            &::placeholder {
+                color: #999;
+            }
+        }
+    }
+
+    .filterGroup {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        svg {
+            color: var(--primary-c);
+            font-size: 1.6rem;
+        }
+
+        select {
+            padding: 1rem 1.5rem;
+            border: 1px solid var(--border-c-04);
+            border-radius: 8px;
+            font-size: 1.4rem;
+            background: white;
+            color: var(--text-c);
+            cursor: pointer;
+            transition: all 0.3s ease;
+
+            &:hover {
+                border-color: var(--primary-c);
+            }
+
+            &:focus {
+                outline: none;
+                border-color: var(--primary-c);
+                box-shadow: 0 0 0 3px var(--primary-c-01);
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .filters {
+        flex-direction: column;
+
+        .searchBox {
+            min-width: 100%;
+        }
+
+        .filterGroup {
+            flex-wrap: wrap;
+
+            select {
+                flex: 1;
+                min-width: 140px;
+            }
+        }
+    }
+}

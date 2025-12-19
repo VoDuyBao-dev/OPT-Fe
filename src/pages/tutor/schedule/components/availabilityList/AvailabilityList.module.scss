@@ -1,0 +1,169 @@
+.availabilityList {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f0f0;
+
+        h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-c);
+            margin: 0;
+        }
+    }
+
+    .emptyState {
+        text-align: center;
+        padding: 3rem 2rem;
+        
+        p {
+            font-size: 1.4rem;
+            color: #666;
+            margin-bottom: 2rem;
+        }
+    }
+
+    .list {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .dayGroup {
+        .dayTitle {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary-c);
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+            border-left: 4px solid var(--primary-c);
+        }
+
+        .slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+    }
+
+    .slotCard {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.2rem;
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8f0fe 100%);
+        border-radius: 10px;
+        border-left: 4px solid var(--primary-c);
+        transition: all 0.3s ease;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(69, 130, 255, 0.15);
+        }
+
+        &.unavailable {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe0e0 100%);
+            border-left-color: #ff6b6b;
+        }
+
+        .slotInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+
+            .time {
+                font-size: 1.4rem;
+                font-weight: 600;
+                color: var(--text-c);
+            }
+
+            .status {
+                display: inline-block;
+                padding: 0.3rem 0.8rem;
+                background: #ff6b6b;
+                color: white;
+                border-radius: 12px;
+                font-size: 1.1rem;
+                font-weight: 600;
+                width: fit-content;
+
+                &.available {
+                    background: #2e7d32;
+                }
+            }
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.5rem;
+
+            button {
+                padding: 0.6rem;
+                border: none;
+                background: white;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 1.4rem;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+
+                &:hover {
+                    transform: scale(1.1);
+                }
+            }
+
+            .editBtn {
+                color: var(--primary-c);
+
+                &:hover {
+                    background: var(--primary-c);
+                    color: white;
+                }
+            }
+
+            .deleteBtn {
+                color: #ff6b6b;
+
+                &:hover {
+                    background: #ff6b6b;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .availabilityList {
+        padding: 1.5rem;
+
+        .header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+
+            h3 {
+                font-size: 1.6rem;
+            }
+        }
+
+        .dayGroup {
+            .slots {
+                grid-template-columns: 1fr;
+            }
+        }
+    }
+}
