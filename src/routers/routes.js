@@ -30,7 +30,7 @@ import LearnerManagement from '~/pages/admin/QLUser/learner/LearnerManagement';
 import AdminProfile from '~/pages/admin/profile/AdminProfile';
 import AdminDashboard from '~/pages/admin/dashboard/AdminDashboard';
 import AdminEBooks from '~/pages/admin/e-books/AdminEbooks';
-import ChatPage from '~/pages/chat/chat/ChatPage';
+import ChatPage from '~/pages/chat/ChatPage';
 
 const publicRouter = [
     { path: '/Login', element: <LoginPage /> },

@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import ChatSidebar from "~/components/chat/chat/ChatSidebar";
-import ChatBox from "~/components/chat/chat/ChatBox";
+import ChatSidebar from "~/components/chat/ChatSidebar";
+import ChatBox from "~/components/chat/ChatBox";
 
 import {
   connectChatSocket,
