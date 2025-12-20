@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Login.scss";
 import { FaUser, FaLock, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { login } from "../../api/services/loginAPI";
 import { jwtDecode } from "jwt-decode";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [showNew, setShowNew] = useState(false);
 
   const [form, setForm] = useState({
@@ -50,25 +49,30 @@ const Login = () => {
       console.log("Decoded token:", decoded);
       console.log("Role:", role);
 
-      // Lưu token vào localStorage nếu cần
-      if (form.remember) {
-        localStorage.setItem("token", result.token);
+      // Lưu token và role cho phiên hiện tại
+      localStorage.setItem("token", result.token);
+      if (role) {
+        localStorage.setItem("role", role);
       }
 
       // Điều hướng theo role
+      let redirectPath = "/";
       switch (role) {
         case "ADMIN":
-          navigate("/admin/dashboard");
+          redirectPath = "/admin/dashboard";
           break;
         case "TUTOR":
-          navigate("/tutor/home");
+          redirectPath = "/tutor/home";
           break;
         case "LEARNER":
-          navigate("/");
+          redirectPath = "/";
           break;
         default:
-          navigate("/");
+          redirectPath = "/";
       }
+
+      // Refresh trang để cập nhật giao diện và trạng thái
+      window.location.href = redirectPath;
     } catch (error) {
       console.error("Login error:", error);
       alert("Sai email hoặc mật khẩu!");

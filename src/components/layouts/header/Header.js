@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faTimes, faUser, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import clsx from 'clsx';
 import { Logo, Notification, Avata, Navbar, Action } from './headerComp'
 import styles from './Header.module.scss'
+import { logout as logoutApi } from '../../../api/services/logoutAPI'
 
 function Header({ showNavbar = true, showHeaderUser = true, userType = false }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -12,7 +13,6 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
     const [visible, setVisible] = useState(true);
     const lastScroll = useRef(0);
     const timeoutRef = useRef(null);
-    const navigate = useNavigate();
 
     // Mock user data - replace with actual data from context/Redux
     const userData = {
@@ -63,10 +63,20 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
         setIsMobileMenuOpen(false);
     };
 
-    const handleLogout = () => {
-        // TODO: Call logout API and clear auth state
+    const handleLogout = async () => {
         closeMobileMenu();
-        navigate('/login');
+        try {
+            await logoutApi();
+        } catch (err) {
+            console.error('Logout failed:', err);
+        }
+
+        ['token', 'role', 'userType', 'user'].forEach((key) => {
+            localStorage.removeItem(key);
+        });
+
+        // Refresh trang để cập nhật giao diện sau khi đăng xuất
+        window.location.href = '/login';
     };
 
     const getProfilePath = () => {

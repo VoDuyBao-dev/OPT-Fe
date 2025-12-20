@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
 import { faAngleDown, faBook, faCheck, faHome, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
@@ -11,7 +10,6 @@ import { logout } from '~/api/services/logoutAPI';
 
 function Avata({ className, userType = 'learner' }) {
     const [open, setOpen] = useState(false);
-    const navigate = useNavigate();
 
     const menuLearnerArr = [
         { label: 'Hồ sơ của bạn', path: '/Profile', icon: faUser },
@@ -38,19 +36,16 @@ function Avata({ className, userType = 'learner' }) {
             : menuArrAdmin;
 
 const handleLogout = async () => {
-  try {
-    await logout(); // gọi API logout
-
-  } catch (err) {
-    console.error("Logout error:", err);
-  } finally {
-    // ✅ LUÔN clear đúng key
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    
-
-    navigate("/login", { replace: true });
-  }
+    try {
+        await logout();
+    } catch (err) {
+        console.error("Logout error:", err);
+    } finally {
+        ['token', 'role', 'userType', 'user'].forEach((key) => {
+            localStorage.removeItem(key);
+        });
+        window.location.href = "/login";
+    }
 };
 
 
