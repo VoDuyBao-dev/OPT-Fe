@@ -14,6 +14,7 @@ $border: #e5e7eb;
     height: 100%;
 }
 
+
 /* HEADER CHAT */
 .mainHeader {
     padding: 16px 20px;
@@ -37,6 +38,7 @@ $border: #e5e7eb;
     padding: 24px;
     overflow-y: auto;
     background: $bg;
+    min-height: 0;
 }
 
 /* MỖI DÒNG CHAT */
@@ -104,15 +106,64 @@ $border: #e5e7eb;
     color: $muted;
 }
 
+.inputWrapper {
+    position: relative;
+    padding: 8px 12px;
+    border-top: 1px solid #ffffff;
+    background: #fff;
+}
+
 /* INPUT DƯỚI */
 .inputBar {
     display: flex;
-    gap: 10px;
-    padding: 14px 16px;
-    border-top: 1px solid $border;
-    background: #fff;
-    flex-shrink: 0;
+    align-items: center;
+    gap: 8px;
 }
+
+.stickerPreview {
+    position: absolute;
+    bottom: 56px;
+    /* nằm ngay trên input */
+    left: 12px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px;
+    background: #f3f4f6;
+    border-radius: 12px;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    z-index: 10;
+}
+
+.stickerPreview img {
+    width: clamp(56px, 12vw, 96px);
+    height: clamp(56px, 12vw, 96px);
+    object-fit: contain;
+}
+
+.clearSticker {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+
+    background: #ef4444;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 .textbox {
     flex: 1;
@@ -120,6 +171,7 @@ $border: #e5e7eb;
     border-radius: 24px;
     border: 1px solid $border;
     font-size: 14px;
+    outline: none;
 
     &:focus {
         border-color: $blue;
@@ -128,21 +180,56 @@ $border: #e5e7eb;
 }
 
 
+// .sendBtn {
+//     height: 40px;
+//     padding: 0 18px;
+//     border-radius: 10px; // ↓ bớt tròn
+//     background-color: $blue;
+//     color: #fff;
+//     font-size: 14px;
+//     font-weight: 500;
+//     border: 1px solid transparent;
+//     cursor: pointer;
+
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+
+//     transition:
+//         background-color 0.15s ease,
+//         box-shadow 0.15s ease,
+//         transform 0.05s ease;
+
+//     &:hover {
+//         background: #f872c0;
+//     }
+
+//     &:active {
+//         transform: scale(0.97);
+//         background: #75f780;
+//     }
+
+
+// }
+
+.stickerBtn,
 .sendBtn {
-    height: 40px;
-    padding: 0 18px;
-    border-radius: 10px; // ↓ bớt tròn
-    background-color: $blue;
-    color: #fff;
-    font-size: 14px;
-    font-weight: 500;
-    border: 1px solid transparent;
+    height: 36px;
+    padding: 0 12px;
+    border-radius: 50%;
+    border: none;
     cursor: pointer;
+}
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.stickerBtn {
+    background: #f3f4f6;
+    font-size: 18px;
+}
 
+.sendBtn {
+    background: #3b82f6;
+    color: white;
+    border-radius: 18px;
     transition:
         background-color 0.15s ease,
         box-shadow 0.15s ease,
@@ -156,8 +243,6 @@ $border: #e5e7eb;
         transform: scale(0.97);
         background: #75f780;
     }
-
-
 }
 
 .empty {
