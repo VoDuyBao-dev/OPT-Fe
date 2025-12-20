@@ -37,7 +37,7 @@ const normalizeToken = (raw) => {
 
 // CONNECT
 export const connectChatSocket = (token) => {
-  // ✅ fallback: nếu caller truyền thiếu token thì tự lấy từ localStorage
+  //  fallback: nếu caller truyền thiếu token thì tự lấy từ localStorage
   const stored = localStorage.getItem("token");
   const finalToken = normalizeToken(token) || normalizeToken(stored);
 
@@ -60,12 +60,13 @@ export const connectChatSocket = (token) => {
     heartbeatIncoming: 10000,
     heartbeatOutgoing: 10000,
 
-    debug: (str) => console.log("[STOMP]", str),
+    // debug: (str) => console.log("[STOMP]", str),
 
     onConnect: () => {
       console.log("[ChatSocket] CONNECTED");
       isConnected = true;
 
+      // 1️ nhận tin nhắn chat
       stompClient.subscribe("/user/queue/messages", (msg) => {
         try {
           const body = JSON.parse(msg.body);
@@ -76,7 +77,20 @@ export const connectChatSocket = (token) => {
           console.error("[ChatSocket] Invalid message body", err);
         }
       });
+
+      // 2️ nhận unreadCount realtime
+      stompClient.subscribe("/user/queue/unread", (msg) => {
+        try {
+          const body = JSON.parse(msg.body);
+          window.dispatchEvent(
+            new CustomEvent("chat:unread", { detail: body })
+          );
+        } catch (err) {
+          console.error("[ChatSocket] Invalid unread body", err);
+        }
+      });
     },
+
 
     onWebSocketError: (e) => {
       console.error("[ChatSocket] WebSocket error", e);

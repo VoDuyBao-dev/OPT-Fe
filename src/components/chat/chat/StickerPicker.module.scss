@@ -2,11 +2,11 @@
     position: absolute;
     bottom: 60px;
     right: 10px;
-    width: 260px;
-    max-height: 200px;
+    width: 320px;
+    max-height: 220px;
     overflow-y: auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 8px;
     padding: 8px;
     background: #fff;
@@ -14,11 +14,31 @@
     border-radius: 8px;
 }
 
+// .sticker {
+//     width: 48px;
+//     height: 48px;
+//     cursor: pointer;
+// }
+
 .sticker {
-    width: 48px;
-    height: 48px;
+    width: clamp(56px, 12vw, 88px);
+    height: clamp(56px, 12vw, 88px);
+    object-fit: contain;
     cursor: pointer;
 }
+
+
+
+.sticker {
+    transition: transform 0.15s ease, background 0.15s;
+
+    &:hover {
+        transform: scale(1.1);
+        background: #f3f4f6;
+        border-radius: 6px;
+    }
+}
+
 
 .empty {
     padding: 12px;

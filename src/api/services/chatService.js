@@ -35,3 +35,7 @@ export const getStickers = async () => {
   const res = await axios.get("/chat/stickers");
   return res.data;
 };
+
+export const markConversationRead = async (otherUserId) => {
+  return axios.post(`/chat/read/${otherUserId}`);
+};
