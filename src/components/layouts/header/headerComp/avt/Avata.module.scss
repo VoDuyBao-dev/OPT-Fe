@@ -31,6 +31,11 @@
     height: 40px;
     width: 40px;
     object-fit: cover;
+    align-content: center;
+    text-align: center;
+    font-size: 2.6rem;
+    color: var(--text-c);
+    background-color: var(--bg-secondary-c);
 }
 .accountIcon{
     position: absolute;

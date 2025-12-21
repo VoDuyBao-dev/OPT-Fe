@@ -6,6 +6,9 @@ import clsx from 'clsx';
 import { Logo, Notification, Avata, Navbar, Action } from './headerComp'
 import styles from './Header.module.scss'
 import { logout as logoutApi } from '../../../api/services/logoutAPI'
+import { getLearnerProfile } from '~/api/services/leanerService';
+import { fetchPersonalInfo } from '~/api/services/tutorService';
+import { fetchAdminProfile } from '~/api/services/adminProfileService';
 
 function Header({ showNavbar = true, showHeaderUser = true, userType = false }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -14,11 +17,7 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
     const lastScroll = useRef(0);
     const timeoutRef = useRef(null);
 
-    // Mock user data - replace with actual data from context/Redux
-    const userData = {
-        fullName: 'Nguyễn Văn An',
-        avatarUrl: '' // Empty for default icon
-    };
+    const [userData, setUserData] = useState({ fullName: '', avatarUrl: '' });
 
     const headerLinks = [
         { path: '/', element: <Logo />, userType: false },
@@ -26,6 +25,42 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
         { path: '/tutor/home', element: <Logo />, userType: 'tutor' },
         { path: '/admin/dashboard', element: <Logo />, userType: 'admin' }
     ];
+
+    // Load avatar/name for current role
+    useEffect(() => {
+        if (!userType) {
+            setUserData({ fullName: '', avatarUrl: '' });
+            return;
+        }
+
+        const loadProfile = async () => {
+            try {
+                let data = null;
+                if (userType === 'learner') {
+                    data = await getLearnerProfile();
+                } else if (userType === 'tutor') {
+                    data = await fetchPersonalInfo();
+                } else if (userType === 'admin') {
+                    const res = await fetchAdminProfile();
+                    data = res?.data?.result;
+                }
+
+                setUserData({
+                    fullName: data?.fullName || 'Người dùng',
+                    avatarUrl: data?.avatarUrl || data?.avatar || '',
+                });
+            } catch (err) {
+                console.error('Load header profile failed:', err);
+                setUserData((prev) => ({
+                    fullName: prev.fullName || 'Người dùng',
+                    avatarUrl: prev.avatarUrl || '',
+                }));
+            } finally {
+            }
+        };
+
+        loadProfile();
+    }, [userType]);
 
     // Lock body scroll when menu is open
     useEffect(() => {
@@ -155,7 +190,7 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
                             showHeaderUser && (
                                 <div className={styles.headerUser}>
                                     <Notification />
-                                    <Avata userType={userType} />
+                                    <Avata userType={userType} avatarUrl={userData.avatarUrl} />
                                 </div>
                             )
                         )}
