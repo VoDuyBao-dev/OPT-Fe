@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import EBookCard from '~/components/e-Books-Card/E-Book-Card';
 import { getFeaturedEbooks } from '~/api/services/homeService';
 import styles from './E-BooksDB-Body.module.scss';
+import { getUserType } from '~/utils/auth';
 
-function EBooksDBBody() {
+function EBooksDBBody({ disableActions }) {
     const [ebooks, setEbooks] = useState([]);
     const [loading, setLoading] = useState(false);
+    const isTutorOrAdmin = useMemo(() => {
+        if (disableActions) return true;
+        const role = getUserType();
+        return role === 'tutor' || role === 'admin';
+    }, [disableActions]);
 
     useEffect(() => {
         const load = async () => {
@@ -45,6 +51,7 @@ function EBooksDBBody() {
                     category={ebook.category}
                     description={ebook.description}
                     downloadUrl={ebook.downloadUrl}
+                    disableNavigation={isTutorOrAdmin}
                 />
             ))}
         </div>

@@ -4,12 +4,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faBook, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-function TutorCard({ id, image, isVerified, name, subject, rating, reviewCount, location, price }) {
+function TutorCard({ id, image, isVerified, name, subject, rating, reviewCount, location, price, disableActions = false }) {
     const navigate = useNavigate();
 
     const ratingValue = Number(rating ?? 0).toFixed(1);
 
     const handleViewProfile = () => {
+        if (disableActions) return;
         navigate(`/tutor/${id}`);
     };
 
@@ -48,6 +49,7 @@ function TutorCard({ id, image, isVerified, name, subject, rating, reviewCount, 
                     <Button 
                         variant="primary" 
                         size="small"
+                        disabled={disableActions}
                         onClick={handleViewProfile}
                     >
                         Xem chi tiết

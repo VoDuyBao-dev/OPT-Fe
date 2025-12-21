@@ -9,10 +9,13 @@ function CTAsBanner() {
     const navigate = useNavigate();
 
     // Người đã đăng nhập sẽ không thấy CTA "Trở thành gia sư"
-    const isLoggedIn = useMemo(() => {
+    const { isLoggedIn, isTutorOrAdmin } = useMemo(() => {
         const role = getUserType();
         const token = localStorage.getItem('token');
-        return !!role || !!token;
+        return {
+            isLoggedIn: !!role || !!token,
+            isTutorOrAdmin: role === 'tutor' || role === 'admin',
+        };
     }, []);
 
     const handleFindTutor = () => {
@@ -25,15 +28,17 @@ function CTAsBanner() {
 
     return (
         <div className={styles.ctasWrapper}>
-            <Button
-                variant="primary"
-                size="large"
-                leftIcon={faSearch}
-                onClick={handleFindTutor}
-                className={styles.ctaButton}
-            >
-                Tìm gia sư
-            </Button>
+            {!isTutorOrAdmin && (
+                <Button
+                    variant="primary"
+                    size="large"
+                    leftIcon={faSearch}
+                    onClick={handleFindTutor}
+                    className={styles.ctaButton}
+                >
+                    Tìm gia sư
+                </Button>
+            )}
             
             {!isLoggedIn && (
                 <Button
