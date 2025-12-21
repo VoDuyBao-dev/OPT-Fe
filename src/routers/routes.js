@@ -54,7 +54,6 @@ const learnerRouter = [
     { path: '/Tutor', element: <TutorList /> },
     { path: '/Tutor/:tutorId', element: <TutorDetail /> },
     { path: '/Contact', element: <ContactPage /> },
-    { path: "/chat", element: <ChatPage /> },
 ]
 
 const tutorRouter = [
@@ -62,7 +61,6 @@ const tutorRouter = [
     { path: '/tutor/schedule', element: <TutorSchedule /> },
     { path: '/tutor/parent-requests', element: <ParentRequest /> },
     { path: '/tutor/profile', element: <TutorProfile /> },
-    { path: '/chat', element: <ChatPage /> }
 ];
 
 const adminRouter = [

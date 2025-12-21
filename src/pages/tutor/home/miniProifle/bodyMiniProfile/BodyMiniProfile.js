@@ -39,7 +39,7 @@ function BodyMiniProfile({ tutorData = null }) {
                     </li>
                     <li>
                         <strong>Giới tính:</strong>
-                        <span>{userData.gender}</span>
+                        <span>{userData.gender === 'FEMALE' ? 'Nữ' : 'Nam'}</span>
                     </li>
                     <li>
                         <strong>Số điện thoại:</strong>

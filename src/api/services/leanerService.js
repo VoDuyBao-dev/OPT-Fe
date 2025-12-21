@@ -23,6 +23,7 @@ export const getLearnerProfile = async () => {
       phoneNumber: data.phoneNumber ?? "",
       address: data.address ?? "",
       email: data.email ?? "",
+      avatarUrl: data.avatarUrl ?? data.avatar ?? "",
     };
   } catch (err) {
     console.error("❌ Get learner profile error:", err.response?.data || err);
