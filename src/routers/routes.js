@@ -40,10 +40,6 @@ const publicRouter = [
     { path: '/register/tutor', element: <RegisterTutor /> },
     { path: '/register/learner', element: <RegisterLearner /> },
     { path: '/', element: <Dashboard /> },
-    { path: '/EBooks', element: <EBooks /> },
-    { path: '/Tutor', element: <TutorList /> },
-    { path: '/Tutor/:tutorId', element: <TutorDetail /> },
-    { path: '/Contact', element: <ContactPage /> },
 
     { path: '/chat', element: <ChatPage /> }
     // bổ xung trang dashboard chung cho tất cả người dùng
@@ -54,6 +50,11 @@ const learnerRouter = [
     { path: '/Classed', element: <Classed /> },
     { path: '/Request', element: <Request /> },
     { path: '/Schedule', element: <Schedule /> },
+    { path: '/EBooks', element: <EBooks /> },
+    { path: '/Tutor', element: <TutorList /> },
+    { path: '/Tutor/:tutorId', element: <TutorDetail /> },
+    { path: '/Contact', element: <ContactPage /> },
+    { path: "/chat", element: <ChatPage /> },
 ]
 
 const tutorRouter = [
@@ -61,6 +62,7 @@ const tutorRouter = [
     { path: '/tutor/schedule', element: <TutorSchedule /> },
     { path: '/tutor/parent-requests', element: <ParentRequest /> },
     { path: '/tutor/profile', element: <TutorProfile /> },
+    { path: '/chat', element: <ChatPage /> }
 ];
 
 const adminRouter = [

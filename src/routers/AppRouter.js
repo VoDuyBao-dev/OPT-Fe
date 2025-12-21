@@ -4,18 +4,31 @@ import { DefaultLayout } from '~/components/layouts/';
 import TutorLayout from '~/components/layouts/tutorLayout/TutorLayout';
 import AdminLayout from '~/components/layouts/adminLayout/AdminLayout';
 import ProtectedRoute from '~/components/login/ProtectedRoute';
+import AlreadyLoggedInGuard from '~/components/login/AlreadyLoggedInGuard';
 import { getUserType } from '~/utils/auth';
 
 function AppRouter() {
     const userType = getUserType(); // 'learner' | 'tutor' | 'admin' | null
     console.log('User type in AppRouter:', userType);
+
+    const authPaths = new Set([
+        '/Login',
+        '/ForgotPassword',
+        '/OTP',
+        '/NewPassword',
+        '/register/tutor',
+        '/register/learner'
+    ]);
+
     return (
         //public router
         <Routes>
             {publicRouter.map((item, index) => (
                 <Route key={index} path={item.path} element={
                     <DefaultLayout userType={userType || false}>
-                        {item.element}
+                        {authPaths.has(item.path)
+                            ? <AlreadyLoggedInGuard>{item.element}</AlreadyLoggedInGuard>
+                            : item.element}
                     </DefaultLayout>
                 }></Route>
             ))}

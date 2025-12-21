@@ -3,6 +3,7 @@ import { faGraduationCap, faFileAlt, faTrash, faPlus } from '@fortawesome/free-s
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from './EducationTab.module.scss';
 import Button from '~/components/button/Button';
+import clsx from 'clsx';
 
 function EducationTab({
     formData,
@@ -19,48 +20,50 @@ function EducationTab({
         .filter(c => !c.deleted);
 
     return (
-        <div className={styles.section}>
-            <h2 className={styles.sectionTitle}>Học vấn & Chứng chỉ</h2>
+        <>
+            <div className={styles.section}>
+                <h2 className={styles.sectionTitle}>Học vấn & Chứng chỉ</h2>
+                <div className={styles.formGrid}>
+                    <div className={styles.fullWidth}>
+                        <FormGroup
+                            label="Trường đại học"
+                            icon={faGraduationCap}
+                            name="university"
+                            value={formData.university}
+                            onChange={onChange}
+                            disabled={!isEditing}
+                        />
+                    </div>
+                    <div className={styles.fullWidth}>
+                        <FormGroup
+                            label="Giới thiệu bản thân"
+                            name="introduction"
+                            type="textarea"
+                            value={formData.introduction}
+                            onChange={onChange}
+                            disabled={!isEditing}
+                            rows={5}
+                        />
+                    </div>
+                    <FormGroup
+                        label="Học phí (VNĐ/giờ)"
+                        name="pricePerHour"
+                        type="number"
+                        value={formData.pricePerHour}
+                        onChange={onChange}
+                        disabled={!isEditing}
+                    />
+                </div>
 
-            <div className={styles.formGrid}>
-                <div className={styles.fullWidth}>
-                    <FormGroup
-                        label="Trường đại học"
-                        icon={faGraduationCap}
-                        name="university"
-                        value={formData.university}
-                        onChange={onChange}
-                        disabled={!isEditing}
-                    />
-                </div>
-                <div className={styles.fullWidth}>
-                    <FormGroup
-                        label="Giới thiệu bản thân"
-                        name="introduction"
-                        type="textarea"
-                        value={formData.introduction}
-                        onChange={onChange}
-                        disabled={!isEditing}
-                        rows={5}
-                    />
-                </div>
-                <FormGroup
-                    label="Học phí (VNĐ/giờ)"
-                    name="pricePerHour"
-                    type="number"
-                    value={formData.pricePerHour}
-                    onChange={onChange}
-                    disabled={!isEditing}
-                />
             </div>
-
-            <div className={styles.proofFile}>
-                <h3>Chứng chỉ & Bằng cấp <span>{isEditing ? "(Lưu ý: Không thêm file mới vào nếu không có thay đổi)" : ""}</span></h3>
-                <p className={styles.reviewNote}>Nếu upload file mới, admin sẽ duyệt lại.</p>
+            <div className={clsx(styles.section, styles.proofFile)}>
+                <h2 className={styles.sectionTitle}>Chứng chỉ & Bằng cấp</h2>
                 <div className={styles.certList}>
                     {visibleCertificates.length === 0 && <p className={styles.empty}>Chưa có chứng chỉ</p>}
                     {visibleCertificates.map((cert) => (
                         <div key={cert.id || cert._origIdx} className={styles.certRow}>
+                            <span className={styles.reviewNote}>{isEditing ? "(Lưu ý: Không thêm file mới vào nếu không có thay đổi)" : ""}</span>
+
                             <div className={styles.certInfo}>
                                 <FormGroup
                                     label="Tên chứng chỉ"
@@ -132,7 +135,7 @@ function EducationTab({
                     </Button>
                 )}
             </div>
-        </div>
+        </>
     );
 }
 

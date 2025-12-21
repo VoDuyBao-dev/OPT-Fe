@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import TutorCard from '~/components/tutorCard/TutorCard';
 import { getFeaturedTutors } from '~/api/services/homeService';
 import styles from './TopTutorBody.module.scss';
+import { getUserType } from '~/utils/auth';
 
-function TopTutorBody() {
+function TopTutorBody({ disableActions }) {
     const [tutors, setTutors] = useState([]);
     const [loading, setLoading] = useState(false);
+    const isTutorOrAdmin = useMemo(() => {
+        if (disableActions) return true;
+        const role = getUserType();
+        return role === 'tutor' || role === 'admin';
+    }, [disableActions]);
 
     useEffect(() => {
         const load = async () => {
@@ -52,6 +58,7 @@ function TopTutorBody() {
                     reviewCount={tutor.reviewCount}
                     location={tutor.location}
                     price={tutor.price}
+                    disableActions={isTutorOrAdmin}
                 />
             ))}
         </div>

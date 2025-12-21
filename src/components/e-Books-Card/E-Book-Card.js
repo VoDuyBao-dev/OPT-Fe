@@ -3,15 +3,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBook, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 
-function EBookCard({ id, cover, title, author, category, description }) {
+function EBookCard({ id, cover, title, author, category, description, disableNavigation = false }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
+        if (disableNavigation) return;
         navigate(`/learner/e-books/${id}`);
     };
 
     return (
-        <div className={styles.ebookCard} onClick={handleClick}>
+        <div
+            className={styles.ebookCard}
+            onClick={handleClick}
+            role="button"
+            aria-disabled={disableNavigation}
+            tabIndex={disableNavigation ? -1 : 0}
+            onKeyDown={(e) => {
+                if (disableNavigation) return;
+                if (e.key === 'Enter' || e.key === ' ') handleClick();
+            }}
+        >
             <div className={styles.coverWrapper}>
                 {cover ? (
                     <img src={cover} alt={title} className={styles.cover} />

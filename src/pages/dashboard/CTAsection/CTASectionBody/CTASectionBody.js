@@ -8,6 +8,7 @@ import { getUserType } from '~/utils/auth';
 function CTASectionBody() {
     const navigate = useNavigate();
     const userType = getUserType();
+    const isTutorOrAdmin = userType === 'tutor' || userType === 'admin';
 
     const features = [
         'Miễn phí đăng ký',
@@ -28,15 +29,17 @@ function CTASectionBody() {
                         Đăng ký ngay
                     </Button>
                 )}
-                <Button 
-                    variant="outline" 
-                    size="large"
-                    rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
-                    onClick={() => navigate('/tutor')}
-                    className={styles.outlineButton}
-                >
-                    Tìm gia sư
-                </Button>
+                {!isTutorOrAdmin && (
+                    <Button 
+                        variant="outline" 
+                        size="large"
+                        rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
+                        onClick={() => navigate('/tutor')}
+                        className={styles.outlineButton}
+                    >
+                        Tìm gia sư
+                    </Button>
+                )}
             </div>
             
             <div className={styles.features}>

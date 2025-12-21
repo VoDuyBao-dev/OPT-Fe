@@ -2,7 +2,7 @@
     .sectionTitle {
         font-size: 2rem;
         font-weight: 700;
-        color: var(--text-c);
+        color: var(--primary-c);
         margin-bottom: 2rem;
         padding-bottom: 1rem;
         border-bottom: 2px solid #f0f0f0;
@@ -19,48 +19,40 @@
         }
     }
 
-    .proofFile {
-        margin-top: 3rem;
-        padding: 2rem;
-        background-color: #f9f9f9;
-        border-radius: 12px;
+}
+.proofFile {
+    margin-top: 3rem;
 
-        h3 {
-            font-size: 1.6rem;
-            font-weight: 600;
+    h2 {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: var(--text-c);
+        margin-bottom: 1rem;
+    }
+    span.reviewNote{
+        font-size: 1.2rem;
+        font-weight: 400;
+        color: red;
+    }
+
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 1.5rem 0;
+
+        li {
+            padding: 0.8rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
             color: var(--text-c);
-            margin-bottom: 1rem;
-            span{
-                font-size: 1.2rem;
-                font-weight: 400;
-                color: red;
-            }
-        }
+            display: flex;
+            align-items: center;
 
-        .reviewNote {
-            margin: 0 0 1rem 0;
-            font-size: 1.3rem;
-            color: #666;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 1.5rem 0;
-
-            li {
-                padding: 0.8rem;
-                background: white;
-                border-radius: 8px;
-                margin-bottom: 0.5rem;
-                color: var(--text-c);
-                display: flex;
-                align-items: center;
-
-                &::before {
-                    content: '📄';
-                    margin-right: 0.8rem;
-                }
+            &::before {
+                content: '📄';
+                margin-right: 0.8rem;
             }
         }
     }
@@ -129,7 +121,6 @@
     gap: 12px;
 
     .fileInput{
-        margin-left: 12px;
         font-size: 1.3rem;
     }
     .removeBtn{

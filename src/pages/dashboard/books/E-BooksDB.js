@@ -6,10 +6,16 @@ import EBooksDBHead from './E-BooksDB-Head/E-BooksDB-Head';
 import EBooksDBBody from './E-BooksDB-Body/E-BooksDB-Body';
 import styles from './E-BooksDB.module.scss';
 import Button from '~/components/button/Button';
+import { useMemo } from 'react';
+import { getUserType } from '~/utils/auth';
 
 
 function EBooksDB() {
     const navigate = useNavigate();
+    const isTutorOrAdmin = useMemo(() => {
+        const role = getUserType();
+        return role === 'tutor' || role === 'admin';
+    }, []);
 
     const handleViewAll = () => {
         navigate('/EBooks');
@@ -18,17 +24,19 @@ function EBooksDB() {
         <section className={styles.ebooks}>
             <div className={styles.ebooksContainer}>
                 <EBooksDBHead />
-                <EBooksDBBody />
-                <div className={styles.buttonWrapper}>
-                    <Button
-                        variant="outline"
-                        size="medium"
-                        rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
-                        onClick={handleViewAll}
-                    >
-                        Xem tất cả
-                    </Button>
-                </div>
+                <EBooksDBBody disableActions={isTutorOrAdmin} />
+                {!isTutorOrAdmin && (
+                    <div className={styles.buttonWrapper}>
+                        <Button
+                            variant="outline"
+                            size="medium"
+                            rightIcon={<FontAwesomeIcon icon={faArrowRight} />}
+                            onClick={handleViewAll}
+                        >
+                            Xem tất cả
+                        </Button>
+                    </div>
+                )}
             </div>
         </section>
     );
