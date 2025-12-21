@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./ChatSidebar.module.scss";
 import { getConversations } from "~/api/services/chatService";
 
-export default function ChatSidebar({ activeUserId, onSelect, onLoaded }) {
+export default function ChatSidebar({ myUserId, activeUserId, onSelect, onLoaded }) {
     const [items, setItems] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -10,16 +10,10 @@ export default function ChatSidebar({ activeUserId, onSelect, onLoaded }) {
         setLoading(true);
         try {
             const res = await getConversations();
-
-            console.log("[ChatSidebar] raw conversations =", res);
-
             const list = Array.isArray(res) ? res : [];
-
             setItems(list);
 
-            // 👇 báo ngược lại cho ChatPage
             if (typeof onLoaded === "function") {
-                console.log("[ChatSidebar] call onLoaded()");
                 onLoaded(list);
             }
         } finally {
@@ -27,9 +21,29 @@ export default function ChatSidebar({ activeUserId, onSelect, onLoaded }) {
         }
     };
 
+    // load ban đầu
     useEffect(() => {
         load();
     }, []);
+
+    /* ===============================
+       REALTIME: UNREAD (BACKEND PUSH)
+       → reload conversations
+    =============================== */
+    useEffect(() => {
+        if (!myUserId) return;
+
+        const handler = (e) => {
+            // payload = { unreadCount: number }
+            if (e.detail?.unreadCount == null) return;
+
+            // Backend đã cập nhật DB → reload list cho đúng
+            load();
+        };
+
+        window.addEventListener("chat:unread", handler);
+        return () => window.removeEventListener("chat:unread", handler);
+    }, [myUserId]);
 
     return (
         <aside className={styles.sidebar}>
@@ -65,14 +79,13 @@ export default function ChatSidebar({ activeUserId, onSelect, onLoaded }) {
                                 className={`${styles.item} ${active ? styles.active : ""
                                     }`}
                                 onClick={() => {
-                                    console.log("[ChatSidebar] click user =", u);
                                     onSelect(u);
                                 }}
                             >
                                 <div className={styles.avatar}>
-                                    {u.avatarUrl ? (
+                                    {u.avatarUrl && (
                                         <img src={u.avatarUrl} alt="avatar" />
-                                    ) : null}
+                                    )}
                                 </div>
 
                                 <div className={styles.meta}>
@@ -80,15 +93,15 @@ export default function ChatSidebar({ activeUserId, onSelect, onLoaded }) {
                                         <div className={styles.name}>
                                             {u.fullName || `User #${u.userId}`}
                                         </div>
+
                                         {u.unreadCount > 0 && (
                                             <div className={styles.badge}>
                                                 {u.unreadCount}
                                             </div>
                                         )}
                                     </div>
-                                    <div className={styles.lastMsg}>
-                                        {"..."}
-                                    </div>
+
+                                    <div className={styles.lastMsg}>{"..."}</div>
                                 </div>
                             </div>
                         );

@@ -1,8 +1,8 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import ChatSidebar from "~/components/chat/chat/ChatSidebar";
-import ChatBox from "~/components/chat/chat/ChatBox";
+import ChatSidebar from "~/components/chat/ChatSidebar";
+import ChatBox from "~/components/chat/ChatBox";
 
 import {
   connectChatSocket,
@@ -17,21 +17,19 @@ export default function ChatPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const receiverIdFromProfile = searchParams.get("userId");
+
   /* ===============================
-     1. USER ĐANG ĐĂNG NHẬP (CHAT)
+     1. USER ĐANG ĐĂNG NHẬP
   =============================== */
   const [myUserId, setMyUserId] = useState(null);
 
   useEffect(() => {
     getMe()
       .then((me) => {
-        console.log("[chat/me] =", me);
+        // console.log("[chat/me] =", me);
         setMyUserId(me.userId);
       })
-      .catch((err) => {
-        console.error("[chat/me] error", err);
-        navigate("/Login");
-      });
+      .catch(() => navigate("/Login"));
   }, [navigate]);
 
   /* ===============================
@@ -53,7 +51,7 @@ export default function ChatPage() {
   };
 
   /* ===============================
-     4. ACTIVE USER = SUY RA
+     4. ACTIVE USER
   =============================== */
   const activeUser = useMemo(() => {
     if (!activeUserId) return null;
@@ -61,33 +59,46 @@ export default function ChatPage() {
   }, [activeUserId, conversations]);
 
   /* ===============================
-     5. WEBSOCKET
+     5. WEBSOCKET (CONNECT 1 LẦN)
   =============================== */
   useEffect(() => {
     if (!myUserId) return;
 
-    connectChatSocket(null, (msg) => {
-      window.dispatchEvent(
-        new CustomEvent("chat:new-message", { detail: msg })
-      );
-    });
+    // ❗ KHÔNG truyền callback
+    connectChatSocket();
 
     return () => disconnectChatSocket();
   }, [myUserId]);
 
   /* ===============================
-     6. CLICK SIDEBAR
+     6. UNREAD REALTIME (GLOBAL)
+  =============================== */
+  const [totalUnread, setTotalUnread] = useState(0);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.detail?.unreadCount == null) return;
+      setTotalUnread(Number(e.detail.unreadCount));
+    };
+
+    window.addEventListener("chat:unread", handler);
+    return () => window.removeEventListener("chat:unread", handler);
+  }, []);
+
+  /* ===============================
+     7. CLICK SIDEBAR
   =============================== */
   const onSelect = (u) => {
     navigate(`/chat?userId=${u.userId}`);
   };
 
   /* ===============================
-     7. RENDER
+     8. RENDER
   =============================== */
   return (
     <div className={styles.wrap}>
       <ChatSidebar
+        myUserId={myUserId}          //  BẮT BUỘC
         activeUserId={activeUserId}
         onSelect={onSelect}
         onLoaded={handleSidebarLoad}
@@ -98,7 +109,6 @@ export default function ChatPage() {
         myUserId={myUserId}
         receiverIdFromProfile={receiverIdFromProfile}
       />
-
     </div>
   );
 }
