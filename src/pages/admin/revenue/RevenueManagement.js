@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useEffect } from 'react';
 import {
   Area,
   AreaChart,
@@ -14,11 +15,16 @@ import {
 } from 'recharts';
 import { LuClock4, LuCoins, LuTrendingUp, LuUsers } from 'react-icons/lu';
 import styles from './RevenueManagement.module.scss';
+import { getAdminRevenueTransactions } from '~/api/services/adminService';
 
 
 const RevenueManagement = () => {
   const [page, setPage] = useState(1);
   const pageSize = 5;
+  const [transactions, setTransactions] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const stats = useMemo(
     () => [
@@ -78,124 +84,64 @@ const RevenueManagement = () => {
     [],
   );
 
-  const transactions = useMemo(
-    () => [
-      {
-        id: '#TX-98421',
-        tutor: 'Nguyen Van A',
-        student: 'Tran Minh Khoa',
-        subject: 'Toán',
-        amount: 120,
-        status: 'Đã thanh toán',
-        date: '01/12/2025',
-      },
-      {
-        id: '#TX-98422',
-        tutor: 'Le Thi B',
-        student: 'Hoang Gia Bao',
-        subject: 'Tiếng Anh',
-        amount: 95,
-        status: 'Đang chờ',
-        date: '02/12/2025',
-      },
-      {
-        id: '#TX-98423',
-        tutor: 'Pham Van C',
-        student: 'Vu Quynh Nhu',
-        subject: 'Vật lý',
-        amount: 130,
-        status: 'Đã thanh toán',
-        date: '03/12/2025',
-      },
-      {
-        id: '#TX-98424',
-        tutor: 'Dang Thi D',
-        student: 'Le Tien Dat',
-        subject: 'Âm nhạc',
-        amount: 80,
-        status: 'Hoàn tiền',
-        date: '04/12/2025',
-      },
-      {
-        id: '#TX-98425',
-        tutor: 'Nguyen Van E',
-        student: 'Ngo My Linh',
-        subject: 'Hóa học',
-        amount: 110,
-        status: 'Đã thanh toán',
-        date: '05/12/2025',
-      },
-      {
-        id: '#TX-98426',
-        tutor: 'Tran Thi F',
-        student: 'Nguyen Truong An',
-        subject: 'Toán',
-        amount: 140,
-        status: 'Đang chờ',
-        date: '06/12/2025',
-      },
-      {
-        id: '#TX-98427',
-        tutor: 'Hoang Van G',
-        student: 'Bui Bao Ngoc',
-        subject: 'Tiếng Anh',
-        amount: 90,
-        status: 'Đã thanh toán',
-        date: '07/12/2025',
-      },
-      {
-        id: '#TX-98428',
-        tutor: 'Pham Thi H',
-        student: 'Trinh Bao Khanh',
-        subject: 'Vật lý',
-        amount: 125,
-        status: 'Đã thanh toán',
-        date: '08/12/2025',
-      },
-      {
-        id: '#TX-98429',
-        tutor: 'Do Van I',
-        student: 'Vu Minh Chau',
-        subject: 'Âm nhạc',
-        amount: 85,
-        status: 'Hoàn tiền',
-        date: '09/12/2025',
-      },
-      {
-        id: '#TX-98430',
-        tutor: 'Vo Thi J',
-        student: 'Dang Gia Han',
-        subject: 'Toán',
-        amount: 150,
-        status: 'Đã thanh toán',
-        date: '10/12/2025',
-      },
-    ],
-    [],
-  );
+  const statusLabel = (status) => {
+    if (!status) return 'Không xác định';
+    const map = {
+      PAID: 'Đã thanh toán',
+      PENDING: 'Đang chờ',
+      REFUNDED: 'Hoàn tiền',
+      FAILED: 'Thất bại',
+    };
+    return map[status] || status;
+  };
 
-  const start = (page - 1) * pageSize;
-  const end = start + pageSize;
-  const pagedTransactions = useMemo(
-    () => transactions.slice(start, end),
-    [transactions, start, end],
-  );
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        setLoading(true);
+        setError('');
+        const res = await getAdminRevenueTransactions({ page: page - 1, size: pageSize });
+        const content = res?.content || [];
+        setTransactions(
+          content.map((item) => ({
+            id: item.transactionCode,
+            tutor: item.tutorName,
+            student: item.learnerName,
+            subject: item.subjectName,
+            amount: item.amount,
+            status: statusLabel(item.status),
+            rawStatus: item.status,
+            date: item.createdAt?.slice(0, 10) || '',
+          })),
+        );
+        setTotalPages(res?.totalPages || 1);
+      } catch (err) {
+        console.error('Load revenue transactions error:', err);
+        setError('Không tải được danh sách giao dịch.');
+        setTransactions([]);
+        setTotalPages(1);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const totalPages = Math.ceil(transactions.length / pageSize);
+    fetchTransactions();
+  }, [page]);
 
   const formatCurrency = (value) =>
     new Intl.NumberFormat('vi-VN', {
       style: 'currency',
       currency: 'VND',
       maximumFractionDigits: 0,
-    }).format(value * 1000);
+    }).format(value || 0);
 
   const subjectColors = ['#2563EB', '#38BDF8', '#22C55E', '#FACC15', '#A855F7', '#0EA5E9'];
 
   const statusClass = (status) => {
     if (status === 'Đã thanh toán') return styles.statusPaid;
     if (status === 'Đang chờ') return styles.statusPending;
-    return styles.statusRefunded;
+    if (status === 'Hoàn tiền') return styles.statusRefunded;
+    return '';
   };
 
   const handlePageChange = (direction) => {
@@ -317,7 +263,22 @@ const RevenueManagement = () => {
               </tr>
             </thead>
             <tbody>
-              {pagedTransactions.map((tx) => (
+              {loading && (
+                <tr>
+                  <td colSpan={7} className={styles.empty}>Đang tải dữ liệu...</td>
+                </tr>
+              )}
+              {!loading && error && (
+                <tr>
+                  <td colSpan={7} className={styles.empty}>{error}</td>
+                </tr>
+              )}
+              {!loading && !error && transactions.length === 0 && (
+                <tr>
+                  <td colSpan={7} className={styles.empty}>Chưa có giao dịch</td>
+                </tr>
+              )}
+              {!loading && !error && transactions.map((tx) => (
                 <tr key={tx.id}>
                   <td>{tx.id}</td>
                   <td>{tx.tutor}</td>
