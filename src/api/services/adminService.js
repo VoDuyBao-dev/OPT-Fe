@@ -94,5 +94,25 @@ export const getAdminRevenueTransactions = async ({ page = 0, size = 5 }) => {
 	return res.data?.result;
 };
 
+// Doanh thu - thống kê tổng quan
+export const getAdminDashboardStats = async () => {
+	const res = await axiosInstance.get('/admin/dashboard/stats');
+	return res.data?.result;
+};
+
+// Doanh thu 6 tháng gần nhất
+export const getAdminRevenueLast6Months = async () => {
+	const res = await axiosInstance.get('/admin/revenue/last-6-months');
+	return res.data?.result;
+};
+
+// Doanh thu theo môn
+export const getAdminRevenueBySubject = async (range = '30d') => {
+	const res = await axiosInstance.get('/admin/revenue/by-subject', {
+		params: { range },
+	});
+	return res.data?.result;
+};
+
 
 
