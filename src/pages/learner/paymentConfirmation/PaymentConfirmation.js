@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { previewOfficialClass } from '~/api/services/leanerService';
+import { createVnpayPaymentLink, previewOfficialClass } from '~/api/services/leanerService';
 import styles from './PaymentConfirmation.module.scss';
 
 const dayMap = {
@@ -30,6 +30,7 @@ const PaymentConfirmation = () => {
   const prefilledPreview = location.state?.previewData;
 
   const [loading, setLoading] = useState(false);
+  const [paying, setPaying] = useState(false);
   const [error, setError] = useState('');
   const [preview, setPreview] = useState(prefilledPreview || null);
 
@@ -70,14 +71,38 @@ const PaymentConfirmation = () => {
     ];
   }, [preview]);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (!preview) return;
-    navigate('/learner/payment/checkout', {
-      state: {
-        previewData: preview,
-        requestPayload,
-      },
-    });
+
+    const classRequestId = preview.classRequestId || requestPayload?.classRequestId;
+
+    if (!classRequestId) {
+      setError('Không tìm thấy mã yêu cầu lớp. Vui lòng thử lại.');
+      return;
+    }
+
+    setError('');
+
+    try {
+      setPaying(true);
+      const res = await createVnpayPaymentLink({
+        classRequestId,
+        amount: preview.totalAmount,
+      });
+
+      const paymentUrl = res?.data?.result?.paymentUrl;
+
+      if (!paymentUrl) {
+        throw new Error('Không nhận được liên kết thanh toán.');
+      }
+
+      window.location.href = paymentUrl;
+    } catch (err) {
+      const message = err?.response?.data?.message || err?.message || 'Không tạo được liên kết thanh toán.';
+      setError(message);
+    } finally {
+      setPaying(false);
+    }
   };
 
   const handleBack = () => navigate(-1);
@@ -98,9 +123,9 @@ const PaymentConfirmation = () => {
             type="button"
             className={styles.btnPrimary}
             onClick={handleConfirm}
-            disabled={!preview || loading}
+            disabled={!preview || loading || paying}
           >
-            Xác nhận & Thanh toán
+            {paying ? 'Đang chuyển...' : 'Xác nhận & Thanh toán'}
           </button>
         </div>
       </header>
