@@ -24,6 +24,7 @@ function Navbar({userType, onLinkClick, isMobile = false}) {
     { title: "Người học", path: "/admin/learner-management" },
     { title: "Gia sư", path: "/admin/tutor-management" },
     { title: "E-Books", path: "/admin/e-books" },
+    { title: "Doanh thu", path: "/admin/revenue-management" },
   ];
   let menu;
   switch(userType) {
