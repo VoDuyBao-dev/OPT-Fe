@@ -121,6 +121,32 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
         return '/';
     };
 
+    const getUserMenu = () => {
+        const learnerMenu = [
+            { label: 'Hồ sơ của bạn', path: '/Profile' },
+            { label: 'Lớp đã học', path: '/Classed' },
+            { label: 'Yêu cầu đã gửi', path: '/Request' },
+            { label: 'Đăng xuất', action: 'logout' },
+        ];
+
+        const tutorMenu = [
+            { label: 'Hồ sơ của bạn', path: '/tutor/profile' },
+            { label: 'Trang chủ gia sư', path: '/tutor/home' },
+            { label: 'Đăng xuất', action: 'logout' },
+        ];
+
+        const adminMenu = [
+            { label: 'Hồ sơ của bạn', path: '/admin/profile' },
+            { label: 'Dashboard admin', path: '/admin/dashboard' },
+            { label: 'Đăng xuất', action: 'logout' },
+        ];
+
+        if (userType === 'learner') return learnerMenu;
+        if (userType === 'tutor') return tutorMenu;
+        if (userType === 'admin') return adminMenu;
+        return [];
+    };
+
     // Scroll behavior for header visibility
     useEffect(() => {
         const handleScroll = () => {
@@ -260,6 +286,17 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
                                     >
                                         <FontAwesomeIcon icon={faSignOutAlt} />
                                     </button>
+                                    <ul className={styles.mobileDropdownList}>
+                                        {getUserMenu().map((item) => (
+                                            <li key={item.label}>
+                                                {item.action === 'logout' ? (
+                                                    <button type="button" onClick={handleLogout}>{item.label}</button>
+                                                ) : (
+                                                    <Link to={item.path} onClick={closeMobileMenu}>{item.label}</Link>
+                                                )}
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </div>
                             )
                         )}

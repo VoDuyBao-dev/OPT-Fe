@@ -130,12 +130,48 @@
 .mobileUserSection {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
     padding: 1.6rem;
     background: linear-gradient(135deg, rgba(69, 130, 255, 0.08) 0%, rgba(69, 130, 255, 0.04) 100%);
     border-radius: 12px;
     border: 1px solid rgba(69, 130, 255, 0.1);
     margin-top: auto;
+}
+
+.mobileDropdownList {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    width: 100%;
+    display: grid;
+    gap: 8px;
+
+    li a,
+    li button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(69, 130, 255, 0.15);
+        background: #fff;
+        color: var(--text-c);
+        font-size: 1.4rem;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    }
+
+    li a:hover,
+    li button:hover {
+        background: rgba(69, 130, 255, 0.08);
+        color: var(--primary-c);
+        border-color: rgba(69, 130, 255, 0.35);
+    }
+
+    li button {
+        cursor: pointer;
+    }
 }
 
 .userProfile {

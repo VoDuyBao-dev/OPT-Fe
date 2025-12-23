@@ -143,3 +143,34 @@
   }
 
 }
+
+@media (max-width: 1024px) {
+  .dashboard {
+    padding: 1.5rem;
+
+    .stats {
+      flex-wrap: wrap;
+    }
+
+    .charts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 20px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 1.25rem;
+
+    .stats {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .charts {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+}

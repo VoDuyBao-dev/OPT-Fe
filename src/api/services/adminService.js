@@ -86,5 +86,13 @@ export const deleteEbook = async (id) => {
   return res.data;
 };
 
+// Doanh thu - giao dịch
+export const getAdminRevenueTransactions = async ({ page = 0, size = 5 }) => {
+	const res = await axiosInstance.get('/admin/revenue/transactions', {
+		params: { page, size },
+	});
+	return res.data?.result;
+};
+
 
 
