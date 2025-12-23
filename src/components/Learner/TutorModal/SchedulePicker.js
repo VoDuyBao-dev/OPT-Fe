@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "./TutorModal.scss";
 import { getWeekDates } from "../../../utils/dateUtils";
 
 /* ============================
-   TIME SLOTS
+   TIME SLOTS (BẮT BUỘC PHẢI CÓ)
 ============================ */
 const TIME_SLOTS = [
   { key: "morning1", label: "08:00 - 09:30" },
@@ -19,7 +19,6 @@ const TIME_SLOTS = [
 ============================ */
 const formatDayHeader = (dateStr) => {
   const date = new Date(dateStr);
-
   const dayMap = [
     "Chủ nhật",
     "Thứ 2",
@@ -42,58 +41,97 @@ const formatDayHeader = (dateStr) => {
    COMPONENT
 ============================ */
 export default function SchedulePicker({
-  baseDate,
   busySlots = [],
   selectedSlots = [],
   onToggleSlot,
+  classType, // "trial" | "official"
 }) {
+  const [baseDate, setBaseDate] = useState(new Date());
   const weekDates = getWeekDates(baseDate);
 
+  const maxSlots = classType === "trial" ? 1 : 2;
+
+  const toInputDate = (date) => date.toISOString().split("T")[0];
+
+  const prevWeek = () => {
+    const d = new Date(baseDate);
+    d.setDate(d.getDate() - 7);
+    setBaseDate(d);
+  };
+
+  const nextWeek = () => {
+    const d = new Date(baseDate);
+    d.setDate(d.getDate() + 7);
+    setBaseDate(d);
+  };
+
   return (
-    <div className="tfm-schedule-grid">
-      {/* Empty corner */}
-      <div />
+    <>
+      {/* ===== TOOLBAR ===== */}
+      <div className="tfm-calendar-toolbar">
+        <button onClick={prevWeek}>❮</button>
+        <button className="today-btn" onClick={() => setBaseDate(new Date())}>
+          Hôm nay
+        </button>
+        <button onClick={nextWeek}>❯</button>
 
-      {/* ===== DAY HEADERS ===== */}
-      {weekDates.map((date) => {
-        const { dayName, dateText } = formatDayHeader(date);
+        <input
+          type="date"
+          value={toInputDate(baseDate)}
+          onChange={(e) => setBaseDate(new Date(e.target.value))}
+        />
+      </div>
 
-        return (
-          <div key={date} className="tfm-day-head">
-            <div className="day-name">{dayName}</div>
-            <div className="day-date">{dateText}</div>
-          </div>
-        );
-      })}
+      {/* ===== GRID ===== */}
+      <div className="tfm-schedule-grid">
+        <div />
 
-      {/* ===== TIME SLOTS ===== */}
-      {TIME_SLOTS.map((slot) => (
-        <React.Fragment key={slot.key}>
-          <div className="tfm-session-cell">{slot.label}</div>
+        {/* HEADER */}
+        {weekDates.map((date) => {
+          const { dayName, dateText } = formatDayHeader(date);
+          return (
+            <div key={date} className="tfm-day-head">
+              <div className="day-name">{dayName}</div>
+              <div className="day-date">{dateText}</div>
+            </div>
+          );
+        })}
 
-          {weekDates.map((date) => {
-            const slotId = `${date}|${slot.key}`;
-            const isBusy = busySlots.includes(slotId);
-            const isSelected = selectedSlots.includes(slotId);
+        {/* SLOTS */}
+        {TIME_SLOTS.map((slot) => (
+          <React.Fragment key={slot.key}>
+            <div className="tfm-session-cell">{slot.label}</div>
 
-            return (
-              <div
-                key={slotId}
-                className={[
-                  "tfm-slot",
-                  isBusy && "busy",
-                  isSelected && "selected",
-                ]
-                  .filter(Boolean)
-                  .join(" ")}
-                onClick={() => !isBusy && onToggleSlot(slotId)}
-              >
-                {slot.label}
-              </div>
-            );
-          })}
-        </React.Fragment>
-      ))}
-    </div>
+            {weekDates.map((date) => {
+              const slotId = `${date}|${slot.key}`;
+              const isBusy = busySlots.includes(slotId);
+              const isSelected = selectedSlots.includes(slotId);
+              const isDisabled =
+                !isSelected && selectedSlots.length >= maxSlots;
+
+              return (
+                <div
+                  key={slotId}
+                  className={[
+                    "tfm-slot",
+                    isBusy && "busy",
+                    isSelected && "selected",
+                    isDisabled && "disabled",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  onClick={() => {
+                    if (isBusy || isDisabled) return;
+                    onToggleSlot(slotId);
+                  }}
+                >
+                  {slot.label}
+                </div>
+              );
+            })}
+          </React.Fragment>
+        ))}
+      </div>
+    </>
   );
 }

@@ -272,3 +272,40 @@
     gap: 0.5rem;
   }
 }
+
+.tfm-calendar-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+
+  button {
+    background: #f1f5f9;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+
+    &:hover {
+      background: #e2e8f0;
+    }
+  }
+
+  .today-btn {
+    background: #0f766e;
+    color: #fff;
+
+    &:hover {
+      background: #115e59;
+    }
+  }
+
+  input[type="date"] {
+    margin-left: auto;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    font-weight: 500;
+  }
+}
