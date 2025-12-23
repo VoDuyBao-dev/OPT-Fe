@@ -18,8 +18,8 @@ export default function EBooks() {
 
         console.log("EBOOK API:", res);
 
-        // ✅ LẤY ĐÚNG ITEMS
-        const rawData = res?.result?.items || [];
+        // ✅ FIX: API KHÔNG CÓ result → LẤY TRỰC TIẾP items
+        const rawData = res?.items || [];
 
         const mapped = rawData.map((e) => ({
           id: e.ebookId,
@@ -39,9 +39,6 @@ export default function EBooks() {
 
     loadEbooks();
   }, [typeFilter]);
-
-
-  
 
   return (
     <div className={styles.eRoot}>
@@ -63,33 +60,31 @@ export default function EBooks() {
 
       {/* LIST */}
       <main className={styles.eContent}>
+        {ebooks.length === 0 && <p>Không có tài liệu</p>}
+
         {ebooks.map((e) => (
-          <div key={e.id} className={styles.eCard}>
-            <EBookCard
-              id={e.id}
-              cover={e.path}
-              title={e.title}
-              author={e.author}
-            />
+          <EBookCard
+            key={e.id}
+            title={e.title}
+            author={e.author}
+          >
+            <a
+              href={e.path}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.btnDơwnload}
+            >
+              📥 Xem / Tải
+            </a>
 
-            <div className={styles.actions}>
-              <a
-                href={e.path}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.btnPrimary}
-              >
-                Tải xuống
-              </a>
+            <button
+              className={styles.btnLight}
+              onClick={() => setSelected(e)}
+            >
+              ℹ️ Chi tiết
+            </button>
+          </EBookCard>
 
-              <button
-                className={styles.btnLight}
-                onClick={() => setSelected(e)}
-              >
-                Chi tiết
-              </button>
-            </div>
-          </div>
         ))}
       </main>
 

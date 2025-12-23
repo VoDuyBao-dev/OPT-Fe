@@ -2,32 +2,55 @@ import React from "react";
 import styles from "./EBooks.module.scss";
 
 export default function EbookDetail({ data, onClose }) {
-    const formatDate = (dateStr) => {
+  if (!data) return null;
+
+  const formatDate = (dateStr) => {
     if (!dateStr) return "";
-    const [month, day, year] = dateStr.split("-");
-    return `${day}/${month}/${year}`;
-    };
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("vi-VN");
+  };
 
   return (
-    <div className={styles["modal-bg"]}>
-      <div className={styles["modal-box"]}>
+    <div className={styles["modal-bg"]} onClick={onClose}>
+      <div
+        className={styles["modal-box"]}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* HEADER */}
         <div className={styles["modal-header"]}>
-            <h3>{data.title}</h3>
-            <button className={styles["modal-close"]} onClick={onClose}>X</button>
+          <h3>{data.title}</h3>
+          <button
+            className={styles["modal-close"]}
+            onClick={onClose}
+          >
+            ✕
+          </button>
         </div>
-        <p>{data.desc}</p>
 
+        {/* INFO */}
         <div className={styles["modal-info-grid"]}>
-          <div><b>Môn học:</b> Công nghệ Web</div>
-          <div><b>Người đăng:</b> {data.uploadedByName}</div>
-          <div><b>Ngày cập nhật:</b> {formatDate(data.createdAt)}</div>
-          <div><b>Loại:</b> {data.type}</div>
+          <div><b>Người đăng:</b> {data.author}</div>
+          <div><b>Loại tài liệu:</b> {data.type}</div>
+          <div><b>Ngày đăng:</b> {formatDate(data.date)}</div>
         </div>
 
-        <button className={styles["btn-primary"]}>Xem Online</button>
-        <button className={styles["btn-secondary"]}>Tải xuống</button>
+        {/* ACTIONS */}
+        <a
+          href={data.path}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={styles["btn-primary"]}
+        >
+          📖 Xem Online
+        </a>
 
-        
+        <a
+          href={data.path}
+          download
+          className={styles["btn-secondary"]}
+        >
+          ⬇️ Tải xuống
+        </a>
       </div>
     </div>
   );
