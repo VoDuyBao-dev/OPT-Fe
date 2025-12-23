@@ -31,6 +31,7 @@ import AdminProfile from '~/pages/admin/profile/AdminProfile';
 import AdminDashboard from '~/pages/admin/dashboard/AdminDashboard';
 import AdminEBooks from '~/pages/admin/e-books/AdminEbooks';
 import ChatPage from '~/pages/chat/ChatPage';
+import RevenueManagement from "~/pages/admin/revenue/RevenueManagement";
 
 const publicRouter = [
     { path: '/Login', element: <LoginPage /> },
@@ -68,6 +69,7 @@ const adminRouter = [
     { path: '/admin/profile', element: <AdminProfile /> },
     { path: '/admin/tutor-management', element: <TutorManagement /> },
     { path: '/admin/learner-management', element: <LearnerManagement /> },
-    { path: '/admin/e-books', element: <AdminEBooks /> }
+    { path: '/admin/e-books', element: <AdminEBooks /> },
+    { path: '/admin/revenue-management', element: <RevenueManagement /> },
 ];
 export { learnerRouter, publicRouter, tutorRouter, adminRouter };
