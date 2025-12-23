@@ -239,4 +239,14 @@ export const previewOfficialClass = (payload) =>
   );
 
 
+// ========================
+// 18. Tạo link thanh toán VNPay
+// ========================
+export const createVnpayPaymentLink = ({ classRequestId, amount }) =>
+  axiosInstance.post(
+    "/payment/vnpay/create",
+    { classRequestId, amount },
+  );
+
+
 

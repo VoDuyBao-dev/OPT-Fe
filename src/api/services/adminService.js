@@ -51,6 +51,10 @@ export const approveTutor = async (tutorId) => {
 	const response = await axiosInstance.put(`/admin/tutors/${tutorId}/approve`);
 	return response.data;
 };
+export const rejectTutor = async (tutorId, reason) => {
+	const response = await axiosInstance.put(`/admin/tutors/${tutorId}/reject`, { reason });
+	return response.data;
+}
 
 // Danh sách ebook (có paging + keyword + type)
 export const getAdminEbooks = async ({ page = 0, size = 10, keyword, type }) => {
@@ -90,6 +94,26 @@ export const deleteEbook = async (id) => {
 export const getAdminRevenueTransactions = async ({ page = 0, size = 5 }) => {
 	const res = await axiosInstance.get('/admin/revenue/transactions', {
 		params: { page, size },
+	});
+	return res.data?.result;
+};
+
+// Doanh thu - thống kê tổng quan
+export const getAdminDashboardStats = async () => {
+	const res = await axiosInstance.get('/admin/dashboard/stats');
+	return res.data?.result;
+};
+
+// Doanh thu 6 tháng gần nhất
+export const getAdminRevenueLast6Months = async () => {
+	const res = await axiosInstance.get('/admin/revenue/last-6-months');
+	return res.data?.result;
+};
+
+// Doanh thu theo môn
+export const getAdminRevenueBySubject = async (range = '30d') => {
+	const res = await axiosInstance.get('/admin/revenue/by-subject', {
+		params: { range },
 	});
 	return res.data?.result;
 };

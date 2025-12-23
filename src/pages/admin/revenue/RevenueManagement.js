@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from 'react';
-import { useEffect } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import {
   Area,
   AreaChart,
@@ -15,7 +14,12 @@ import {
 } from 'recharts';
 import { LuClock4, LuCoins, LuTrendingUp, LuUsers } from 'react-icons/lu';
 import styles from './RevenueManagement.module.scss';
-import { getAdminRevenueTransactions } from '~/api/services/adminService';
+import {
+  getAdminRevenueTransactions,
+  getAdminDashboardStats,
+  getAdminRevenueLast6Months,
+  getAdminRevenueBySubject,
+} from '~/api/services/adminService';
 
 
 const RevenueManagement = () => {
@@ -25,64 +29,59 @@ const RevenueManagement = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [statsData, setStatsData] = useState(null);
+  const [statsLoading, setStatsLoading] = useState(false);
+  const [trendData, setTrendData] = useState([]);
+  const [trendLoading, setTrendLoading] = useState(false);
+  const [subjectShare, setSubjectShare] = useState([]);
+  const [subjectRange, setSubjectRange] = useState('30d');
+  const [subjectLoading, setSubjectLoading] = useState(false);
 
-  const stats = useMemo(
-    () => [
+  const formatCurrency = (value) =>
+    new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+      maximumFractionDigits: 0,
+    }).format(value || 0);
+
+  const stats = useMemo(() => {
+    const totalRevenue = statsData?.totalRevenue ?? 0;
+    const platformProfit = statsData?.platformProfit ?? 0;
+    const activeTutors = statsData?.activeTutors ?? 0;
+    const pendingAmount = statsData?.pendingAmount ?? 0;
+    const growth = statsData?.revenueGrowthPercent;
+
+    return [
       {
         label: 'Tổng doanh thu',
-        value: '124.500.000 ₫',
-        delta: '+18,2%',
+        value: formatCurrency(totalRevenue),
+        delta: growth != null ? `${growth}%` : '—',
         icon: <LuTrendingUp />,
         accent: styles.accentPrimary,
       },
       {
         label: 'Lợi nhuận sàn',
-        value: '24.900.000 ₫',
+        value: formatCurrency(platformProfit),
         delta: '20% phí',
         icon: <LuCoins />,
         accent: styles.accentTeal,
       },
       {
         label: 'Gia sư đang hoạt động',
-        value: '482',
-        delta: '+36 mới',
+        value: activeTutors?.toLocaleString('vi-VN') ?? '0',
+        delta: '',
         icon: <LuUsers />,
         accent: styles.accentIndigo,
       },
       {
         label: 'Chờ thanh toán',
-        value: '6.740.000 ₫',
-        delta: '5 đang duyệt',
+        value: formatCurrency(pendingAmount),
+        delta: '',
         icon: <LuClock4 />,
         accent: styles.accentAmber,
       },
-    ],
-    [],
-  );
-
-  const revenueTrend = useMemo(
-    () => [
-      { month: 'Thg 7', revenue: 17500, profit: 3500 },
-      { month: 'Thg 8', revenue: 19200, profit: 3840 },
-      { month: 'Thg 9', revenue: 20500, profit: 4100 },
-      { month: 'Thg 10', revenue: 21800, profit: 4360 },
-      { month: 'Thg 11', revenue: 23600, profit: 4720 },
-      { month: 'Thg 12', revenue: 24700, profit: 4940 },
-    ],
-    [],
-  );
-
-  const subjectShare = useMemo(
-    () => [
-      { name: 'Toán', value: 32 },
-      { name: 'Vật lý', value: 18 },
-      { name: 'Tiếng Anh', value: 22 },
-      { name: 'Âm nhạc', value: 12 },
-      { name: 'Hóa học', value: 9 },
-      { name: 'Khác', value: 7 },
-    ],
-    [],
-  );
+    ];
+  }, [statsData]);
 
   const statusLabel = (status) => {
     if (!status) return 'Không xác định';
@@ -128,12 +127,66 @@ const RevenueManagement = () => {
     fetchTransactions();
   }, [page]);
 
-  const formatCurrency = (value) =>
-    new Intl.NumberFormat('vi-VN', {
-      style: 'currency',
-      currency: 'VND',
-      maximumFractionDigits: 0,
-    }).format(value || 0);
+  useEffect(() => {
+    const loadStats = async () => {
+      try {
+        setStatsLoading(true);
+        const res = await getAdminDashboardStats();
+        setStatsData(res || null);
+      } catch (err) {
+        console.error('Load dashboard stats error:', err);
+        setStatsData(null);
+      } finally {
+        setStatsLoading(false);
+      }
+    };
+
+    loadStats();
+  }, []);
+
+  useEffect(() => {
+    const loadTrend = async () => {
+      try {
+        setTrendLoading(true);
+        const res = await getAdminRevenueLast6Months();
+        const mapped = (res || []).map((item) => ({
+          month: item.month,
+          revenue: item.revenue || 0,
+          profit: item.profit || 0,
+        }));
+        setTrendData(mapped);
+      } catch (err) {
+        console.error('Load revenue last 6 months error:', err);
+        setTrendData([]);
+      } finally {
+        setTrendLoading(false);
+      }
+    };
+
+    loadTrend();
+  }, []);
+
+  useEffect(() => {
+    const loadSubjectShare = async () => {
+      try {
+        setSubjectLoading(true);
+        const res = await getAdminRevenueBySubject(subjectRange);
+        const mapped = (res || []).map((item) => ({
+          name: item.subject,
+          value: item.percent || 0,
+          amount: item.amount || 0,
+        }));
+        setSubjectShare(mapped);
+      } catch (err) {
+        console.error('Load revenue by subject error:', err);
+        setSubjectShare([]);
+      } finally {
+        setSubjectLoading(false);
+      }
+    };
+
+    loadSubjectShare();
+  }, [subjectRange]);
 
   const subjectColors = ['#2563EB', '#38BDF8', '#22C55E', '#FACC15', '#A855F7', '#0EA5E9'];
 
@@ -164,7 +217,7 @@ const RevenueManagement = () => {
           <h1 className={styles.title}>Bảng điều khiển doanh thu</h1>
           <p className={styles.subtitle}>Theo dõi hiệu suất nền tảng và thanh toán theo thời gian thực.</p>
         </div>
-        <div className={styles.headerBadge}>Cập nhật: 10/12/2025</div>
+        {/* <div className={styles.headerBadge}>Cập nhật: 10/12/2025</div> */}
       </header>
 
       <section className={styles.statsGrid}>
@@ -189,57 +242,72 @@ const RevenueManagement = () => {
             <span className={styles.badge}>VND</span>
           </div>
           <div className={styles.chartWrapper}>
-            <ResponsiveContainer width="100%" height={320}>
-              <AreaChart data={revenueTrend} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#2563EB" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#2563EB" stopOpacity={0} />
-                  </linearGradient>
-                  <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#22C55E" stopOpacity={0.25} />
-                    <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
-                <XAxis dataKey="month" tick={{ fill: '#6B7280', fontSize: 12 }} tickLine={false} />
-                <YAxis tick={{ fill: '#6B7280', fontSize: 12 }} tickLine={false} axisLine={false} />
-                <Tooltip formatter={(value) => formatCurrency(value)} />
-                <Area type="monotone" dataKey="revenue" stroke="#2563EB" fillOpacity={1} fill="url(#colorRevenue)" strokeWidth={2.5} />
-                <Area type="monotone" dataKey="profit" stroke="#22C55E" fillOpacity={1} fill="url(#colorProfit)" strokeWidth={2.5} />
-                <Legend verticalAlign="top" height={32} iconType="circle" />
-              </AreaChart>
-            </ResponsiveContainer>
+            {trendLoading ? (
+              <div className={styles.empty}>Đang tải...</div>
+            ) : (
+              <ResponsiveContainer width="100%" height={320}>
+                <AreaChart data={trendData} margin={{ top: 10, right: 20, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#2563EB" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#2563EB" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient id="colorProfit" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#22C55E" stopOpacity={0.25} />
+                      <stop offset="95%" stopColor="#22C55E" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#E5E7EB" />
+                  <XAxis dataKey="month" tick={{ fill: '#6B7280', fontSize: 12 }} tickLine={false} />
+                  <YAxis tick={{ fill: '#6B7280', fontSize: 12 }} tickLine={false} axisLine={false} />
+                  <Tooltip formatter={(value) => formatCurrency(value)} />
+                  <Area type="monotone" dataKey="revenue" stroke="#2563EB" fillOpacity={1} fill="url(#colorRevenue)" strokeWidth={2.5} />
+                  <Area type="monotone" dataKey="profit" stroke="#22C55E" fillOpacity={1} fill="url(#colorProfit)" strokeWidth={2.5} />
+                  <Legend verticalAlign="top" height={32} iconType="circle" />
+                </AreaChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
 
         <div className={styles.card}>
           <div className={styles.cardHeader}>
             <h3>Doanh thu theo môn</h3>
-            <span className={styles.badgeAlt}>30 ngày gần nhất</span>
+            <div className={styles.subjectHeaderRight}>
+              <span className={styles.badgeAlt}>{subjectRange === '7d' ? '7 ngày' : subjectRange === '90d' ? '90 ngày' : '30 ngày gần nhất'}</span>
+              <select value={subjectRange} onChange={(e) => setSubjectRange(e.target.value)} className={styles.rangeSelect}>
+                <option value="7d">7d</option>
+                <option value="30d">30d</option>
+                <option value="90d">90d</option>
+              </select>
+            </div>
           </div>
           <div className={styles.chartWrapper}>
-            <ResponsiveContainer width="100%" height={320}>
-              <PieChart>
-                <Pie
-                  data={subjectShare}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={70}
-                  outerRadius={110}
-                  paddingAngle={4}
-                  dataKey="value"
-                  labelLine={false}
-                  label={renderDonutLabel}
-                >
-                  {subjectShare.map((entry, index) => (
-                    <Cell key={entry.name} fill={subjectColors[index % subjectColors.length]} />
-                  ))}
-                </Pie>
-                <Legend verticalAlign="bottom" height={36} iconType="circle" />
-                <Tooltip formatter={(value) => `${value}%`} />
-              </PieChart>
-            </ResponsiveContainer>
+            {subjectLoading ? (
+              <div className={styles.empty}>Đang tải...</div>
+            ) : (
+              <ResponsiveContainer width="100%" height={320}>
+                <PieChart>
+                  <Pie
+                    data={subjectShare}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={70}
+                    outerRadius={110}
+                    paddingAngle={4}
+                    dataKey="value"
+                    labelLine={false}
+                    label={renderDonutLabel}
+                  >
+                    {subjectShare.map((entry, index) => (
+                      <Cell key={entry.name} fill={subjectColors[index % subjectColors.length]} />
+                    ))}
+                  </Pie>
+                  <Legend verticalAlign="bottom" height={36} iconType="circle" />
+                  <Tooltip formatter={(value, name, props) => [`${value}%`, props?.payload?.name]} />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </div>
         </div>
       </section>
