@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import "./TutorList.scss";
 import FilterSidebar from "./FilterSidebar";
 import TutorCard from "./TutorCard";
@@ -17,7 +17,7 @@ const TutorList = () => {
     const loadTutors = async () => {
       try {
         const data = await searchTutorsByFilter({});
-        setTutors(data);
+        setTutors(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Load tutors error:", err);
       }
@@ -27,12 +27,28 @@ const TutorList = () => {
   }, []);
 
   // ============================
-  // Pagination
+  // 🔥 DEDUPE tutors theo tutorId
   // ============================
-  const totalPages = Math.ceil(tutors.length / tutorsPerPage);
+  const uniqueTutors = useMemo(() => {
+    const map = new Map();
+    tutors.forEach((t) => {
+      if (t?.tutorId && !map.has(t.tutorId)) {
+        map.set(t.tutorId, t);
+      }
+    });
+    return Array.from(map.values());
+  }, [tutors]);
+
+  // ============================
+  // Pagination (SAU dedupe)
+  // ============================
+  const totalPages = Math.ceil(uniqueTutors.length / tutorsPerPage);
   const indexOfLastTutor = currentPage * tutorsPerPage;
   const indexOfFirstTutor = indexOfLastTutor - tutorsPerPage;
-  const currentTutors = tutors.slice(indexOfFirstTutor, indexOfLastTutor);
+  const currentTutors = uniqueTutors.slice(
+    indexOfFirstTutor,
+    indexOfLastTutor
+  );
 
   const handleNext = () => {
     if (currentPage < totalPages) setCurrentPage((p) => p + 1);
@@ -46,8 +62,8 @@ const TutorList = () => {
   // Nhận kết quả từ FilterSidebar
   // ============================
   const handleFilterResult = (data) => {
-    setTutors(data);
-    setCurrentPage(1); // reset page
+    setTutors(Array.isArray(data) ? data : []);
+    setCurrentPage(1);
   };
 
   return (
@@ -60,7 +76,10 @@ const TutorList = () => {
         )}
 
         {currentTutors.map((tutor) => (
-          <TutorCard key={tutor.tutorId} tutor={tutor} />
+          <TutorCard
+            key={tutor.tutorId}   // ✅ giờ chắc chắn UNIQUE
+            tutor={tutor}
+          />
         ))}
 
         {/* Pagination */}

@@ -119,31 +119,51 @@ export const getLearnerCalendar = async (from, to) => {
   return res.data?.result || [];
 };
 
-// ========================
-// 7. Lấy dữ liệu filter gia sư
-// ========================
+// ============================
+// 7. Lấy danh sách filter
+// ============================
 
 export const getTutorFilters = async () => {
-  const res = await axiosInstance.get("/learner/tutors/filters");
-  return res.data.result;
+  const res = await axiosInstance.get(
+    "/learner/tutors/filters"
+  );
+  return res.data?.result || res.data;
 };
 
-// =====================
-// 8. Tìm kiếm gia sư (theo filter)
-// =====================
-export const searchTutorsByFilter = async (params) => {
-  const res = await axiosInstance.get("/learner/tutors/search-filters", { params });
-  return res.data.result;
+// ============================
+// 8. Tìm gia sư theo filter
+// ============================
+export const searchTutorsByFilter = async ({
+  subjectId,
+  educationalLevel,
+} = {}) => {
+  const res = await axiosInstance.get(
+    "/learner/tutors/search-filters",
+    {
+      params: {
+        subjectId: subjectId || undefined,
+        educationalLevel: educationalLevel || undefined,
+      },
+    }
+  );
+
+  return res.data?.result || res.data || [];
 };
 
-// =====================
-// 9. Tìm kiếm gia sư (theo từ khóa)
-// =====================
-export const searchTutorsByKeyword = async (q) => {
-  const res = await axiosInstance.get("/learner/tutors/search", {
-    params: { q },
-  });
-  return res.data.result;
+
+// ============================
+// 9. Tìm gia sư theo keyword
+// ============================
+
+export const searchTutorsByKeyword = async (keyword) => {
+  const res = await axiosInstance.get(
+    "/learner/tutors/search",
+    {
+      params: { q: keyword },
+    }
+  );
+
+  return res.data?.result || res.data || [];
 };
 
 // ========================
