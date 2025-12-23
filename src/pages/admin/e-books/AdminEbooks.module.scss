@@ -324,3 +324,50 @@
     background: #fecaca;
   }
 }
+
+@media (max-width: 1024px) {
+  .eRoot {
+    flex-direction: column;
+    padding: 1.5rem;
+  }
+
+  .eSidebar {
+    width: 100%;
+  }
+
+  .eContent {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .eRoot {
+    gap: 1.25rem;
+    padding: 1.25rem;
+  }
+
+  .eSidebar {
+    padding: 16px;
+  }
+
+  .eContent {
+    grid-template-columns: 1fr;
+    padding: 0;
+    width: 100%;
+  }
+
+  .actions,
+  .modalActions {
+    flex-direction: column;
+  }
+
+  .btnPrimary,
+  .btnLight,
+  .btnDanger,
+  .btn-primary,
+  .btn-secondary,
+  .btnDơwnload {
+    width: 100%;
+    text-align: center;
+  }
+}

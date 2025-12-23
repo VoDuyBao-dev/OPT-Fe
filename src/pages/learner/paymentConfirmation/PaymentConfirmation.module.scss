@@ -1,5 +1,6 @@
 .page {
-    max-width: 1200px;
+  max-width: 1200px;
+  margin: 0 auto;
   min-height: 100vh;
   background: linear-gradient(180deg, #f7fbff 0%, #f3f6fb 40%, #ffffff 100%);
   padding: 12px;
@@ -16,13 +17,13 @@
 
 .breadcrumb {
   margin: 0 0 6px;
-  font-size: 13px;
+  font-size: 1.3rem;
   color: #64748b;
 }
 
 .title {
   margin: 0 0 4px;
-  font-size: 26px;
+  font-size: 2.6rem;
   font-weight: 700;
   color: #0b1f44;
 }
@@ -30,7 +31,7 @@
 .subtitle {
   margin: 0;
   color: #6b7280;
-  font-size: 14px;
+  font-size: 1.4rem;
 }
 
 .actions {
@@ -47,6 +48,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.1s ease, box-shadow 0.2s ease;
+  font-size: 1.4rem;
 }
 
 .btnPrimary {
@@ -109,7 +111,7 @@
 
 .cardTitle {
   margin: 0 0 12px;
-  font-size: 18px;
+  font-size: 1.8rem;
   color: #0b1f44;
 }
 
@@ -128,7 +130,7 @@
 
 .summaryLabel {
   display: block;
-  font-size: 12px;
+  font-size: 1.2rem;
   color: #6b7280;
   margin-bottom: 4px;
 }
@@ -163,6 +165,7 @@
 .scheduleTime {
   margin: 0;
   color: #475569;
+  font-size: 1.4rem;
 }
 
 .scheduleBadge {
@@ -171,7 +174,7 @@
   padding: 6px 10px;
   border-radius: 10px;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 1.2rem;
 }
 
 .noteBox {
@@ -198,5 +201,17 @@
   .actions {
     width: 100%;
     justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .btnPrimary,
+  .btnGhost {
+    width: 100%;
+    text-align: center;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
   }
 }
