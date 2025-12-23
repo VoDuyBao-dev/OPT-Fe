@@ -15,6 +15,7 @@ import NewPassword from '~/pages/account/login/NewPassword';
 import TutorList from '~/pages/learner/TutorList/TutorList';
 import TutorDetail from '~/pages/learner/TutorDetail/TutorDetail';
 import Schedule from '~/pages/learner/schedule/Schedule';
+import PaymentConfirmation from '~/pages/learner/paymentConfirmation/PaymentConfirmation';
 
 import ContactPage from '~/pages/learner/contact/Contact';
 //tutor pages
@@ -55,6 +56,7 @@ const learnerRouter = [
     { path: '/Tutor', element: <TutorList /> },
     { path: '/Tutor/:tutorId', element: <TutorDetail /> },
     { path: '/Contact', element: <ContactPage /> },
+    { path: '/payment/confirmation', element: <PaymentConfirmation /> }, // tạm thời để vậy, sẽ sửa lại sau
 ]
 
 const tutorRouter = [

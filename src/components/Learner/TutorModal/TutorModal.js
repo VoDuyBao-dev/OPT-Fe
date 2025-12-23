@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import ReactDOM from "react-dom";
+import { useNavigate } from "react-router-dom";
 import "./TutorModal.scss";
 
 import SchedulePicker from "./SchedulePicker";
@@ -10,7 +11,7 @@ import {
 
 import {
   createTrialRequest,
-  createOfficialRequest,
+  previewOfficialClass,
 } from "../../../api/services/leanerService";
 
 const TutorModal = ({
@@ -19,6 +20,7 @@ const TutorModal = ({
   tutorId,
   subjectId,
 }) => {
+  const navigate = useNavigate();
   const [type, setType] = useState("");
   const [notes, setNotes] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -83,21 +85,34 @@ const TutorModal = ({
         console.log("🔥 TRIAL PAYLOAD:", payload);
 
         await createTrialRequest(payload);
+
+        alert("Gửi yêu cầu học thử thành công!");
+        onClose();
+        return;
       }
 
       if (type === "official") {
-        await createOfficialRequest({
+        const officialPayload = {
           tutorId,
           subjectId,
           startDate,
           endDate,
           schedules: buildOfficialSchedules(selectedSlots),
           additionalNotes: notes,
-        });
-      }
+        };
 
-      alert("Gửi yêu cầu thành công!");
-      onClose();
+        // Gọi preview từ BE, sau đó điều hướng sang trang xác nhận và truyền sẵn dữ liệu
+        const res = await previewOfficialClass(officialPayload);
+        const previewData = res?.data?.result;
+
+        navigate("/payment/confirmation", {
+          state: {
+            requestPayload: officialPayload,
+            previewData,
+          },
+        });
+        return;
+      }
     } catch (err) {
       alert(err.response?.data?.message || "Có lỗi xảy ra");
     }

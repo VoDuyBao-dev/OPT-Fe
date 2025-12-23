@@ -227,5 +227,16 @@ export const createTrialRequest = (payload) =>
 export const createOfficialRequest = (payload) =>
   axiosInstance.post("/learner/class-requests/create-official-request", payload);
 
+// ========================
+// 17. Preview chi phí/lịch trước khi thanh toán
+// ========================
+// Backend trả về: totalAmount, totalSessions, tutorName, subjectName,
+// startDate, endDate, schedules[], additionalNotes, classRequestId (nếu có)
+export const previewOfficialClass = (payload) =>
+  axiosInstance.post(
+    "/learner/class-requests/official/preview",
+    payload,
+  );
+
 
 
