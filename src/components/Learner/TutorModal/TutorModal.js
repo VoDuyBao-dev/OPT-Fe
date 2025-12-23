@@ -25,26 +25,20 @@ const TutorModal = ({
   const [notes, setNotes] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [baseDate, setBaseDate] = useState(new Date());
-
   const [selectedSlots, setSelectedSlots] = useState([]);
 
-  // ================= VALIDATION =================
+  /* ================= VALIDATION ================= */
   const validationError = useMemo(() => {
     if (!type) return "Vui lòng chọn hình thức học.";
 
     if (type === "trial" && selectedSlots.length !== 1)
-      return "Chọn đúng 1 buổi học thử.";
+      return "Học thử chỉ được chọn 1 buổi.";
 
     if (type === "official") {
       if (!startDate || !endDate)
         return "Vui lòng chọn ngày bắt đầu và kết thúc.";
-      if (selectedSlots.length === 0)
-        return "Chọn ít nhất 1 buổi.";
-      if (new Set(
-        selectedSlots.map(s => s.split("|")[0])
-      ).size > 3)
-        return "Tối đa 3 buổi mỗi tuần.";
+      if (selectedSlots.length !== 2)
+        return "Học chính thức phải chọn đúng 2 buổi.";
     }
 
     return null;
@@ -52,38 +46,33 @@ const TutorModal = ({
 
   if (!isOpen) return null;
 
-  // ================= SLOT TOGGLE =================
-  function handleToggleSlot(slotId) {
+  /* ================= SLOT TOGGLE ================= */
+  const handleToggleSlot = (slotId) => {
     if (type === "trial") {
       setSelectedSlots([slotId]);
       return;
     }
 
-    setSelectedSlots(prev =>
+    setSelectedSlots((prev) =>
       prev.includes(slotId)
-        ? prev.filter(x => x !== slotId)
+        ? prev.filter((x) => x !== slotId)
         : [...prev, slotId]
     );
-  }
+  };
 
-  // ================= SUBMIT =================
-  async function handleSubmit(e) {
+  /* ================= SUBMIT ================= */
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validationError) return alert(validationError);
 
     try {
       if (type === "trial") {
-        const trial = buildTrialPayload(selectedSlots[0]);
-
         const payload = {
           tutorId,
           subjectId,
-          ...trial,
+          ...buildTrialPayload(selectedSlots[0]),
           additionalNotes: notes,
         };
-
-        console.log("🔥 TRIAL PAYLOAD:", payload);
-
         await createTrialRequest(payload);
 
         alert("Gửi yêu cầu học thử thành công!");
@@ -116,12 +105,12 @@ const TutorModal = ({
     } catch (err) {
       alert(err.response?.data?.message || "Có lỗi xảy ra");
     }
-  }
+  };
 
-  // ================= RENDER =================
+  /* ================= RENDER ================= */
   return ReactDOM.createPortal(
     <div className="tfm-overlay" onClick={onClose}>
-      <div className="tfm-modal" onClick={e => e.stopPropagation()}>
+      <div className="tfm-modal" onClick={(e) => e.stopPropagation()}>
         <button className="tfm-close" onClick={onClose}>×</button>
 
         <h2 className="tfm-title">Đăng ký thuê gia sư</h2>
@@ -131,7 +120,7 @@ const TutorModal = ({
             <label>Hình thức học</label>
             <select
               value={type}
-              onChange={e => {
+              onChange={(e) => {
                 setType(e.target.value);
                 setSelectedSlots([]);
               }}
@@ -143,31 +132,32 @@ const TutorModal = ({
           </div>
 
           {type === "official" && (
-                <div className="tfm-row tfm-date-range">
-                  <div>
-                    <label> Ngày bắt đầu    </label>
-                    <input
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                    />
-                  </div>
+            <div className="tfm-row tfm-date-range">
+              <div>
+                <label>Ngày bắt đầu</label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
+              </div>
 
-                  <div>
-                    <label> Ngày kết thúc    </label>
-                    <input
-                      type="date"
-                      value={endDate}
-                      min={startDate || undefined}
-                      onChange={(e) => setEndDate(e.target.value)}
-                    />
-                  </div>
-                </div>
+              <div>
+                <label>Ngày kết thúc</label>
+                <input
+                  type="date"
+                  value={endDate}
+                  min={startDate || undefined}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </div>
+            </div>
           )}
 
           <SchedulePicker
-            baseDate={baseDate}
+            busySlots={[]}
             selectedSlots={selectedSlots}
+            classType={type}
             onToggleSlot={handleToggleSlot}
           />
           <div className="tfm-legend">
@@ -186,14 +176,18 @@ const TutorModal = ({
             <label>Ghi chú</label>
             <textarea
               value={notes}
-              onChange={e => setNotes(e.target.value)}
+              onChange={(e) => setNotes(e.target.value)}
               placeholder="Môn học / yêu cầu riêng..."
             />
           </div>
 
           <div className="tfm-actions">
-            <button type="button" onClick={onClose} className="tfm-btn tfm-cancel">Hủy</button>
-            <button type="submit" className="tfm-btn tfm-submit">Đăng ký ngay</button>
+            <button type="button" onClick={onClose} className="tfm-btn tfm-cancel">
+              Hủy
+            </button>
+            <button type="submit" className="tfm-btn tfm-submit">
+              Đăng ký ngay
+            </button>
           </div>
         </form>
       </div>
