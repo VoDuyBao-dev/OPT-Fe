@@ -3,8 +3,17 @@ import "./TutorModal.scss";
 import { getWeekDates } from "../../../utils/dateUtils";
 
 /* ============================
-   TIME SLOTS (BẮT BUỘC PHẢI CÓ)
+   TIME SLOT DEFINITIONS
 ============================ */
+export const TIME_SLOT_MAP = {
+  morning1: { start: "08:00", end: "09:30" },
+  morning2: { start: "09:30", end: "11:00" },
+  afternoon1: { start: "13:00", end: "14:30" },
+  afternoon2: { start: "14:30", end: "16:00" },
+  evening1: { start: "17:00", end: "18:30" },
+  evening2: { start: "18:30", end: "20:00" },
+};
+
 const TIME_SLOTS = [
   { key: "morning1", label: "08:00 - 09:30" },
   { key: "morning2", label: "09:30 - 11:00" },
@@ -15,7 +24,44 @@ const TIME_SLOTS = [
 ];
 
 /* ============================
-   FORMAT DAY HEADER
+   UTILS
+============================ */
+function timeToMinutes(t) {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function isOverlap(aStart, aEnd, bStart, bEnd) {
+  return Math.max(aStart, bStart) < Math.min(aEnd, bEnd);
+}
+
+/* ============================
+   MAP BE → BUSY SLOTS
+============================ */
+export function mapAvailabilitiesToBusySlots(availabilities = []) {
+  const busy = [];
+
+  availabilities.forEach((a) => {
+    if (a.status !== "BOOKED") return;
+
+    const aStart = timeToMinutes(a.startTime);
+    const aEnd = timeToMinutes(a.endTime);
+
+    Object.entries(TIME_SLOT_MAP).forEach(([slotKey, slot]) => {
+      const sStart = timeToMinutes(slot.start);
+      const sEnd = timeToMinutes(slot.end);
+
+      if (isOverlap(aStart, aEnd, sStart, sEnd)) {
+        busy.push(`${a.startDate}|${slotKey}`);
+      }
+    });
+  });
+
+  return busy;
+}
+
+/* ============================
+   HEADER FORMAT
 ============================ */
 const formatDayHeader = (dateStr) => {
   const date = new Date(dateStr);
@@ -51,29 +97,22 @@ export default function SchedulePicker({
 
   const maxSlots = classType === "trial" ? 1 : 2;
 
-  const toInputDate = (date) => date.toISOString().split("T")[0];
+  const toInputDate = (date) =>
+    typeof date === "string" ? date : date.toISOString().split("T")[0];
 
-  const prevWeek = () => {
+  const changeWeek = (offset) => {
     const d = new Date(baseDate);
-    d.setDate(d.getDate() - 7);
-    setBaseDate(d);
-  };
-
-  const nextWeek = () => {
-    const d = new Date(baseDate);
-    d.setDate(d.getDate() + 7);
+    d.setDate(d.getDate() + offset);
     setBaseDate(d);
   };
 
   return (
     <>
-      {/* ===== TOOLBAR ===== */}
+      {/* TOOLBAR */}
       <div className="tfm-calendar-toolbar">
-        <button onClick={prevWeek}>❮</button>
-        <button className="today-btn" onClick={() => setBaseDate(new Date())}>
-          Hôm nay
-        </button>
-        <button onClick={nextWeek}>❯</button>
+        <button onClick={() => changeWeek(-7)}>❮</button>
+        <button onClick={() => setBaseDate(new Date())}>Hôm nay</button>
+        <button onClick={() => changeWeek(7)}>❯</button>
 
         <input
           type="date"
@@ -82,32 +121,30 @@ export default function SchedulePicker({
         />
       </div>
 
-      {/* ===== GRID ===== */}
+      {/* GRID */}
       <div className="tfm-schedule-grid">
         <div />
 
-        {/* HEADER */}
         {weekDates.map((date) => {
-          const { dayName, dateText } = formatDayHeader(date);
+          const { dayName, dateText } = formatDayHeader(toInputDate(date));
           return (
-            <div key={date} className="tfm-day-head">
+            <div key={toInputDate(date)} className="tfm-day-head">
               <div className="day-name">{dayName}</div>
               <div className="day-date">{dateText}</div>
             </div>
           );
         })}
 
-        {/* SLOTS */}
         {TIME_SLOTS.map((slot) => (
           <React.Fragment key={slot.key}>
             <div className="tfm-session-cell">{slot.label}</div>
 
             {weekDates.map((date) => {
-              const slotId = `${date}|${slot.key}`;
+              const slotId = `${toInputDate(date)}|${slot.key}`;
               const isBusy = busySlots.includes(slotId);
               const isSelected = selectedSlots.includes(slotId);
               const isDisabled =
-                !isSelected && selectedSlots.length >= maxSlots;
+                !isSelected && selectedSlots.length >= maxSlots && classType !== "trial";
 
               return (
                 <div

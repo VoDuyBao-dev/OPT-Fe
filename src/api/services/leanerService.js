@@ -209,13 +209,15 @@ export const createRating = (payload) => {
 // ========================
 // 15. Lấy lịch trống của gia sư
 // ========================
-export const getTutorAvailabilities = (tutorId, fromDate, toDate) => {
-  return axiosInstance.get(
+export const getTutorAvailabilities = async (tutorId, fromDate, toDate) => {
+  const res = await axiosInstance.get(
     `/learner/tutor-avails/${tutorId}/availabilities`,
     {
-      params: { fromDate, toDate }
+      params: { fromDate, toDate },
     }
   );
+
+  return res.data?.result || [];
 };
 
 // ========================
@@ -232,11 +234,47 @@ export const createOfficialRequest = (payload) =>
 // ========================
 // Backend trả về: totalAmount, totalSessions, tutorName, subjectName,
 // startDate, endDate, schedules[], additionalNotes, classRequestId (nếu có)
-export const previewOfficialClass = (payload) =>
-  axiosInstance.post(
-    "/learner/class-requests/official/preview",
-    payload,
-  );
+export const previewOfficialClass = async (payload) => {
+  if (process.env.NODE_ENV === 'development') {
+    console.debug('Calling previewOfficialClass ->', {
+      url: '/learner/class-requests/official/preview',
+      payload,
+      tokenPresent: !!localStorage.getItem('token'),
+    });
+  }
+
+  try {
+    const res = await axiosInstance.post(
+      "/learner/class-requests/official/preview",
+      payload,
+    );
+
+    if (process.env.NODE_ENV === 'development') {
+      console.debug('previewOfficialClass response data:', res?.data);
+    }
+
+    return res;
+  } catch (err) {
+    // Log detailed request + response info to help reproduce
+    try {
+      console.error('previewOfficialClass error status:', err?.response?.status);
+      console.error('previewOfficialClass response data:', JSON.stringify(err?.response?.data, null, 2));
+      console.error('previewOfficialClass request data:', err?.config?.data);
+      console.error('previewOfficialClass request headers:', err?.config?.headers);
+
+      // Print a curl command (with redacted token) that you can copy/paste to reproduce
+      const hdrs = err?.config?.headers || {};
+      const authHeader = hdrs.Authorization ? "-H \"Authorization: Bearer <TOKEN>\" " : '';
+      const contentType = hdrs['Content-Type'] ? `-H \"Content-Type: ${hdrs['Content-Type']}\" ` : '';
+      const curlBody = typeof err?.config?.data === 'string' ? err.config.data : JSON.stringify(err?.config?.data);
+      console.error('cURL (redacted):', `curl -X POST ${authHeader}${contentType}\"${axiosInstance.defaults.baseURL}/learner/class-requests/official/preview\" -d '${curlBody}'`);
+    } catch (e) {
+      console.error('Error while logging previewOfficialClass error details', e);
+    }
+
+    throw err;
+  }
+};
 
 
 

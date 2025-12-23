@@ -13,11 +13,14 @@ export function buildTrialPayload(slotId) {
   const [date, slotKey] = slotId.split("|");
   const [startTime, endTime] = SLOT_TIME[slotKey];
 
+  // Normalize to hh:mm:ss
+  const formatSec = (t) => (t.length === 5 ? `${t}:00` : t);
+
   return {
     trialDate: date,
     dayOfWeek: getDayOfWeekEnum(date),
-    startTime,
-    endTime,
+    startTime: formatSec(startTime),
+    endTime: formatSec(endTime),
   };
 }
 
@@ -30,9 +33,10 @@ export function buildOfficialSchedules(slotIds) {
     map[dow] = SLOT_TIME[slotKey];
   });
 
+  const formatSec = (t) => (t.length === 5 ? `${t}:00` : t);
   return Object.entries(map).map(([dayOfWeek, [startTime, endTime]]) => ({
     dayOfWeek,
-    startTime,
-    endTime,
+    startTime: formatSec(startTime),
+    endTime: formatSec(endTime),
   }));
 }
