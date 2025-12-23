@@ -51,6 +51,10 @@ export const approveTutor = async (tutorId) => {
 	const response = await axiosInstance.put(`/admin/tutors/${tutorId}/approve`);
 	return response.data;
 };
+export const rejectTutor = async (tutorId, reason) => {
+	const response = await axiosInstance.put(`/admin/tutors/${tutorId}/reject`, { reason });
+	return response.data;
+}
 
 // Danh sách ebook (có paging + keyword + type)
 export const getAdminEbooks = async ({ page = 0, size = 10, keyword, type }) => {

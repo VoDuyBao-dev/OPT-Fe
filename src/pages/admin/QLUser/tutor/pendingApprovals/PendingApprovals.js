@@ -6,7 +6,7 @@ import Button from '~/components/button/Button';
 import styles from './PendingApprovals.module.scss';
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';
-import { approveTutor, getPendingTutorDetail, getPendingTutors } from '~/api/services/adminService';
+import { approveTutor, getPendingTutorDetail, getPendingTutors, rejectTutor } from '~/api/services/adminService';
 
 // Configure PDF.js worker
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
@@ -169,8 +169,23 @@ function PendingApprovals() {
         }
     };
 
-    const handleReject = () => {
-        alert('Hiện chưa hỗ trợ từ chối hồ sơ từ BE.');
+    const handleReject = async () => {
+        if (!selectedTutor) return;
+
+        const reason = window.prompt('Lý do từ chối hồ sơ này?');
+        if (!reason || !reason.trim()) return;
+
+        try {
+            setDetailLoading(true);
+            await rejectTutor(selectedTutor.id, reason.trim());
+            alert('Đã từ chối hồ sơ.');
+            setSelectedTutor(null);
+            fetchPendingTutors(page);
+        } catch (err) {
+            handleApiError(err, 'Không thể từ chối hồ sơ');
+        } finally {
+            setDetailLoading(false);
+        }
     };
 
     const closeDetailModal = () => {
