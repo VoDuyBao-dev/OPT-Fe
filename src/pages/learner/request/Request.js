@@ -29,6 +29,7 @@ export default function LearnerDashboard() {
             date: r.createdAt || r.startDate || '—',
             schedule,
             note: r.additionalNotes,
+            rejectionReason: r.rejectionReason,
             type: typeCode,
             typeLabel,
             status: r.status,

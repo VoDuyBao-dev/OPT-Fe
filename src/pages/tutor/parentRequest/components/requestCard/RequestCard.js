@@ -72,11 +72,17 @@ function RequestCard({ request, onAccept, onReject }) {
                         </div>
                     </div>
 
-                    {/* TODO: Uncomment when message feature is ready */}
                     <div className={styles.message}>
                         <strong>Tin nhắn:</strong>
                         <p>{request.message}</p>
                     </div>
+
+                    {request.status === 'rejected' && request.rejectionReason && (
+                        <div className={styles.message}>
+                            <strong>Lý do từ chối:</strong>
+                            <p>{request.rejectionReason}</p>
+                        </div>
+                    )}
                 </div>
 
                 {request.status === 'pending' && (

@@ -45,6 +45,7 @@ function ParentRequest() {
                 duration: `${item.totalSessions || ''} buổi`,
                 price: item.pricePerHour ? `${item.pricePerHour.toLocaleString('vi-VN')} đ/giờ` : '',
                 message: item.additionalNotes || '',
+                rejectionReason: item.rejectionReason || item.reason,
                 status: item.status === 'CONFIRMED' ? 'accepted' : item.status === 'CANCELLED' ? 'rejected' : 'pending',
                 createdAt: item.createdAt,
                 requestStatus: item.status,

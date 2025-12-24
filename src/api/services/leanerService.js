@@ -17,7 +17,7 @@ export const getLearnerProfile = async () => {
       console.error("❌ Không có result từ backend");
       return null;
     }
-    // console.log("✅ Get learner profile data:", res.data?.result);
+    console.log("✅ Get learner profile data:", res.data?.result);
     return {
       fullName: data.fullName ?? "",
       phoneNumber: data.phoneNumber ?? "",
@@ -40,7 +40,6 @@ export const updateLearnerProfile = async (payload) => {
     payload,
     { timeout: 15000 }
   );
-
   return res.data;
 };
 

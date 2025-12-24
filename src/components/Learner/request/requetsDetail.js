@@ -30,11 +30,18 @@ export default function RequestDetailModal({ open, onClose, request }) {
 
             <div className={styles["ld-request-label"]}>Trạng thái:</div>
             <div className={styles["ld-request-value"]}>{request.statusLabel}</div>
+
+            {request.rejectionReason && (
+              <>
+                <div className={styles["ld-request-label"]}>Lý do từ chối:</div>
+                <div className={styles["ld-request-value"]}>{request.rejectionReason}</div>
+              </>
+            )}
         </div>
 
-        <div className={styles["ld-request-note"]}>
+        {/* <div className={styles["ld-request-note"]}>
             Ghi chú: {request.note}
-        </div>
+        </div> */}
         </div>
         
         <div className={styles["ld-modal-actions"]}>
