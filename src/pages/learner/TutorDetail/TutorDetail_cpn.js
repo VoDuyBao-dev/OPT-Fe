@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import "./TutorDetail.scss";
 import { FaStar } from "react-icons/fa";
 import ClassCard from "~/components/Learner/Card/Card";
@@ -9,6 +9,8 @@ import { getRelatedClasses } from "~/api/services/publicService";
 
 const TutorDetail = () => {
   const { tutorId } = useParams();
+  const [searchParams] = useSearchParams();
+  const subjectIdParam = searchParams.get("subjectId");
 
   const [tutor, setTutor] = useState(null);
   const [relatedClasses, setRelatedClasses] = useState([]);
@@ -21,41 +23,56 @@ const TutorDetail = () => {
   useEffect(() => {
     const fetchTutor = async () => {
       try {
-        const res = await getTutorDetail(tutorId);
-        setTutor(res.data.result);
+        const res = await getTutorDetail(tutorId, subjectIdParam);
+        const data = res.data?.result;
+
+        // Chuẩn hóa subject để đồng nhất với UI cũ
+        const normalizedSubject = data?.subject || (data?.subjectId
+          ? { subjectId: data.subjectId, subjectName: data.subjectName }
+          : null);
+
+        setTutor({
+          ...data,
+          subject: normalizedSubject,
+          subjects: data?.subjects || (normalizedSubject ? [normalizedSubject] : []),
+        });
       } catch (err) {
         console.error("❌ Lỗi lấy tutor detail", err);
       }
     };
 
-    fetchTutor();
-  }, [tutorId]);
+    if (tutorId) {
+      fetchTutor();
+    }
+  }, [tutorId, subjectIdParam]);
 
   // =========================
   // FETCH RELATED CLASSES
   // =========================
   useEffect(() => {
-  if (!tutor?.tutorId) return;
+    if (!tutor?.tutorId) return;
 
-  const mainSubject = tutor.subject || tutor.subjects?.[0];
-  if (!mainSubject) return;
+    const mainSubject = tutor.subject
+      || tutor.subjects?.[0]
+      || (tutor.subjectId ? { subjectId: tutor.subjectId, subjectName: tutor.subjectName } : null);
+    if (!mainSubject?.subjectId) return;
 
-  const fetchRelated = async () => {
-    try {
-      const res = await getRelatedClasses({
-        classId: tutor.classes?.[0]?.classId || 0, // 🔥 BẮT BUỘC
-        subjectId: mainSubject.subjectId,
-        tutorId: tutor.tutorId,
-      });
+    const fetchRelated = async () => {
+      try {
+        const res = await getRelatedClasses({
+          classId: tutor.classes?.[0]?.classId || 0, // 🔥 BẮT BUỘC
+          subjectId: mainSubject.subjectId,
+          tutorId: tutor.tutorId,
+        });
 
-      setRelatedClasses(res.data.result || []);
-    } catch (err) {
-      console.error("❌ Lỗi lấy lớp học liên quan", err);
-    }
-  };
+        setRelatedClasses(res.data.result || []);
+      } catch (err) {
+        console.error("❌ Lỗi lấy lớp học liên quan", err);
+      }
+    };
 
-  fetchRelated();
-}, [tutor]);
+    fetchRelated();
+  }, [tutor]);
 
 
   // =========================
@@ -68,7 +85,9 @@ const TutorDetail = () => {
   // =========================
   // DATA MAPPING
   // =========================
-  const mainSubject = tutor.subject || tutor.subjects?.[0];
+  const mainSubject = tutor.subject
+    || tutor.subjects?.[0]
+    || (tutor.subjectId ? { subjectId: tutor.subjectId, subjectName: tutor.subjectName } : null);
   const reviews = tutor.recentReviews || [];
 
   return (
@@ -90,13 +109,13 @@ const TutorDetail = () => {
         </div>
 
         <div className="info-section">
-          <h2>{mainSubject?.subjectName}</h2>
+          <h2>{mainSubject?.subjectName || tutor.subjectName}</h2>
           <p>
             Giáo viên:{" "}
             <span className="teacher">{tutor.fullName}</span>
           </p>
           <h3 className="price">
-            {tutor.pricePerHour.toLocaleString()}đ
+            {tutor.pricePerHour != null ? `${tutor.pricePerHour.toLocaleString()}đ` : ""}
           </h3>
           <p className="desc">{tutor.introduction}</p>
 

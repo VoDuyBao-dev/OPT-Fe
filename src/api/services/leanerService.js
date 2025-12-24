@@ -226,10 +226,12 @@ export const searchEbooks = async ({ type, page = 0, size = 5 }) => {
 
 // =======================
 // 12. Lấy chi tiết gia sư
+// Backend: GET /learner/tutordetail/{tutorId}?subjectId=..
 // =======================
-export const getTutorDetail = (tutorId) => {
-  const res = axiosInstance.get(`/tutors/tutorDetail/${tutorId}`);//axiosInstance.get(`/tutors/tutorDetail/${tutorId}`);
-  return res || {};
+export const getTutorDetail = (tutorId, subjectId) => {
+  return axiosInstance.get(`/learner/tutordetail/${tutorId}`, {
+    params: { subjectId },
+  });
 };
 
 // ========================

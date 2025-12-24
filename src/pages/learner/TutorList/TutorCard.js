@@ -6,10 +6,15 @@ import TutorModal from "~/components/Learner/TutorModal/TutorModal";
 const TutorCard = ({ tutor }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const primarySubject = tutor.subject || tutor.subjects?.[0];
+  const detailHref = primarySubject?.subjectId
+    ? `/Tutor/${tutor.tutorId}?subjectId=${primarySubject.subjectId}`
+    : `/Tutor/${tutor.tutorId}`;
+
   return (
     <article className="tutor-card">
       <div className="tutor-image">
-        <Link to={`/Tutor/${tutor.tutorId}`}>
+        <Link to={detailHref}>
           <img
             src={tutor.avatarUrl || tutor.avatarImage || "/default-avatar.png"}
             alt={tutor.fullName}
@@ -18,7 +23,7 @@ const TutorCard = ({ tutor }) => {
       </div>
 
       <div className="tutor-info">
-        <Link to={`/Tutor/${tutor.tutorId}`} className="tutor-card-link">
+        <Link to={detailHref} className="tutor-card-link">
           <p className="tutor-name">{tutor.fullName}</p>
 
           {/* ✅ FIX gender */}
@@ -33,7 +38,7 @@ const TutorCard = ({ tutor }) => {
           </p>
 
           <h3 className="tutor-subject">
-            {tutor.subject?.subjectName || tutor.subjects?.[0]?.subjectName || "Chưa cập nhật"}
+            {primarySubject?.subjectName || "Chưa cập nhật"}
           </h3>
 
           <p className="tutor-price">
@@ -58,7 +63,7 @@ const TutorCard = ({ tutor }) => {
           />
 
           <Link
-            to={`/Tutor/${tutor.tutorId}`}
+            to={detailHref}
             className="btn-secondary"
             onClick={(e) => e.stopPropagation()}
           >
