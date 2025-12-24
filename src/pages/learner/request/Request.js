@@ -15,19 +15,27 @@ export default function LearnerDashboard() {
   useEffect(() => {
     const loadRequests = async () => {
       try {
-        const data = await getLearnerRequests();
+        const { items } = await getLearnerRequests();
 
-        const mapped = data.map((r) => ({
-          id: r.requestId,
-          tutor: r.tutor,
-          subject: r.subject,
-          date: r.startDate,
-          schedule: `${r.startDate} → ${r.endDate}`,
-          note: r.additionalNotes,
-          type: r.type === "Học thử" ? "trial" : "official",
-          status: r.status,
-          statusLabel: r.status,
-        }));
+        const mapped = (items || []).map((r) => {
+          const typeCode = (r.type || '').toLowerCase().includes('thử') ? 'trial' : 'official';
+          const typeLabel = r.type || (typeCode === 'trial' ? 'Học thử' : 'Học chính thức');
+          const schedule = r.startDate && r.endDate ? `${r.startDate} → ${r.endDate}` : '—';
+
+          return {
+            id: r.requestId,
+            tutor: r.tutor,
+            subject: r.subject,
+            date: r.createdAt || r.startDate || '—',
+            schedule,
+            note: r.additionalNotes,
+            rejectionReason: r.rejectionReason,
+            type: typeCode,
+            typeLabel,
+            status: r.status,
+            statusLabel: r.status,
+          };
+        });
 
         setRequests(mapped);
       } catch (err) {

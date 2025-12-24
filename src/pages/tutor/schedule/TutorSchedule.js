@@ -77,15 +77,21 @@ export default function TutorSchedule() {
     };
   });
 
-  const mapTeachingToUi = (list = []) => list.map((x) => ({
-    date: x.studyDate,
-    session: sessionOf(x.startTime),
-    shift: `${x.startTime} - ${x.endTime}`,
-    subject: x.subjectName,
-    time: `${x.startTime} - ${x.endTime}`,
-    student: x.learnerName,
-    status: x.classStatus,
-  }));
+  const hhmm = (s = '') => (s.includes('T') ? s.split('T')[1].slice(0, 5) : s.slice(0, 5));
+
+  const mapTeachingToUi = (list = []) => list.map((x) => {
+    const start = hhmm(x.startTime);
+    const end = hhmm(x.endTime);
+    return {
+      date: x.studyDate,
+      session: sessionOf(start),
+      shift: `${start} - ${end}`,
+      subject: x.subjectName,
+      time: `${start} - ${end}`,
+      student: x.learnerName,
+      status: x.classStatus,
+    };
+  });
 
   const refreshAvailabilities = async () => {
     try {

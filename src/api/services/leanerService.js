@@ -17,7 +17,7 @@ export const getLearnerProfile = async () => {
       console.error("❌ Không có result từ backend");
       return null;
     }
-
+    console.log("✅ Get learner profile data:", res.data?.result);
     return {
       fullName: data.fullName ?? "",
       phoneNumber: data.phoneNumber ?? "",
@@ -40,7 +40,6 @@ export const updateLearnerProfile = async (payload) => {
     payload,
     { timeout: 15000 }
   );
-
   return res.data;
 };
 
@@ -62,30 +61,23 @@ export const getCompletedClasses = async () => {
 
 // ========================
 // 4. Gửi đánh giá cho lớp học
+// API: POST /learner/ratings/create-rating
+// Body: { classId, score, comment }
 // ========================
 
 export const submitClassReview = async ({
   classId,
   rating,
   comment,
-  image,
 }) => {
-  const formData = new FormData();
-  formData.append("rating", rating);
-  formData.append("comment", comment);
-
-  if (image) {
-    formData.append("image", image);
-  }
-
   const res = await axiosInstance.post(
-    `/learner/classes/${classId}/review`,
-    formData,
+    "/learner/ratings/create-rating",
     {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
+      classId,
+      score: rating,
+      comment,
+    },
+    { timeout: 15000 }
   );
 
   return res.data;
@@ -100,7 +92,18 @@ export const getLearnerRequests = async (page = 0, size = 10) => {
     params: { page, size },
   });
 
-  return res.data?.result?.content ?? [];
+  const result = res.data?.result || {};
+  const content = result?.content || [];
+
+  return {
+    items: content,
+    pagination: {
+      page: result?.pageable?.pageNumber ?? page,
+      size: result?.pageable?.pageSize ?? size,
+      totalItems: result?.totalElements ?? content.length,
+      totalPages: result?.totalPages ?? 1,
+    },
+  };
 };
 
 // ========================
@@ -117,6 +120,16 @@ export const getLearnerCalendar = async (from, to) => {
   );
 
   return res.data?.result || [];
+};
+
+// Chuẩn hóa dữ liệu gia sư từ API list/search
+const normalizeTutor = (tutor) => {
+  if (!tutor) return tutor;
+  return {
+    ...tutor,
+    avatarUrl: tutor.avatarUrl || tutor.avatarImage,
+    subjects: tutor.subjects || (tutor.subject ? [tutor.subject] : []),
+  };
 };
 
 // ============================
@@ -146,8 +159,8 @@ export const searchTutorsByFilter = async ({
       },
     }
   );
-
-  return res.data?.result || res.data || [];
+  const data = res.data?.result || res.data || [];
+  return Array.isArray(data) ? data.map(normalizeTutor) : [];
 };
 
 
@@ -162,8 +175,8 @@ export const searchTutorsByKeyword = async (keyword) => {
       params: { q: keyword },
     }
   );
-
-  return res.data?.result || res.data || [];
+  const data = res.data?.result || res.data || [];
+  return Array.isArray(data) ? data.map(normalizeTutor) : [];
 };
 
 // ========================
@@ -171,7 +184,18 @@ export const searchTutorsByKeyword = async (keyword) => {
 // ========================
 export const getAllEbooks = async () => {
   const res = await axiosInstance.get("/learner/ebooks");
-  return res.data.result;
+  const result = res.data?.result || {};
+  const items = result.items || result.content || [];
+
+  return {
+    items,
+    pagination: {
+      page: result.page ?? result.pageable?.pageNumber ?? 0,
+      size: result.size ?? result.pageable?.pageSize ?? items.length,
+      totalItems: result.totalItems ?? result.totalElements ?? items.length,
+      totalPages: result.totalPages ?? 1,
+    },
+  };
 };
 
 // ========================
@@ -184,14 +208,26 @@ export const searchEbooks = async ({ type, page = 0, size = 5 }) => {
       params: { type, page, size },
     }
   );
-  return res.data.result;
+  const result = res.data?.result || {};
+  const items = result.items || result.content || [];
+  // console.log('searchEbooks result:', result);
+  return {
+    items,
+    pagination: {
+      page: result.page ?? result.pageable?.pageNumber ?? page,
+      size: result.size ?? result.pageable?.pageSize ?? size,
+      totalItems: result.totalItems ?? result.totalElements ?? items.length,
+      totalPages: result.totalPages ?? 1,
+    },
+  };
 };
 
 // =======================
 // 12. Lấy chi tiết gia sư
 // =======================
 export const getTutorDetail = (tutorId) => {
-  return axiosInstance.get(`/tutors/tutorDetail/${tutorId}`);
+  const res = axiosInstance.get(`/tutors/tutorDetail/${tutorId}`);//axiosInstance.get(`/tutors/tutorDetail/${tutorId}`);
+  return res || {};
 };
 
 // ========================

@@ -39,15 +39,15 @@ axiosInstance.interceptors.response.use(
   (error) => {
     if (error?.response) {
       const { status, data } = error.response;
-      if (status === 401) {
-        console.warn('API returned 401 - clearing auth token and redirecting to login.');
-        try {
-          localStorage.removeItem('token');
-        } catch (e) { /* ignore */ }
+        if (status === 401) {
+          console.warn('API returned 401 - clearing auth and redirecting to login.');
+          try {
+            ['token', 'role', 'userType', 'user'].forEach((k) => localStorage.removeItem(k));
+          } catch (e) { /* ignore */ }
 
-        if (typeof window !== 'undefined') {
-          window.location.href = '/account/login';
-        }
+          if (typeof window !== 'undefined') {
+            window.location.href = '/Login';
+          }
       } else {
         // Log other API errors (400, 422, 500 etc) for easier debugging
         try {

@@ -18,6 +18,10 @@ function ParentRequest() {
     const [rejectReason, setRejectReason] = useState('');
     const [toast, setToast] = useState({ message: '', type: '' });
 
+    const extractErrorMessage = (err, fallback) => {
+        return err?.response?.data?.message || err?.response?.data?.result || err?.message || fallback;
+    };
+
     const showToast = (message, type = 'info') => {
         setToast({ message, type });
     };
@@ -45,6 +49,7 @@ function ParentRequest() {
                 duration: `${item.totalSessions || ''} buổi`,
                 price: item.pricePerHour ? `${item.pricePerHour.toLocaleString('vi-VN')} đ/giờ` : '',
                 message: item.additionalNotes || '',
+                rejectionReason: item.rejectionReason || item.reason,
                 status: item.status === 'CONFIRMED' ? 'accepted' : item.status === 'CANCELLED' ? 'rejected' : 'pending',
                 createdAt: item.createdAt,
                 requestStatus: item.status,
@@ -75,8 +80,9 @@ function ParentRequest() {
             await loadRequests(pageInfo.page);
             showToast('Chấp nhận yêu cầu thành công', 'success');
         } catch (err) {
-            setError('Chấp nhận yêu cầu thất bại');
-            showToast('Chấp nhận yêu cầu thất bại', 'error');
+            const msg = extractErrorMessage(err, 'Chấp nhận yêu cầu thất bại');
+            setError(msg);
+            showToast(msg, 'error');
         }
     };
 
@@ -86,14 +92,16 @@ function ParentRequest() {
     };
 
     const confirmReject = async () => {
-        if (selectedRequest) {
+        const reason = rejectReason.trim();
+        if (selectedRequest && reason) {
             try {
-                await rejectTutorRequest(selectedRequest.id);
+                await rejectTutorRequest(selectedRequest.id, reason);
                 await loadRequests(pageInfo.page);
                 showToast('Từ chối yêu cầu thành công', 'success');
             } catch (err) {
-                setError('Từ chối yêu cầu thất bại');
-                showToast('Từ chối yêu cầu thất bại', 'error');
+                const msg = extractErrorMessage(err, 'Từ chối yêu cầu thất bại');
+                setError(msg);
+                showToast(msg, 'error');
             }
             setShowRejectModal(false);
             setRejectReason('');

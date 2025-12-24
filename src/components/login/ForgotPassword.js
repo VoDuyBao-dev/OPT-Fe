@@ -15,11 +15,12 @@ const ForgotPassword = () => {
 
       alert("Mã OTP đã được gửi đến email!");
 
-      // Lưu email để dùng ở bước OTP
+      // Lưu email để dùng ở bước OTP và clear trạng thái cũ
       localStorage.setItem("resetEmail", email);
+      localStorage.removeItem("resetVerified");
 
       // Điều hướng sang trang nhập OTP
-      navigate("/OTP");
+      navigate("/OTP", { state: { email } });
 
     } catch (err) {
       alert(

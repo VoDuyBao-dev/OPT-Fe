@@ -45,14 +45,16 @@ export const forgotPassword = async (email) => {
   }
 };
 
-// Verify OTP
-export const verifyOtp = async (email, otp) => {
+// Verify OTP (forgot password flow) -- default otpType: FORGOT_PASSWORD
+// Backend expects field name `otpCode`
+export const verifyOtp = async (email, otp, otpType = 'FORGOT_PASSWORD') => {
   try {
     const response = await axiosInstance.post(
       "/auth/otp/verifyOtp",
       {
         email: email.trim(),
-        otp: otp.trim()
+        otpCode: otp.trim(),
+        otpType,
       },
       { timeout: 15000 }
     );
@@ -64,12 +66,12 @@ export const verifyOtp = async (email, otp) => {
   }
 };
 
-// Resend OTP
-export const resendOtp = async (email) => {
+// Resend OTP (forgot password flow) -- default otpType: FORGOT_PASSWORD
+export const resendOtp = async (email, otpType = 'FORGOT_PASSWORD') => {
   try {
     const response = await axiosInstance.post(
       "/auth/otp/resendOtp",
-      { email: email.trim() },
+      { email: email.trim(), otpType },
       { timeout: 15000 }
     );
 

@@ -11,7 +11,7 @@ const TutorCard = ({ tutor }) => {
       <div className="tutor-image">
         <Link to={`/Tutor/${tutor.tutorId}`}>
           <img
-            src={tutor.avatarUrl || "/default-avatar.png"}
+            src={tutor.avatarUrl || tutor.avatarImage || "/default-avatar.png"}
             alt={tutor.fullName}
           />
         </Link>
@@ -32,9 +32,12 @@ const TutorCard = ({ tutor }) => {
             Trình độ chuyên môn: {tutor.educationalLevel}
           </p>
 
-          {/* ✅ FIX subject */}
+          {/* ✅ Hiển thị tất cả môn */}
           <h3 className="tutor-subject">
-            {tutor.subject?.subjectName || "Chưa cập nhật"}
+            {(tutor.subjects || [])
+              .map((s) => s?.subjectName)
+              .filter(Boolean)
+              .join(", ") || tutor.subject?.subjectName || "Chưa cập nhật"}
           </h3>
 
           <p className="tutor-price">
@@ -55,7 +58,7 @@ const TutorCard = ({ tutor }) => {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             tutorId={tutor.tutorId}
-            subject={tutor.subject}   // ✅ đúng theo BE
+            subject={tutor.subject || (tutor.subjects || [])[0]}   // ✅ theo BE
           />
 
           <Link

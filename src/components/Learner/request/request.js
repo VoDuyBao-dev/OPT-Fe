@@ -23,7 +23,7 @@ function RequestsTab({ requests, onViewRequest }) {
           <tbody>
             {requests.map((r) => (
               <tr key={r.id}>
-                <td>{r.type === 'trial' ? 'Học thử' : 'Học chính thức'}</td>
+                <td>{r.typeLabel || (r.type === 'trial' ? 'Học thử' : 'Học chính thức')}</td>
                 <td>{r.tutor}</td>
                 <td>{r.date}</td>
                 <td><span className={`${styles.status} ${styles[r.status]}`}>{r.statusLabel}</span></td>

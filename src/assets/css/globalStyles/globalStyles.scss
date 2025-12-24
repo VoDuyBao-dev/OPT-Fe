@@ -28,6 +28,7 @@
   src: url('../../fonts/Inter/Inter_18pt-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -35,6 +36,7 @@
   src: url('../../fonts/Inter/Inter_18pt-Italic.ttf') format('truetype');
   font-weight: 400;
   font-style: italic;
+  font-display: swap;
 }
 
 @font-face {
@@ -42,6 +44,7 @@
   src: url('../../fonts/Inter/Inter_18pt-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -49,6 +52,7 @@
   src: url('../../fonts/Inter/Inter_18pt-MediumItalic.ttf') format('truetype');
   font-weight: 500;
   font-style: italic;
+  font-display: swap;
 }
 
 // @font-face {
@@ -70,6 +74,7 @@
   src: url('../../fonts/Inter/Inter_18pt-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 
 @font-face {
@@ -77,6 +82,7 @@
   src: url('../../fonts/Inter/Inter_18pt-LightItalic.ttf') format('truetype');
   font-weight: 300;
   font-style: italic;
+  font-display: swap;
 }
 
 /* === GLOBAL FONT APPLY === */
@@ -86,6 +92,7 @@ html, body {
   color: var(--text-c);
   background-color: var(--bgr-c);
   line-height: 1.5;
+  
 }
 
 *{

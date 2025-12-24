@@ -316,9 +316,11 @@ export const acceptTutorRequest = async (requestId) => {
   }
 };
 
-export const rejectTutorRequest = async (requestId) => {
+export const rejectTutorRequest = async (requestId, reason) => {
   try {
-    const response = await axiosInstance.patch(`/tutors/requests/${requestId}/reject`);
+    // Backend now expects field name `reason` for the reject message
+    const payload = { reason: reason?.trim() || '' };
+    const response = await axiosInstance.patch(`/tutors/requests/${requestId}/reject`, payload);
     return response.data.result;
   } catch (error) {
     console.error('Error rejecting tutor request:', error);

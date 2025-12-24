@@ -28,6 +28,7 @@ export default function AdminEBooks() {
       author: e.uploadedByName,
       date: e.createdAt,
       type: e.type,
+      filePath: e.filePath,
       desc: e.title,
     }));
     setEbooks(mapped);
@@ -38,14 +39,19 @@ export default function AdminEBooks() {
   }, [keyword, typeFilter]);
 
   const handleSave = async (data) => {
-    if (editing) {
-      await updateEbook({ ebookId: editing.id, ...data });
-    } else {
-      await createEbook(data);
+    try {
+      if (editing) {
+        await updateEbook({ ebookId: editing.id, ...data });
+      } else {
+        await createEbook(data);
+      }
+      setOpenModal(false);
+      setEditing(null);
+      loadEbooks();
+    } catch (error) {
+      console.error('Failed to save ebook', error);
+      window.alert('Không thể lưu ebook. Vui lòng thử lại.');
     }
-    setOpenModal(false);
-    setEditing(null);
-    loadEbooks();
   };
 
   const handleDelete = async (id) => {
