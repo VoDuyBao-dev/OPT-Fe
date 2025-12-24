@@ -37,6 +37,7 @@ const TutorModal = ({
   const [endDate, setEndDate] = useState("");
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [busySlots, setBusySlots] = useState([]);
+  const [availableSlots, setAvailableSlots] = useState([]);
   const [needsAuth, setNeedsAuth] = useState(false);
   const [toast, setToast] = useState({ message: '', type: '' });
 
@@ -69,8 +70,9 @@ const TutorModal = ({
 
         console.debug("Tutor availabilities:", availabilities);
 
-        const busy = mapAvailabilitiesToBusySlots(availabilities || []);
+        const { busySlots: busy, availableSlots } = mapAvailabilitiesToBusySlots(availabilities || []);
         setBusySlots(busy);
+        setAvailableSlots(availableSlots);
       } catch (err) {
         if (err?.response?.status === 401) {
           setNeedsAuth(true);
@@ -82,11 +84,17 @@ const TutorModal = ({
         }
         console.error("❌ Lỗi khi lấy availabilities:", err?.response?.data || err);
         setBusySlots([]);
+        setAvailableSlots([]);
       }
     }
 
     loadAvailabilities();
   }, [isOpen, tutorId]);
+
+  // If availabilities change, remove any selected slots that are no longer available
+  useEffect(() => {
+    setSelectedSlots((prev) => prev.filter((s) => availableSlots.includes(s)));
+  }, [availableSlots]);
 
   /* ================= VALIDATION ================= */
   const validationError = useMemo(() => {
@@ -333,6 +341,7 @@ const TutorModal = ({
           ) : (
             <SchedulePicker
               busySlots={busySlots}
+              availableSlots={availableSlots}
               selectedSlots={selectedSlots}
               classType={type}
               onToggleSlot={handleToggleSlot}
@@ -340,9 +349,10 @@ const TutorModal = ({
           )}
 
           <div className="tfm-legend">
-            <span><div className="leg-box leg-free" /> Rảnh</span>
+            <span><div className="leg-box leg-available" /> Có sẵn</span>
             <span><div className="leg-box leg-busy" /> Bận</span>
             <span><div className="leg-box leg-selected" /> Đang chọn</span>
+            <span><div className="leg-box leg-not-available" /> Không khả dụng</span>
           </div>
 
           <div className="tfm-row">
@@ -361,17 +371,6 @@ const TutorModal = ({
             <button type="submit" className="tfm-btn tfm-submit">
               Đăng ký ngay
             </button>
-
-            {process.env.NODE_ENV === 'development' && (
-              <button
-                type="button"
-                className="tfm-btn tfm-debug"
-                onClick={() => runPreviewTest()}
-                style={{ marginLeft: 8, background: '#6a5acd', color: 'white' }}
-              >
-                Run preview test
-              </button>
-            )}
           </div>
         </form>
 
