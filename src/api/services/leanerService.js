@@ -182,7 +182,18 @@ export const searchTutorsByKeyword = async (keyword) => {
 // ========================
 export const getAllEbooks = async () => {
   const res = await axiosInstance.get("/learner/ebooks");
-  return res.data.result;
+  const result = res.data?.result || {};
+  const items = result.items || result.content || [];
+
+  return {
+    items,
+    pagination: {
+      page: result.page ?? result.pageable?.pageNumber ?? 0,
+      size: result.size ?? result.pageable?.pageSize ?? items.length,
+      totalItems: result.totalItems ?? result.totalElements ?? items.length,
+      totalPages: result.totalPages ?? 1,
+    },
+  };
 };
 
 // ========================
@@ -195,7 +206,18 @@ export const searchEbooks = async ({ type, page = 0, size = 5 }) => {
       params: { type, page, size },
     }
   );
-  return res.data.result;
+  const result = res.data?.result || {};
+  const items = result.items || result.content || [];
+  // console.log('searchEbooks result:', result);
+  return {
+    items,
+    pagination: {
+      page: result.page ?? result.pageable?.pageNumber ?? page,
+      size: result.size ?? result.pageable?.pageSize ?? size,
+      totalItems: result.totalItems ?? result.totalElements ?? items.length,
+      totalPages: result.totalPages ?? 1,
+    },
+  };
 };
 
 // =======================
