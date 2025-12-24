@@ -86,9 +86,10 @@ function ParentRequest() {
     };
 
     const confirmReject = async () => {
-        if (selectedRequest) {
+        const reason = rejectReason.trim();
+        if (selectedRequest && reason) {
             try {
-                await rejectTutorRequest(selectedRequest.id);
+                await rejectTutorRequest(selectedRequest.id, reason);
                 await loadRequests(pageInfo.page);
                 showToast('Từ chối yêu cầu thành công', 'success');
             } catch (err) {
