@@ -125,10 +125,12 @@ export const getLearnerCalendar = async (from, to) => {
 // Chuẩn hóa dữ liệu gia sư từ API list/search
 const normalizeTutor = (tutor) => {
   if (!tutor) return tutor;
+  const primarySubject = tutor.subject || (Array.isArray(tutor.subjects) ? tutor.subjects[0] : null);
   return {
     ...tutor,
     avatarUrl: tutor.avatarUrl || tutor.avatarImage,
-    subjects: tutor.subjects || (tutor.subject ? [tutor.subject] : []),
+    subject: primarySubject,
+    subjects: primarySubject ? [primarySubject] : [],
   };
 };
 

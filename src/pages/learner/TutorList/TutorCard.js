@@ -32,12 +32,8 @@ const TutorCard = ({ tutor }) => {
             Trình độ chuyên môn: {tutor.educationalLevel}
           </p>
 
-          {/* ✅ Hiển thị tất cả môn */}
           <h3 className="tutor-subject">
-            {(tutor.subjects || [])
-              .map((s) => s?.subjectName)
-              .filter(Boolean)
-              .join(", ") || tutor.subject?.subjectName || "Chưa cập nhật"}
+            {tutor.subject?.subjectName || tutor.subjects?.[0]?.subjectName || "Chưa cập nhật"}
           </h3>
 
           <p className="tutor-price">
@@ -58,7 +54,7 @@ const TutorCard = ({ tutor }) => {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             tutorId={tutor.tutorId}
-            subject={tutor.subject || (tutor.subjects || [])[0]}   // ✅ theo BE
+            subject={tutor.subject || tutor.subjects?.[0]}
           />
 
           <Link
