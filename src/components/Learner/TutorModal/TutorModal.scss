@@ -17,7 +17,7 @@
 
 .tfm-modal {
   background: #fff;
-  width: 820px;
+  width: 1000px;
   max-width: 95%;
   border-radius: 14px;
   padding: 2.2rem;
@@ -144,9 +144,12 @@
 /* ---- Schedule Grid ---- */
 .tfm-schedule-grid {
   display: grid;
-  grid-template-columns: 120px repeat(6, 1fr);
+  /* 1 column for session labels + 7 day columns (Mon -> Sun) */
+  grid-template-columns: 120px repeat(7, 1fr);
   gap: 0.35rem;
   margin: 1rem 0;
+  /* allow horizontal scroll when viewport is too narrow */
+  overflow-x: auto;
 }
 
 .tfm-col-head {
@@ -204,6 +207,10 @@
     transform: translateY(-1px);
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
   }
+  &.available {
+    background: #f2fff6;
+    border-color: #c9f3d7;
+  }
   &.busy {
     background: #ffe0e0;
     border-color: #f5bcbc;
@@ -214,6 +221,14 @@
     background: #cce5ff;
     border-color: #66b2ff;
     font-weight: 600;
+  }
+  &.not-provided {
+    opacity: 0.25;
+    pointer-events: none;
+    cursor: not-allowed;
+    background: transparent;
+    border-color: #f0f0f0;
+    color: #999;
   }
 }
 
@@ -235,9 +250,10 @@
     border-radius: 4px;
     border: 1px solid #ccc;
   }
-  .leg-free { background: #f9f9f9; }
+  .leg-available { background: #e6ffed; border-color: #b7f0c8; }
   .leg-busy { background: #ffe0e0; border-color: #f5bcbc; }
   .leg-selected { background: #cce5ff; border-color: #66b2ff; }
+  .leg-not-available { background: #fafafa; border-color: #eee; }
 }
 
 /* ---- Hint ---- */

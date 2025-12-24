@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import "./TutorModal.scss";
-import { getWeekDates } from "../../../utils/dateUtils";
+import { getWeekDates, formatYMD } from "../../../utils/dateUtils";
 
 /* ============================
-   TIME SLOTS (BẮT BUỘC PHẢI CÓ)
+   TIME SLOT DEFINITIONS
 ============================ */
+export const TIME_SLOT_MAP = {
+  morning1: { start: "08:00", end: "09:30" },
+  morning2: { start: "09:30", end: "11:00" },
+  afternoon1: { start: "13:00", end: "14:30" },
+  afternoon2: { start: "14:30", end: "16:00" },
+  evening1: { start: "17:00", end: "18:30" },
+  evening2: { start: "18:30", end: "20:00" },
+};
+
 const TIME_SLOTS = [
   { key: "morning1", label: "08:00 - 09:30" },
   { key: "morning2", label: "09:30 - 11:00" },
@@ -15,7 +24,76 @@ const TIME_SLOTS = [
 ];
 
 /* ============================
-   FORMAT DAY HEADER
+   UTILS
+============================ */
+function timeToMinutes(t) {
+  const [h, m] = t.split(":").map(Number);
+  return h * 60 + m;
+}
+
+function isOverlap(aStart, aEnd, bStart, bEnd) {
+  return Math.max(aStart, bStart) < Math.min(aEnd, bEnd);
+}
+
+/* ============================
+   MAP BE → BUSY SLOTS
+============================ */
+export function mapAvailabilitiesToBusySlots(availabilities = []) {
+  const busy = new Set();
+  const available = new Set();
+
+  // helper to iterate inclusive dates between start and end
+  function iterateDates(startStr, endStr) {
+    const list = [];
+    let cur = new Date(startStr);
+    const last = new Date(endStr);
+    while (cur <= last) {
+      list.push(formatYMD(cur));
+      cur.setDate(cur.getDate() + 1);
+    }
+    return list;
+  }
+
+  availabilities.forEach((a) => {
+    const status = (a.status || "").toUpperCase();
+    const aStartTime = a.startTime;
+    const aEndTime = a.endTime;
+
+    const dates = iterateDates(a.startDate, a.endDate);
+
+    dates.forEach((date) => {
+      Object.entries(TIME_SLOT_MAP).forEach(([slotKey, slot]) => {
+        const slotStart = slot.start;
+        const slotEnd = slot.end;
+
+        if (status === "AVAILABLE") {
+          // Only mark available when times exactly match a slot
+          if (slotStart === aStartTime && slotEnd === aEndTime) {
+            available.add(`${date}|${slotKey}`);
+          }
+        } else if (status === "BOOKED") {
+          // BOOKED should block any overlapping slot
+          const aStart = timeToMinutes(aStartTime);
+          const aEnd = timeToMinutes(aEndTime);
+          const sStart = timeToMinutes(slotStart);
+          const sEnd = timeToMinutes(slotEnd);
+
+          if (isOverlap(aStart, aEnd, sStart, sEnd)) {
+            busy.add(`${date}|${slotKey}`);
+          }
+        }
+      });
+    });
+  });
+
+  return {
+    busySlots: Array.from(busy),
+    availableSlots: Array.from(available),
+  };
+}
+
+/* ============================
+   HEADER FORMAT
 ============================ */
 const formatDayHeader = (dateStr) => {
   const date = new Date(dateStr);
@@ -42,6 +120,7 @@ const formatDayHeader = (dateStr) => {
 ============================ */
 export default function SchedulePicker({
   busySlots = [],
+  availableSlots = [],
   selectedSlots = [],
   onToggleSlot,
   classType, // "trial" | "official"
@@ -51,29 +130,22 @@ export default function SchedulePicker({
 
   const maxSlots = classType === "trial" ? 1 : 2;
 
-  const toInputDate = (date) => date.toISOString().split("T")[0];
+  const toInputDate = (date) =>
+    typeof date === "string" ? date : date.toISOString().split("T")[0];
 
-  const prevWeek = () => {
+  const changeWeek = (offset) => {
     const d = new Date(baseDate);
-    d.setDate(d.getDate() - 7);
-    setBaseDate(d);
-  };
-
-  const nextWeek = () => {
-    const d = new Date(baseDate);
-    d.setDate(d.getDate() + 7);
+    d.setDate(d.getDate() + offset);
     setBaseDate(d);
   };
 
   return (
     <>
-      {/* ===== TOOLBAR ===== */}
+      {/* TOOLBAR */}
       <div className="tfm-calendar-toolbar">
-        <button onClick={prevWeek}>❮</button>
-        <button className="today-btn" onClick={() => setBaseDate(new Date())}>
-          Hôm nay
-        </button>
-        <button onClick={nextWeek}>❯</button>
+        <button onClick={() => changeWeek(-7)}>❮</button>
+        <button onClick={() => setBaseDate(new Date())}>Hôm nay</button>
+        <button onClick={() => changeWeek(7)}>❯</button>
 
         <input
           type="date"
@@ -82,46 +154,49 @@ export default function SchedulePicker({
         />
       </div>
 
-      {/* ===== GRID ===== */}
+      {/* GRID */}
       <div className="tfm-schedule-grid">
         <div />
 
-        {/* HEADER */}
         {weekDates.map((date) => {
-          const { dayName, dateText } = formatDayHeader(date);
+          const { dayName, dateText } = formatDayHeader(toInputDate(date));
           return (
-            <div key={date} className="tfm-day-head">
+            <div key={toInputDate(date)} className="tfm-day-head">
               <div className="day-name">{dayName}</div>
               <div className="day-date">{dateText}</div>
             </div>
           );
         })}
 
-        {/* SLOTS */}
         {TIME_SLOTS.map((slot) => (
           <React.Fragment key={slot.key}>
             <div className="tfm-session-cell">{slot.label}</div>
 
             {weekDates.map((date) => {
-              const slotId = `${date}|${slot.key}`;
+              const slotId = `${toInputDate(date)}|${slot.key}`;
               const isBusy = busySlots.includes(slotId);
+              const isAvailable = availableSlots.includes(slotId);
               const isSelected = selectedSlots.includes(slotId);
+              const isNotProvided = !isBusy && !isAvailable;
               const isDisabled =
-                !isSelected && selectedSlots.length >= maxSlots;
+                isNotProvided || (!isSelected && selectedSlots.length >= maxSlots && classType !== "trial");
 
               return (
                 <div
                   key={slotId}
                   className={[
                     "tfm-slot",
+                    isAvailable && "available",
                     isBusy && "busy",
                     isSelected && "selected",
                     isDisabled && "disabled",
+                    isNotProvided && "not-provided",
                   ]
                     .filter(Boolean)
                     .join(" ")}
                   onClick={() => {
-                    if (isBusy || isDisabled) return;
+                    // Only allow toggle when slot is explicitly AVAILABLE and not disabled
+                    if (!isAvailable || isBusy || isDisabled) return;
                     onToggleSlot(slotId);
                   }}
                 >
