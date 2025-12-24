@@ -73,15 +73,35 @@ export const getAdminEbookDetail = async (id) => {
 };
 
 // Thêm ebook
-export const createEbook = async (data) => {
-  const res = await axiosInstance.post("/admin/ebooks", data);
-  return res.data;
+export const createEbook = async ({ title, type, file }) => {
+	if (file) {
+		const formData = new FormData();
+		formData.append('ebookFile', file);
+		formData.append('data', JSON.stringify({ title, type }));
+
+		const res = await axiosInstance.post('/admin/ebooks', formData);
+		return res.data;
+	}
+
+	const res = await axiosInstance.post('/admin/ebooks', { title, type });
+	return res.data;
 };
 
 // Cập nhật ebook
-export const updateEbook = async (data) => {
-  const res = await axiosInstance.put("/admin/ebooks", data);
-  return res.data;
+export const updateEbook = async ({ ebookId, title, type, file }) => {
+	const url = `/admin/ebooks/${ebookId}`;
+
+	if (file) {
+		const formData = new FormData();
+		formData.append('ebookFile', file);
+		formData.append('data', JSON.stringify({ title, type }));
+
+		const res = await axiosInstance.put(url, formData);
+		return res.data;
+	}
+
+	const res = await axiosInstance.put(url, { title, type });
+	return res.data;
 };
 
 // Xoá ebook
