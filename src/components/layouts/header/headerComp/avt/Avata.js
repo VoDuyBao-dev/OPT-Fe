@@ -6,9 +6,11 @@ import Dropdown from '../dropdown/Dropdown';
 import styles from './Avata.module.scss'
 import Modal from '~/components/modal/Modal';
 import { logout } from '~/api/services/logoutAPI';
+import defaultAvatar from '~/assets/imgs/img.jpg';
 
 function Avata({ className, userType = 'learner', avatarUrl }) {
     const [open, setOpen] = useState(false);
+    const avatarSrc = avatarUrl || defaultAvatar;
 
     const menuLearnerArr = [
         { label: 'Hồ sơ của bạn', path: '/Profile', icon: faUser },
@@ -54,13 +56,7 @@ const handleLogout = async () => {
             <div className={styles.accountCtn}>
                 <div className={styles.accountAvt}>
                     <div className={styles.accountImg}>
-                        {avatarUrl ? (
-                            <img src={avatarUrl} className={styles.accountImgItem} alt='avatar'></img>
-                        ) : (
-                            <div className={styles.accountImgItem} aria-label="avatar placeholder">
-                                <FontAwesomeIcon icon={faUser} />
-                            </div>
-                        )}
+                        <img src={avatarSrc} className={styles.accountImgItem} alt='avatar'></img>
                     </div>
                     <div className={styles.accountIcon}>
                         <span className={clsx(styles.accountIconItem, open ? styles.rotate : '')}>
