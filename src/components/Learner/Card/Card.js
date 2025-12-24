@@ -11,6 +11,7 @@ const ClassCard = ({
   price,
   description,
   tutorId,
+  detailHref,
   onRegister,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -20,7 +21,7 @@ const ClassCard = ({
     return `${Number(price).toLocaleString("vi-VN")}đ/giờ`;
   }, [price]);
 
-  const detailHref = tutorId ? `/Tutor/${tutorId}` : "#";
+  const detailLink = detailHref || (tutorId ? `/Tutor/${tutorId}` : "#");
   const imgSrc = image || "https://placehold.co/400x240?text=Class";
 
   return (
@@ -48,7 +49,7 @@ const ClassCard = ({
             tutorId={tutorId}
           />
           <button className="btn-google">
-            <a href={detailHref}>Chi tiết</a>
+            <a href={detailLink}>Chi tiết</a>
           </button>
         </div>
       </div>

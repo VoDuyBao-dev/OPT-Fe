@@ -65,7 +65,8 @@ const TutorDetail = () => {
           tutorId: tutor.tutorId,
         });
 
-        setRelatedClasses(res.data.result || []);
+        const result = res?.result ?? res?.data?.result ?? res?.data ?? [];
+        setRelatedClasses(Array.isArray(result) ? result : []);
       } catch (err) {
         console.error("❌ Lỗi lấy lớp học liên quan", err);
       }
@@ -215,7 +216,17 @@ const TutorDetail = () => {
             <p>Không có lớp học liên quan</p>
           )}
           {relatedClasses.map((item) => (
-            <ClassCard key={item.classId} data={item} />
+            <ClassCard
+              key={`${item.classId ?? "rel"}-${item.tutorId}-${item.subjectName}`}
+              image={item.avatarImage}
+              subject={item.subjectName}
+              teacherName={item.teacherName}
+              teacherLevel={item.educationalLevel || item.university}
+              price={item.pricePerHour}
+              description={item.introduction}
+              tutorId={item.tutorId}
+              detailHref={mainSubject?.subjectId ? `/Tutor/${item.tutorId}?subjectId=${mainSubject.subjectId}` : undefined}
+            />
           ))}
         </div>
       </div>
