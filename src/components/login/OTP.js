@@ -7,7 +7,7 @@ const OTP = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const email = location.state?.email;
+  const email = location.state?.email || localStorage.getItem("resetEmail");
 
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const inputsRef = useRef([]);
@@ -38,7 +38,10 @@ const OTP = () => {
   };
 
   const handleVerifyOTP = async () => {
-    if (!email) return alert("Không có email!");
+    if (!email) {
+      alert("Không có email! Hãy quay lại trang Quên mật khẩu.");
+      return navigate("/forgot-password");
+    }
 
     const otpCode = otp.join("");
     if (otpCode.length !== 6) {
@@ -46,9 +49,9 @@ const OTP = () => {
     }
 
     try {
-      await verifyOtp(email, otpCode);
+      await verifyOtp(email, otpCode, 'FORGOT_PASSWORD');
       alert("Xác thực OTP thành công!");
-
+      localStorage.setItem("resetVerified", "true");
       navigate("/NewPassword", { state: { email } });
     } catch (err) {
       alert(err.message || "OTP không đúng!");
@@ -56,10 +59,13 @@ const OTP = () => {
   };
 
   const handleResend = async () => {
-    if (!email) return alert("Không có email!");
+    if (!email) {
+      alert("Không có email! Hãy quay lại trang Quên mật khẩu.");
+      return navigate("/forgot-password");
+    }
 
     try {
-      await resendOtp(email);
+      await resendOtp(email, 'FORGOT_PASSWORD');
       alert("OTP mới đã gửi!");
 
       setOtp(["", "", "", "", "", ""]);
