@@ -16,6 +16,7 @@ import TutorList from '~/pages/learner/TutorList/TutorList';
 import TutorDetail from '~/pages/learner/TutorDetail/TutorDetail';
 import Schedule from '~/pages/learner/schedule/Schedule';
 import PaymentConfirmation from '~/pages/learner/paymentConfirmation/PaymentConfirmation';
+import PaymentResult from '~/pages/learner/paymentResult/PaymentResult';
 
 import ContactPage from '~/pages/learner/contact/Contact';
 //tutor pages
@@ -43,7 +44,8 @@ const publicRouter = [
     { path: '/register/learner', element: <RegisterLearner /> },
     { path: '/', element: <Dashboard /> },
 
-    { path: '/chat', element: <ChatPage /> }
+    { path: '/chat', element: <ChatPage /> },
+    { path: '/payment/result', element: <PaymentResult /> },
     // bổ xung trang dashboard chung cho tất cả người dùng
 ]
 
