@@ -62,30 +62,23 @@ export const getCompletedClasses = async () => {
 
 // ========================
 // 4. Gửi đánh giá cho lớp học
+// API: POST /learner/ratings/create-rating
+// Body: { classId, score, comment }
 // ========================
 
 export const submitClassReview = async ({
   classId,
   rating,
   comment,
-  image,
 }) => {
-  const formData = new FormData();
-  formData.append("rating", rating);
-  formData.append("comment", comment);
-
-  if (image) {
-    formData.append("image", image);
-  }
-
   const res = await axiosInstance.post(
-    `/learner/classes/${classId}/review`,
-    formData,
+    "/learner/ratings/create-rating",
     {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    }
+      classId,
+      score: rating,
+      comment,
+    },
+    { timeout: 15000 }
   );
 
   return res.data;
