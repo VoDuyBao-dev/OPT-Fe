@@ -32,8 +32,31 @@ const TutorList = () => {
   const uniqueTutors = useMemo(() => {
     const map = new Map();
     tutors.forEach((t) => {
-      if (t?.tutorId && !map.has(t.tutorId)) {
-        map.set(t.tutorId, t);
+      if (!t?.tutorId) return;
+      const existing = map.get(t.tutorId);
+      if (!existing) {
+        map.set(t.tutorId, { ...t });
+      } else {
+        const mergedSubjects = [
+          ...(existing.subjects || []),
+          ...(t.subjects || []),
+          ...(existing.subject ? [existing.subject] : []),
+          ...(t.subject ? [t.subject] : []),
+        ]
+          .filter(Boolean)
+          .reduce((acc, cur) => {
+            const id = cur.subjectId || cur.id || cur.subject_id;
+            if (id && !acc.some((s) => (s.subjectId || s.id || s.subject_id) === id)) {
+              acc.push(cur);
+            }
+            return acc;
+          }, []);
+
+        map.set(t.tutorId, {
+          ...existing,
+          ...t,
+          subjects: mergedSubjects,
+        });
       }
     });
     return Array.from(map.values());

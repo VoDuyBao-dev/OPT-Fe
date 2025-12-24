@@ -7,7 +7,6 @@ export const getNotifications = async () => {
 
 export const getFeaturedTutors = async () => {
 	const res = await axiosInstance.get('/public/home');
-	console.log('getFeaturedTutors response:', res.data);
 	return res.data?.result || [];
 };
 

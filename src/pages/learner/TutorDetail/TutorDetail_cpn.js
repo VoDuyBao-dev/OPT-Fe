@@ -65,6 +65,10 @@ const TutorDetail = () => {
   // DATA MAPPING
   // =========================
   const mainSubject = tutor.subjects?.[0];
+  const subjectNames = (tutor.subjects || [])
+    .map((s) => s?.subjectName)
+    .filter(Boolean)
+    .join(', ');
   const reviews = tutor.recentReviews || [];
 
   return (
@@ -73,26 +77,26 @@ const TutorDetail = () => {
       <div className="tutor-detail-header">
         <div className="image-section">
           <img
-            src={tutor.avatarImage}
+            src={tutor.avatarUrl || tutor.avatarImage}
             alt={tutor.fullName}
             className="main-img"
           />
 
           <div className="thumbnail-list">
-            <img src={tutor.avatarImage} alt="" />
-            <img src={tutor.avatarImage} alt="" />
-            <img src={tutor.avatarImage} alt="" />
+            <img src={tutor.avatarUrl || tutor.avatarImage} alt="" />
+            <img src={tutor.avatarUrl || tutor.avatarImage} alt="" />
+            <img src={tutor.avatarUrl || tutor.avatarImage} alt="" />
           </div>
         </div>
 
         <div className="info-section">
-          <h2>{mainSubject?.subjectName}</h2>
+          <h2>{subjectNames || mainSubject?.subjectName || 'Gia sư'}</h2>
           <p>
             Giáo viên:{" "}
             <span className="teacher">{tutor.fullName}</span>
           </p>
           <h3 className="price">
-            {tutor.pricePerHour.toLocaleString()}đ
+            {Number(tutor.pricePerHour || 0).toLocaleString('vi-VN')}đ
           </h3>
           <p className="desc">{tutor.introduction}</p>
 
@@ -136,6 +140,7 @@ const TutorDetail = () => {
               <li>Kinh nghiệm: {tutor.educationalLevel}</li>
               <li>Trường: {tutor.university}</li>
               <li>Địa chỉ: {tutor.address}</li>
+              <li>Môn dạy: {subjectNames || 'Chưa cập nhật'}</li>
               <li>Học thử trước khi học chính thức</li>
             </ul>
           </div>
@@ -147,6 +152,7 @@ const TutorDetail = () => {
             <p>
               {tutor.educationalLevel} - {tutor.university}
             </p>
+            <p>Môn dạy: {subjectNames || 'Chưa cập nhật'}</p>
             <p>{tutor.introduction}</p>
           </div>
         )}
