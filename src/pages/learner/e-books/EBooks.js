@@ -13,19 +13,16 @@ export default function EBooks() {
     const loadEbooks = async () => {
       try {
         const res = typeFilter
-          ? await searchEbooks({ type: typeFilter })
+          ? await searchEbooks({ type: typeFilter, page: 0, size: 20 })
           : await getAllEbooks();
 
-        console.log("EBOOK API:", res);
-
-        // ✅ FIX: API KHÔNG CÓ result → LẤY TRỰC TIẾP items
         const rawData = res?.items || [];
 
         const mapped = rawData.map((e) => ({
           id: e.ebookId,
           title: e.title,
-          author: e.uploadedByName,
-          date: e.createdAt,
+          author: e.uploadedByName || e.uploadedBy || '—',
+          date: e.createdAt || e.uploadedAt,
           type: e.type,
           path: e.filePath,
         }));

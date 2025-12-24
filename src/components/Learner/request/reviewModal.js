@@ -10,8 +10,6 @@ export function ReviewModal({
 }) {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
 
   if (!open) return null;
 
@@ -20,13 +18,11 @@ export function ReviewModal({
     onClose();
     setRating(5);
     setComment("");
-    setImage(null);
-    setImagePreview(null);
   };
 
   const handleSubmit = () => {
     if (loading) return;
-    onSubmit({ rating, comment, image });
+    onSubmit({ rating, comment });
   };
 
   return (

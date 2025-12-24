@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "~/components/Learner/profile/Profile.module.scss";
 import ClassesTab from "~/components/Learner/classed/class";
 import { ReviewModal } from "~/components/Learner/request/reviewModal";
@@ -9,6 +9,7 @@ export default function LearnerDashboard() {
   const [reviewModalOpen, setReviewModalOpen] = useState(false);
   const [selectedClass, setSelectedClass] = useState(null);
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
 
   // ============================
   // Load completed classes
@@ -37,17 +38,17 @@ export default function LearnerDashboard() {
   // ============================
   // Submit review (CALL API)
   // ============================
-  const handleSubmitReview = async ({ rating, comment, image }) => {
-    if (!selectedClass) return;
+  const handleSubmitReview = async ({ rating, comment }) => {
+    if (!selectedClass || submittingRef.current) return;
 
     try {
       setSubmitting(true);
+      submittingRef.current = true;
 
       await submitClassReview({
         classId: selectedClass.classId,
         rating,
         comment,
-        image,
       });
 
       // ✅ Update UI: disable rating button
@@ -66,6 +67,7 @@ export default function LearnerDashboard() {
       alert("Gửi đánh giá thất bại, vui lòng thử lại!");
     } finally {
       setSubmitting(false);
+      submittingRef.current = false;
     }
   };
 

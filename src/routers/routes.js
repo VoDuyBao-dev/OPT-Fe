@@ -10,6 +10,7 @@ import LoginPage from '~/pages/account/login/Login';
 import ForgotPassword from '~/pages/account/login/ForgotPassword';
 import OTP from '~/pages/account/login/OTP';
 import NewPassword from '~/pages/account/login/NewPassword';
+import OTPAuth from '~/pages/account/register/registerLearner/otp/OTPAuth';
 
 //Leaner pages
 import TutorList from '~/pages/learner/TutorList/TutorList';
@@ -42,6 +43,7 @@ const publicRouter = [
     { path: '/NewPassword', element: <NewPassword /> },
     { path: '/register/tutor', element: <RegisterTutor /> },
     { path: '/register/learner', element: <RegisterLearner /> },
+    { path: '/verify-otp', element: <OTPAuth /> },
     { path: '/', element: <Dashboard /> },
 
     { path: '/chat', element: <ChatPage /> },

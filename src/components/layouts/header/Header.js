@@ -9,6 +9,7 @@ import { logout as logoutApi } from '../../../api/services/logoutAPI'
 import { getLearnerProfile } from '~/api/services/leanerService';
 import { fetchPersonalInfo } from '~/api/services/tutorService';
 import { fetchAdminProfile } from '~/api/services/adminProfileService';
+import defaultAvatar from '~/assets/imgs/img.jpg';
 
 function Header({ showNavbar = true, showHeaderUser = true, userType = false }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -271,11 +272,7 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
                                         onClick={closeMobileMenu}
                                     >
                                         <div className={styles.userAvatar}>
-                                            {userData.avatarUrl ? (
-                                                <img src={userData.avatarUrl} alt={userData.fullName} />
-                                            ) : (
-                                                <FontAwesomeIcon icon={faUser} />
-                                            )}
+                                            <img src={userData.avatarUrl || defaultAvatar} alt={userData.fullName} />
                                         </div>
                                         <span className={styles.userName}>{userData.fullName}</span>
                                     </Link>
