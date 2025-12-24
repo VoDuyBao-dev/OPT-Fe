@@ -122,6 +122,16 @@ export const getLearnerCalendar = async (from, to) => {
   return res.data?.result || [];
 };
 
+// Chuẩn hóa dữ liệu gia sư từ API list/search
+const normalizeTutor = (tutor) => {
+  if (!tutor) return tutor;
+  return {
+    ...tutor,
+    avatarUrl: tutor.avatarUrl || tutor.avatarImage,
+    subjects: tutor.subjects || (tutor.subject ? [tutor.subject] : []),
+  };
+};
+
 // ============================
 // 7. Lấy danh sách filter
 // ============================
@@ -149,8 +159,8 @@ export const searchTutorsByFilter = async ({
       },
     }
   );
-
-  return res.data?.result || res.data || [];
+  const data = res.data?.result || res.data || [];
+  return Array.isArray(data) ? data.map(normalizeTutor) : [];
 };
 
 
@@ -165,8 +175,8 @@ export const searchTutorsByKeyword = async (keyword) => {
       params: { q: keyword },
     }
   );
-
-  return res.data?.result || res.data || [];
+  const data = res.data?.result || res.data || [];
+  return Array.isArray(data) ? data.map(normalizeTutor) : [];
 };
 
 // ========================
@@ -216,7 +226,8 @@ export const searchEbooks = async ({ type, page = 0, size = 5 }) => {
 // 12. Lấy chi tiết gia sư
 // =======================
 export const getTutorDetail = (tutorId) => {
-  return axiosInstance.get(`/tutors/tutorDetail/${tutorId}`);
+  const res = axiosInstance.get(`/tutors/tutorDetail/${tutorId}`);//axiosInstance.get(`/tutors/tutorDetail/${tutorId}`);
+  return res || {};
 };
 
 // ========================
