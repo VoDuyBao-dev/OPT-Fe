@@ -35,19 +35,7 @@ const TutorDetail = () => {
   // FETCH RELATED CLASSES
   // =========================
   useEffect(() => {
-<<<<<<< HEAD
-    if (!tutor?.subject?.subjectId || !tutor?.tutorId) return;
 
-    const fetchRelated = async () => {
-      try {
-        const res = await getRelatedClasses({
-          classId: tutor.classes?.[0]?.classId || 0,
-          subjectId: tutor.subject.subjectId,
-          tutorId: tutor.tutorId,
-        });
-
-        setRelatedClasses(res.data.result || []);
-=======
     if (!tutor?.subjects?.length || !tutor?.tutorId) return;
 
     const fetchRelated = async () => {
@@ -58,7 +46,6 @@ const TutorDetail = () => {
         });
 
         setRelatedClasses(data?.result || []);
->>>>>>> fb8771a7fa0410245d80184ca9c61dea0d2c1434
       } catch (err) {
         console.error("❌ Lỗi lấy lớp học liên quan", err);
       }
