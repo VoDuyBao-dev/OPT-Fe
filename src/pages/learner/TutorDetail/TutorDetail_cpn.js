@@ -35,24 +35,23 @@ const TutorDetail = () => {
   // FETCH RELATED CLASSES
   // =========================
   useEffect(() => {
-  if (!tutor?.subjects?.length || !tutor?.tutorId) return;
+    if (!tutor?.subjects?.length || !tutor?.tutorId) return;
 
-  const fetchRelated = async () => {
-    try {
-      const res = await getRelatedClasses({
-        classId: tutor.classes?.[0]?.classId || 0, // 🔥 BẮT BUỘC
-        subjectId: tutor.subjects[0].subjectId,
-        tutorId: tutor.tutorId,
-      });
+    const fetchRelated = async () => {
+      try {
+        const data = await getRelatedClasses({
+          subjectId: tutor.subjects[0].subjectId,
+          tutorId: tutor.tutorId,
+        });
 
-      setRelatedClasses(res.data.result || []);
-    } catch (err) {
-      console.error("❌ Lỗi lấy lớp học liên quan", err);
-    }
-  };
+        setRelatedClasses(data?.result || []);
+      } catch (err) {
+        console.error("❌ Lỗi lấy lớp học liên quan", err);
+      }
+    };
 
-  fetchRelated();
-}, [tutor]);
+    fetchRelated();
+  }, [tutor]);
 
 
   // =========================
@@ -192,8 +191,17 @@ const TutorDetail = () => {
           {relatedClasses.length === 0 && (
             <p>Không có lớp học liên quan</p>
           )}
-          {relatedClasses.map((item) => (
-            <ClassCard key={item.classId} data={item} />
+          {relatedClasses.map((item, idx) => (
+            <ClassCard
+              key={item.classId ?? `${item.tutorId || 't'}-${item.subjectId || 's'}-${idx}`}
+              image={item.avatarImage}
+              subject={item.subjectName}
+              teacherName={item.teacherName}
+              teacherLevel={item.educationalLevel || item.university}
+              price={item.pricePerHour}
+              description={item.introduction}
+              tutorId={item.tutorId}
+            />
           ))}
         </div>
       </div>
