@@ -18,6 +18,10 @@ function ParentRequest() {
     const [rejectReason, setRejectReason] = useState('');
     const [toast, setToast] = useState({ message: '', type: '' });
 
+    const extractErrorMessage = (err, fallback) => {
+        return err?.response?.data?.message || err?.response?.data?.result || err?.message || fallback;
+    };
+
     const showToast = (message, type = 'info') => {
         setToast({ message, type });
     };
@@ -76,8 +80,9 @@ function ParentRequest() {
             await loadRequests(pageInfo.page);
             showToast('Chấp nhận yêu cầu thành công', 'success');
         } catch (err) {
-            setError('Chấp nhận yêu cầu thất bại');
-            showToast('Chấp nhận yêu cầu thất bại', 'error');
+            const msg = extractErrorMessage(err, 'Chấp nhận yêu cầu thất bại');
+            setError(msg);
+            showToast(msg, 'error');
         }
     };
 
@@ -94,8 +99,9 @@ function ParentRequest() {
                 await loadRequests(pageInfo.page);
                 showToast('Từ chối yêu cầu thành công', 'success');
             } catch (err) {
-                setError('Từ chối yêu cầu thất bại');
-                showToast('Từ chối yêu cầu thất bại', 'error');
+                const msg = extractErrorMessage(err, 'Từ chối yêu cầu thất bại');
+                setError(msg);
+                showToast(msg, 'error');
             }
             setShowRejectModal(false);
             setRejectReason('');
