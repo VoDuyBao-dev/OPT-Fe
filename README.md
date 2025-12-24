@@ -3,3 +3,7 @@
 ``` bash
 npm start
 ```
+### Chạy ứng dụng ở chế độ dev
+``` bash
+npm start
+```

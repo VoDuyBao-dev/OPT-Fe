@@ -35,24 +35,24 @@ const TutorDetail = () => {
   // FETCH RELATED CLASSES
   // =========================
   useEffect(() => {
-  if (!tutor?.subjects?.length || !tutor?.tutorId) return;
+    if (!tutor?.subject?.subjectId || !tutor?.tutorId) return;
 
-  const fetchRelated = async () => {
-    try {
-      const res = await getRelatedClasses({
-        classId: tutor.classes?.[0]?.classId || 0, // 🔥 BẮT BUỘC
-        subjectId: tutor.subjects[0].subjectId,
-        tutorId: tutor.tutorId,
-      });
+    const fetchRelated = async () => {
+      try {
+        const res = await getRelatedClasses({
+          classId: tutor.classes?.[0]?.classId || 0,
+          subjectId: tutor.subject.subjectId,
+          tutorId: tutor.tutorId,
+        });
 
-      setRelatedClasses(res.data.result || []);
-    } catch (err) {
-      console.error("❌ Lỗi lấy lớp học liên quan", err);
-    }
-  };
+        setRelatedClasses(res.data.result || []);
+      } catch (err) {
+        console.error("❌ Lỗi lấy lớp học liên quan", err);
+      }
+    };
 
-  fetchRelated();
-}, [tutor]);
+    fetchRelated();
+  }, [tutor]);
 
 
   // =========================
@@ -65,7 +65,7 @@ const TutorDetail = () => {
   // =========================
   // DATA MAPPING
   // =========================
-  const mainSubject = tutor.subjects?.[0];
+  const mainSubject = tutor.subject;
   const reviews = tutor.recentReviews || [];
 
   return (
@@ -74,15 +74,15 @@ const TutorDetail = () => {
       <div className="tutor-detail-header">
         <div className="image-section">
           <img
-            src={tutor.avatarImage}
+            src={tutor.avatarImage || tutor.avatarUrl || "/default-avatar.png"}
             alt={tutor.fullName}
             className="main-img"
           />
 
           <div className="thumbnail-list">
-            <img src={tutor.avatarImage} alt="" />
-            <img src={tutor.avatarImage} alt="" />
-            <img src={tutor.avatarImage} alt="" />
+            <img src={tutor.avatarImage || tutor.avatarUrl || "/default-avatar.png"} alt="" />
+            <img src={tutor.avatarImage || tutor.avatarUrl || "/default-avatar.png"} alt="" />
+            <img src={tutor.avatarImage || tutor.avatarUrl || "/default-avatar.png"} alt="" />
           </div>
         </div>
 
