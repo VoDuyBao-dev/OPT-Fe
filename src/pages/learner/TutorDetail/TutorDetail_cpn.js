@@ -218,8 +218,9 @@ const TutorDetail = () => {
           {relatedClasses.map((item) => (
             <ClassCard
               key={`${item.classId ?? "rel"}-${item.tutorId}-${item.subjectName}`}
-              image={item.avatarImage}
-              subject={item.subjectName}
+              image={item.avatarUrl || item.avatarImage || "/default-avatar.png"}
+              alt={item.fullName}
+              subject={item.subjectName}S
               teacherName={item.teacherName}
               teacherLevel={item.educationalLevel || item.university}
               price={item.pricePerHour}
