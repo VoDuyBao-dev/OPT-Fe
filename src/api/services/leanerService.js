@@ -100,7 +100,18 @@ export const getLearnerRequests = async (page = 0, size = 10) => {
     params: { page, size },
   });
 
-  return res.data?.result?.content ?? [];
+  const result = res.data?.result || {};
+  const content = result?.content || [];
+
+  return {
+    items: content,
+    pagination: {
+      page: result?.pageable?.pageNumber ?? page,
+      size: result?.pageable?.pageSize ?? size,
+      totalItems: result?.totalElements ?? content.length,
+      totalPages: result?.totalPages ?? 1,
+    },
+  };
 };
 
 // ========================

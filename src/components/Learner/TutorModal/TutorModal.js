@@ -155,6 +155,18 @@ const TutorModal = ({
       return null;
     }
 
+    const translateError = (serverData, fallback) => {
+      const code = serverData?.code;
+      switch (code) {
+        case 5107:
+          return 'Gia sư không dạy môn học này.';
+        case 5121:
+          return 'Lịch đã trùng với lớp khác. Vui lòng chọn ngày hoặc giờ khác.';
+        default:
+          return serverData?.message || fallback || 'Có lỗi xảy ra. Vui lòng thử lại.';
+      }
+    };
+
     try {
       if (type === "trial") {
         if (!resolvedSubjectId) {
@@ -225,18 +237,12 @@ const TutorModal = ({
       return;
     } catch (err) {
       console.error('Submit error:', err);
-      // Try to show detailed server error if available
       const serverData = err?.response?.data;
-      if (serverData) {
-        try {
-          console.error('Server response body:', JSON.stringify(serverData, null, 2));
-          setToast({ message: serverData.message || JSON.stringify(serverData), type: 'error' });
-        } catch (e) {
-          setToast({ message: serverData.message || 'Có lỗi xảy ra', type: 'error' });
-        }
-      } else {
-        setToast({ message: err.message || 'Có lỗi xảy ra', type: 'error' });
-      }
+      const friendly = translateError(serverData, err.message);
+      try {
+        console.error('Server response body:', JSON.stringify(serverData, null, 2));
+      } catch (_) {}
+      setToast({ message: friendly, type: 'error' });
     }
   };
 
