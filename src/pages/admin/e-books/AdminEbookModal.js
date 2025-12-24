@@ -5,10 +5,19 @@ export default function AdminEbookModal({ open, onClose, onSubmit, initial }) {
   const [form, setForm] = useState({
     title: "",
     type: "TAI_LIEU",
+    file: null,
   });
 
   useEffect(() => {
-    if (initial) setForm(initial);
+    if (initial) {
+      setForm({
+        title: initial.title || "",
+        type: initial.type || "TAI_LIEU",
+        file: null,
+      });
+    } else {
+      setForm({ title: "", type: "TAI_LIEU", file: null });
+    }
   }, [initial]);
 
   if (!open) return null;
@@ -32,6 +41,15 @@ export default function AdminEbookModal({ open, onClose, onSubmit, initial }) {
           <option value="TAI_LIEU">Tài liệu</option>
           <option value="DE_THI_THAM_KHAO">Đề thi tham khảo</option>
         </select>
+
+        <input
+          type="file"
+          accept=".pdf"
+          onChange={(e) =>
+            setForm({ ...form, file: e.target.files?.[0] || null })
+          }
+          required={!initial}
+        />
 
         <div className={styles.modalActions}>
           <button onClick={() => onSubmit(form)} className={styles.btnPrimary}>

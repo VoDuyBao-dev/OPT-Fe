@@ -505,7 +505,7 @@ function PendingApprovals() {
                                 className={styles.rejectButton}
                                 disabled={detailLoading}
                             >
-                                <FontAwesomeIcon icon={faTimesCircle} /> Từ chối (chưa hỗ trợ)
+                                <FontAwesomeIcon icon={faTimesCircle} /> Từ chối
                             </Button>
                         </div>
                     </div>
