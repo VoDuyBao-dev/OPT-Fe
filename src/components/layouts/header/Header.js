@@ -203,7 +203,7 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
                     ))}
 
                     {/* Desktop Navigation - Hidden for tutor and admin */}
-                    {userType !== 'tutor' && (
+                    {userType && userType !== 'tutor' && (
                         <div className={styles.desktopNav}>
                             {showNavbar && <Navbar userType={userType} />}
                         </div>
@@ -252,7 +252,7 @@ function Header({ showNavbar = true, showHeaderUser = true, userType = false }) 
                 <div className={clsx(styles.mobileMenu, { [styles.open]: isMobileMenuOpen })}>
                     <div className={styles.mobileMenuContent}>
                         {/* Navigation Items */}
-                        {showNavbar && (
+                        {showNavbar && userType && (
                             <div className={styles.mobileNavSection}>
                                 <Navbar userType={userType} onLinkClick={closeMobileMenu} isMobile={true} />
                             </div>
