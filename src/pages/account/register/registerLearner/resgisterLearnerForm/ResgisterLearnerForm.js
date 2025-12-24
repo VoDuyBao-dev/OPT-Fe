@@ -73,12 +73,10 @@ function ReisterFormLearner() {
         setErrors({});
 
         try {
-            //đăng ký thành công và điều hướng qua trang login
             setLoading(true);
             await registerLearner({ fullName, email, password, confirmPassword });
-            alert('Đăng ký thành công. chúng tôi sẽ chuyển bạn đến trang đăng nhập');
-            setFormData({ fullName: '', email: '', password: '', confirmPassword: '' });
-            setTimeout(() => navigate('/login'), 2000);
+            alert('Đăng ký thành công. Vui lòng kiểm tra email để lấy mã OTP.');
+            navigate(`/verify-otp?email=${encodeURIComponent(email)}&type=ACCOUNT_ACTIVATION`);
         } catch (err) {
             const apiMsg = err.response?.data?.message;
             const apiCode = err.response?.data?.code;

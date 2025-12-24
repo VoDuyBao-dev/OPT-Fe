@@ -87,6 +87,26 @@ export const registerLearner = async (data) => {
 };
 
 // ========================
+// Verify OTP
+// ========================
+export const verifyOtp = async ({ email, otpCode, otpType }) => {
+  const res = await axiosInstance.post('/auth/otp/verifyOtp', {
+    email,
+    otpCode,
+    otpType,
+  });
+  return res.data;
+};
+
+// ========================
+// Resend OTP
+// ========================
+export const resendOtp = async (email) => {
+  const res = await axiosInstance.post('/auth/otp/resendOtp', { email });
+  return res.data;
+};
+
+// ========================
 // đổi mật khẩu gia sư (Tutor Change Password)
 // ========================
 export const changeTutorPassword = async (payload) => {
