@@ -22,11 +22,16 @@ const ClassCard = ({
   }, [price]);
 
   const detailLink = detailHref || (tutorId ? `/Tutor/${tutorId}` : "#");
-  const imgSrc = image || "https://placehold.co/400x240?text=Class";
+  const imgSrc = image || "/default-avatar.png";
 
   return (
     <div className="class-card">
-      <img src={imgSrc} alt={subject} className="class-main-img" />
+      <img src={imgSrc} alt={subject} className="class-main-img"
+       referrerPolicy="no-referrer"
+        onError={(e) => {
+          e.currentTarget.onerror = null;
+          e.currentTarget.src = "/default-avatar.png";
+  }} />
       <div className="class-info">
         <div className="teacher-info">
           <div>

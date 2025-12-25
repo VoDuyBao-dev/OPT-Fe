@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { faAngleDown, faBook, faCheck, faHome, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faAngleDown, faBook, faCheck, faHome, faM, faMessage, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import clsx from 'clsx';
 import Dropdown from '../dropdown/Dropdown';
@@ -16,11 +16,13 @@ function Avata({ className, userType = 'learner', avatarUrl }) {
         { label: 'Hồ sơ của bạn', path: '/Profile', icon: faUser },
         { label: 'Lớp đã học', path: '/Classed', icon: faBook },
         { label: 'Yêu cầu đã gửi', path: '/Request', icon: faCheck },
+        { label: 'Tin nhắn', path: '/chat', icon: faMessage },
         { label: 'Đăng xuất', action: 'logout', icon: faRightFromBracket },
     ];
     const menuArrTutor = [
         { label: 'Hồ sơ của bạn', path: '/tutor/profile', icon: faUser },
         { label: 'Trang chủ gia sư', path: '/tutor/home', icon: faHome },
+        { label: 'Tin nhắn', path: '/chat', icon: faMessage },
         { label: 'Đăng xuất', action: 'logout', icon: faRightFromBracket },
     ];
 
